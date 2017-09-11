@@ -12,7 +12,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "conf",
-			Value: "config.toml",
+			Value: "conf.toml",
 			Usage: "config file",
 		},
 	}
