@@ -63,8 +63,8 @@
 		},
 		{
 			"ImportPath": "github.com/pagoda-tech/macaron",
-			"Comment": "v1.2.2-3-gd66c7c6",
-			"Rev": "d66c7c6cfec0e9d9b3e27081271fc872752e494c"
+			"Comment": "v1.2.2-4-ge874198",
+			"Rev": "e87419849ae3276d4d96973524570f104d23efb3"
 		},
 		{
 			"ImportPath": "github.com/urfave/cli",
@@ -74,11 +74,6 @@
 		{
 			"ImportPath": "golang.org/x/crypto/pbkdf2",
 			"Rev": "9ba3862cf6a5452ae579de98f9364dd2e544844c"
-		},
-		{
-			"ImportPath": "gopkg.in/ini.v1",
-			"Comment": "v1.28.2",
-			"Rev": "20b96f641a5ea98f2f8619ff4f3e061cff4833bd"
 		}
 	]
 }

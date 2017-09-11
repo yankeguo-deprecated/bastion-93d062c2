@@ -26,8 +26,6 @@ import (
 	"strings"
 
 	"github.com/Unknwon/com"
-	"gopkg.in/ini.v1"
-
 	"github.com/go-macaron/inject"
 )
 
@@ -288,9 +286,6 @@ var (
 
 	// Flash applies to current request.
 	FlashNow bool
-
-	// Configuration convention object.
-	cfg *ini.File
 )
 
 func (m *Macaron) SetEnv(e string) {
@@ -311,19 +306,4 @@ func init() {
 	if err != nil {
 		panic("error getting work directory: " + err.Error())
 	}
-}
-
-// SetConfig sets data sources for configuration.
-func SetConfig(source interface{}, others ...interface{}) (_ *ini.File, err error) {
-	cfg, err = ini.Load(source, others...)
-	return Config(), err
-}
-
-// Config returns configuration convention object.
-// It returns an empty object if there is no one available.
-func Config() *ini.File {
-	if cfg == nil {
-		return ini.Empty()
-	}
-	return cfg
 }
