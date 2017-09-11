@@ -1,0 +1,20 @@
+[bastion]
+
+env = "development"
+sandbox_dir = "/tmp/bastion/sandboxes"
+master_key_file = "/tmp/.ssh/id_rsa"
+authorized_keys_file = "/tmp/.ssh/authorized_keys"
+
+[db]
+
+url = "root@tcp(localhost:3306)/bastion"
+
+[redis]
+
+url = "redis://localhost:6379/1"
+
+[web]
+
+domain = "localhost"
+host = "localhost"
+port = 5566
