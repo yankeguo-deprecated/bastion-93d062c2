@@ -4,6 +4,7 @@ import (
 	"github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/pagoda-tech/bastion/models"
+	"github.com/pagoda-tech/bastion/routes"
 	"github.com/pagoda-tech/bastion/utils"
 	"github.com/pagoda-tech/macaron"
 	"github.com/urfave/cli"
@@ -23,6 +24,7 @@ func execWebCommand(c *cli.Context) (err error) {
 
 	// create macaron instance
 	m := macaron.Classic()
+	m.Use(macaron.Renderer())
 
 	// decode config
 	var cfg *utils.Config
@@ -54,15 +56,9 @@ func execWebCommand(c *cli.Context) (err error) {
 	m.Map(r)
 
 	// routes
-	mountRoutes(m)
+	routes.Mount(m)
 
 	// run macaron instance
 	m.Run(cfg.Web.Host, cfg.Web.Port)
 	return
-}
-
-func mountRoutes(m *macaron.Macaron) {
-	m.Get("/", func() string {
-		return "Hello world!"
-	})
 }

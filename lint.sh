@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gofmt -s -w */*.go *.go
+gofmt -s -w routes/**/*.go */*.go *.go
