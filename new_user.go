@@ -2,8 +2,8 @@ package main
 
 import (
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/pagoda-tech/bastion/conf"
 	"github.com/pagoda-tech/bastion/models"
+	"github.com/pagoda-tech/bastion/utils"
 	"github.com/urfave/cli"
 	"log"
 )
@@ -48,8 +48,8 @@ func execNewUserCommand(c *cli.Context) (err error) {
 	}
 
 	// decode config
-	var cfg *conf.Config
-	if cfg, err = conf.DecodeFile(c.GlobalString("conf")); err != nil {
+	var cfg *utils.Config
+	if cfg, err = utils.ParseConfigFile(c.GlobalString("config")); err != nil {
 		log.Fatalln(err)
 		return
 	}

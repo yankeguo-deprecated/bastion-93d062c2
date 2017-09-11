@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/pagoda-tech/bastion/conf"
+	"github.com/pagoda-tech/bastion/utils"
 	"github.com/pagoda-tech/macaron"
 )
 
@@ -12,7 +12,7 @@ type DB struct {
 }
 
 // NewDB 创建一个新的 DB 实例
-func NewDB(cfg *conf.Config) (db *DB, err error) {
+func NewDB(cfg *utils.Config) (db *DB, err error) {
 	var db0 *gorm.DB
 	if db0, err = gorm.Open("mysql", cfg.Database.URL); err != nil {
 		return nil, err

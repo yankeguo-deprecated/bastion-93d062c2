@@ -11,8 +11,8 @@ func main() {
 	app.Usage = "Enterprise Bastion System"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:  "conf",
-			Value: "conf.toml",
+			Name:  "config",
+			Value: "config.toml",
 			Usage: "config file",
 		},
 	}

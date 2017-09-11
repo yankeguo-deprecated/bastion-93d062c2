@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/pagoda-tech/bastion/conf"
 	"github.com/pagoda-tech/bastion/models"
+	"github.com/pagoda-tech/bastion/utils"
 	"github.com/pagoda-tech/macaron"
 	"github.com/urfave/cli"
 	"log"
@@ -25,8 +25,8 @@ func execWebCommand(c *cli.Context) (err error) {
 	m := macaron.Classic()
 
 	// decode config
-	var cfg *conf.Config
-	if cfg, err = conf.DecodeFile(c.GlobalString("conf")); err != nil {
+	var cfg *utils.Config
+	if cfg, err = utils.ParseConfigFile(c.GlobalString("config")); err != nil {
 		log.Fatalln(err)
 		return
 	}
