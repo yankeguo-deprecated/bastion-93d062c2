@@ -16,6 +16,10 @@ func main() {
 			Usage: "config file",
 		},
 	}
-	app.Commands = []cli.Command{webCommand, handleCommand}
+	app.Commands = []cli.Command{
+		webCommand,
+		handleCommand,
+		newUserCommand,
+	}
 	app.Run(os.Args)
 }
