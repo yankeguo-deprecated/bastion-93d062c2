@@ -72,7 +72,31 @@
 			"Rev": "7fb9c86b14e6a702a4157ccb5a863f07d844a207"
 		},
 		{
+			"ImportPath": "golang.org/x/crypto/bcrypt",
+			"Rev": "9ba3862cf6a5452ae579de98f9364dd2e544844c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "9ba3862cf6a5452ae579de98f9364dd2e544844c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/curve25519",
+			"Rev": "9ba3862cf6a5452ae579de98f9364dd2e544844c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ed25519",
+			"Rev": "9ba3862cf6a5452ae579de98f9364dd2e544844c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ed25519/internal/edwards25519",
+			"Rev": "9ba3862cf6a5452ae579de98f9364dd2e544844c"
+		},
+		{
 			"ImportPath": "golang.org/x/crypto/pbkdf2",
+			"Rev": "9ba3862cf6a5452ae579de98f9364dd2e544844c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ssh",
 			"Rev": "9ba3862cf6a5452ae579de98f9364dd2e544844c"
 		}
 	]
