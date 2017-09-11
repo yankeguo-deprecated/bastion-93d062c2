@@ -1,0 +1,84 @@
+{
+	"ImportPath": "github.com/pagoda-tech/bastion",
+	"GoVersion": "go1.9",
+	"GodepVersion": "v79",
+	"Deps": [
+		{
+			"ImportPath": "github.com/BurntSushi/toml",
+			"Comment": "v0.3.0-7-ga368813",
+			"Rev": "a368813c5e648fee92e5f6c30e3944ff9d5e8895"
+		},
+		{
+			"ImportPath": "github.com/Unknwon/com",
+			"Comment": "v1-13-g7677a1d",
+			"Rev": "7677a1d7c1137cd3dd5ba7a076d0c898a1ef4520"
+		},
+		{
+			"ImportPath": "github.com/go-macaron/inject",
+			"Rev": "d8a0b8677191f4380287cfebd08e462217bac7ad"
+		},
+		{
+			"ImportPath": "github.com/go-redis/redis",
+			"Comment": "v6.6.1",
+			"Rev": "fdafb11e5fa5d52d965e12073c8a58468c98ebe2"
+		},
+		{
+			"ImportPath": "github.com/go-redis/redis/internal",
+			"Comment": "v6.6.1",
+			"Rev": "fdafb11e5fa5d52d965e12073c8a58468c98ebe2"
+		},
+		{
+			"ImportPath": "github.com/go-redis/redis/internal/consistenthash",
+			"Comment": "v6.6.1",
+			"Rev": "fdafb11e5fa5d52d965e12073c8a58468c98ebe2"
+		},
+		{
+			"ImportPath": "github.com/go-redis/redis/internal/hashtag",
+			"Comment": "v6.6.1",
+			"Rev": "fdafb11e5fa5d52d965e12073c8a58468c98ebe2"
+		},
+		{
+			"ImportPath": "github.com/go-redis/redis/internal/pool",
+			"Comment": "v6.6.1",
+			"Rev": "fdafb11e5fa5d52d965e12073c8a58468c98ebe2"
+		},
+		{
+			"ImportPath": "github.com/go-redis/redis/internal/proto",
+			"Comment": "v6.6.1",
+			"Rev": "fdafb11e5fa5d52d965e12073c8a58468c98ebe2"
+		},
+		{
+			"ImportPath": "github.com/go-sql-driver/mysql",
+			"Comment": "v1.3-31-g26471af",
+			"Rev": "26471af196a17ee75a22e6481b5a5897fb16b081"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/gorm",
+			"Comment": "v1.0-173-gb1885a6",
+			"Rev": "b1885a643b4977c9089d77eb07c0fd96591f94b8"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/inflection",
+			"Rev": "1c35d901db3da928c72a72d8458480cc9ade058f"
+		},
+		{
+			"ImportPath": "github.com/pagoda-tech/macaron",
+			"Comment": "v1.2.2-3-gd66c7c6",
+			"Rev": "d66c7c6cfec0e9d9b3e27081271fc872752e494c"
+		},
+		{
+			"ImportPath": "github.com/urfave/cli",
+			"Comment": "v1.20.0-5-g7fb9c86",
+			"Rev": "7fb9c86b14e6a702a4157ccb5a863f07d844a207"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/pbkdf2",
+			"Rev": "9ba3862cf6a5452ae579de98f9364dd2e544844c"
+		},
+		{
+			"ImportPath": "gopkg.in/ini.v1",
+			"Comment": "v1.28.2",
+			"Rev": "20b96f641a5ea98f2f8619ff4f3e061cff4833bd"
+		}
+	]
+}
