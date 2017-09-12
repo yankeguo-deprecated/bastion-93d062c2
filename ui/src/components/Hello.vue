@@ -14,8 +14,8 @@
       </b-row>
 
       <b-row>
-        <b-col md="5"></b-col>
-        <b-col md="2">
+        <b-col md="4"></b-col>
+        <b-col md="4">
           <b-alert variant="danger" dismissible :show="alert.danger.show" @dismissed="alert.danger.show = false">
             {{ alert.danger.message }}
           </b-alert>
@@ -23,8 +23,8 @@
       </b-row>
 
       <b-row>
-        <b-col md="5"></b-col>
-        <b-col md="2">
+        <b-col md="4"></b-col>
+        <b-col md="4">
           <b-form @submit="submitForm">
             <b-form-group label="登录名:" label-for="login-input">
               <b-form-input id="login-input" type="text" v-model="form.data.login" required placeholder="输入登录名"></b-form-input>

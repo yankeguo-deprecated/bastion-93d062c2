@@ -1,8 +1,8 @@
 <template>
-  <b-container fluid id="app">
+  <b-container id="app">
 
     <!-- Navbar -->
-    <b-row v-if="!hidesNavbar">
+    <b-row v-if="components.navbar">
       <b-col>
         <router-view name="navbar"></router-view>
       </b-col>
@@ -10,7 +10,7 @@
 
     <!-- Sidebar with Content -->
     <b-row>
-      <b-col v-if="!hidesSidebar" md="2">
+      <b-col v-if="components.sidebar" md="3">
         <router-view name="sidebar"></router-view>
       </b-col>
       <b-col>
@@ -25,21 +25,25 @@ export default {
   name: 'app',
   data: function () {
     return {
-      hidesSidebar: false,
-      hidesNavbar: false
+      components: {
+        navbar: false,
+        sidebar: false
+      }
     }
   },
   created () {
-    this.updateBars()
+    this.updateComponents()
     this.fetchCurrentUserIfNeeded()
   },
   watch: {
-    '$route': ['updateBars', 'fetchCurrentUserIfNeeded']
+    '$route': ['updateComponents', 'fetchCurrentUserIfNeeded']
   },
   methods: {
-    updateBars () {
-      this.hidesSidebar = !!this.$route.matched.some((r) => r.meta.hidesSidebar)
-      this.hidesNavbar = !!this.$route.matched.some((r) => r.meta.hidesNavbar)
+    updateComponents () {
+      this.components = {
+        navbar: !this.$route.matched.some((r) => r.meta.hidesNavbar),
+        sidebar: !this.$route.matched.some((r) => r.meta.hidesSidebar)
+      }
     },
     fetchCurrentUserIfNeeded () {
       if (this.$store.getters.isSignedIn && !this.$store.getters.hasCurrentUser) {
