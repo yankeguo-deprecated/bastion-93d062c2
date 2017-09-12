@@ -43,7 +43,7 @@ export default {
       this.hidesNavbar = !!this.$route.matched.some((r) => r.meta.hidesNavbar)
     },
     fetchCurrentUserIfNeeded () {
-      if (this.$store.getters.isSignedIn) {
+      if (this.$store.getters.isSignedIn && !this.$store.getters.hasCurrentUser) {
         this.$api.fetchCurrentUser().then(({body}) => {
           const {user} = body
           this.$store.commit('setCurrentUser', user)
