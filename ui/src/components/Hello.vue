@@ -2,7 +2,8 @@
   <div>
     <el-row class="banner">
       <img src="../assets/logo.png">
-      <h1>{{ msg }}</h1>
+      <h1>{{ title }}</h1>
+      <h2>{{ subTitle }}</h2>
     </el-row>
     <el-row>
       <el-col :md="{span:6, offset:9}">
@@ -25,9 +26,15 @@
 <script>
 export default {
   name: 'index',
+  head: {
+    title: {
+      inner: '欢迎使用'
+    }
+  },
   data () {
     return {
-      msg: '欢迎使用 Bastion',
+      title: '欢迎使用 Bastion',
+      subTitle: '请登录',
       form: {
       }
     }
