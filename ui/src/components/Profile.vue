@@ -4,17 +4,16 @@
 
 <script>
 export default {
-  name: 'dashboard',
+  name: 'profile',
   head: {
     title: {
-      inner: '仪表盘'
+      inner: '个人信息'
     }
+  },
+  created () {
   },
   data () {
     return {
-      msg: '欢迎使用 Bastion',
-      form: {
-      }
     }
   }
 }

@@ -53,17 +53,17 @@
 			"Rev": "26471af196a17ee75a22e6481b5a5897fb16b081"
 		},
 		{
-			"ImportPath": "github.com/jinzhu/gorm",
-			"Comment": "v1.0-173-gb1885a6",
-			"Rev": "b1885a643b4977c9089d77eb07c0fd96591f94b8"
-		},
-		{
-			"ImportPath": "github.com/jinzhu/inflection",
-			"Rev": "1c35d901db3da928c72a72d8458480cc9ade058f"
-		},
-		{
 			"ImportPath": "github.com/pagoda-tech/binding",
 			"Rev": "014405b3a7ce59167cdf3aceb5dfa58b2b3fce43"
+		},
+		{
+			"ImportPath": "github.com/pagoda-tech/gorm",
+			"Comment": "v1.0-175-g42b51b4",
+			"Rev": "42b51b4f292c2b72e4a781323c4c6005c9b3e8fa"
+		},
+		{
+			"ImportPath": "github.com/pagoda-tech/inflection",
+			"Rev": "1c35d901db3da928c72a72d8458480cc9ade058f"
 		},
 		{
 			"ImportPath": "github.com/pagoda-tech/macaron",

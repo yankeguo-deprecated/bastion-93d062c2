@@ -22,7 +22,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'app',
   data: function () {
@@ -33,14 +32,23 @@ export default {
   },
   created () {
     this.updateBars()
+    this.fetchCurrentUserIfNeeded()
   },
   watch: {
-    '$route': 'updateBars'
+    '$route': ['updateBars', 'fetchCurrentUserIfNeeded']
   },
   methods: {
     updateBars () {
       this.hidesSidebar = !!this.$route.matched.some((r) => r.meta.hidesSidebar)
       this.hidesNavbar = !!this.$route.matched.some((r) => r.meta.hidesNavbar)
+    },
+    fetchCurrentUserIfNeeded () {
+      if (this.$store.getters.isSignedIn) {
+        this.$api.fetchCurrentUser().then(({body}) => {
+          const {user} = body
+          this.$store.commit('setCurrentUser', user)
+        })
+      }
     }
   }
 }

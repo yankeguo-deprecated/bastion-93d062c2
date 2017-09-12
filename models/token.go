@@ -3,7 +3,7 @@ package models
 import (
 	"crypto/rand"
 	"encoding/hex"
-	"github.com/jinzhu/gorm"
+	"github.com/pagoda-tech/gorm"
 	"time"
 )
 

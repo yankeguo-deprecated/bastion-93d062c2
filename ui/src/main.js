@@ -2,28 +2,35 @@ import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'normalize.css/normalize.css'
 import 'element-ui/lib/theme-default/index.css'
-import App from './App'
 import VueHead from 'vue-head'
 import VueResource from 'vue-resource'
-import router from './router'
-import Auth from './lib/auth'
-
-if (!window.localStorage) {
-  alert('不支持该浏览器，请使用主流浏览器')
-}
+import Api from './api'
 
 Vue.use(VueResource)
 Vue.use(VueHead)
 Vue.use(ElementUI)
+Vue.use(Api)
 
-Auth.init()
+import App from './App'
+import router from './router'
+import store from './store'
 
+/* Setup HTTP */
 Vue.http.options.root = '/api'
+
+Vue.http.interceptors.push(function (request, next) {
+  if (store.getters.isSignedIn) {
+    request.headers.set('Authorization', `Bearer ${store.state.token.token}`)
+  }
+  next()
+})
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   render: h => h(App)
 })

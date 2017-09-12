@@ -1,8 +1,8 @@
 package models
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/pagoda-tech/bastion/utils"
+	"github.com/pagoda-tech/gorm"
 	"github.com/pagoda-tech/macaron"
 )
 

@@ -1,11 +1,11 @@
 package utils
 
-// WildMap map[string]interface{} 的快捷写法
-type WildMap map[string]interface{}
+// Map map[string]interface{} 的快捷写法
+type Map map[string]interface{}
 
-// Map 创建一个 WildMap
-func Map(args ...interface{}) WildMap {
-	m := WildMap{}
+// NewMap 创建一个 Map
+func NewMap(args ...interface{}) Map {
+	m := Map{}
 	for i := 0; i < len(args); i = i + 2 {
 		m[args[i].(string)] = args[i+1]
 	}
@@ -13,7 +13,7 @@ func Map(args ...interface{}) WildMap {
 }
 
 // Set 设置一个值，并返回自己
-func (m WildMap) Set(key string, value interface{}) WildMap {
+func (m Map) Set(key string, value interface{}) Map {
 	m[key] = value
 	return m
 }

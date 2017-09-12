@@ -1,8 +1,8 @@
 package models
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/pagoda-tech/bastion/utils"
+	"github.com/pagoda-tech/gorm"
 	"golang.org/x/crypto/bcrypt"
 	"regexp"
 	"time"
@@ -19,24 +19,24 @@ type User struct {
 	gorm.Model
 
 	// Login 登录名
-	Login string `gorm:"unique_index"`
+	Login string `gorm:"unique_index" json:"login"`
 	// Nickname 昵称
-	Nickname string
+	Nickname string `json:"nickname"`
 	// PasswordDigest bcrypt 加密后的密码
-	PasswordDigest string `gorm:"type:text"`
+	PasswordDigest string `gorm:"type:text" json:"-"`
 	// IsBlocked 用户是否被禁用
-	IsBlocked bool `gorm:"not null"`
+	IsBlocked bool `gorm:"not null" json:"isBlocked"`
 	// IsAdmin 用户是否是管理员
-	IsAdmin bool `gorm:"not null"`
+	IsAdmin bool `gorm:"not null" json:"isAdmin"`
 
 	// Fingerprint Sandbox 公钥指纹
-	Fingerprint string `gorm:"unique_index"`
+	Fingerprint string `gorm:"unique_index" json:"fingerprint"`
 	// PublicKey Sandbox 公钥
-	PublicKey string `gorm:"type:text"`
+	PublicKey string `gorm:"type:text" json:"-"`
 	// PrivateKey Sandbox 私钥
-	PrivateKey string `gorm:"type:text"`
+	PrivateKey string `gorm:"type:text" json:"-"`
 	// UsedAt 最后一次使用时间
-	UsedAt *time.Time
+	UsedAt *time.Time `json:"usedAt"`
 }
 
 // GenerateSSHKey 为该用户填充一个新的 SSH 密钥对

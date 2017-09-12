@@ -29,8 +29,6 @@
 </template>
 
 <script>
-import Auth from '../lib/auth'
-
 export default {
   name: 'index',
   head: {
@@ -39,7 +37,7 @@ export default {
     }
   },
   created () {
-    this.$http.get('').then(({body}) => {
+    this.$api.check().then(({body}) => {
       this.info = body.name + ' v' + body.version
     }, (response) => {})
   },
@@ -58,8 +56,9 @@ export default {
   methods: {
     submitForm () {
       this.submitting = true
-      this.$http.post('tokens/create', this.form).then(({body}) => {
-        Auth.setToken(body.token.secret)
+      this.$api.createToken(this.form).then(({body}) => {
+        this.$store.commit('setToken', body.token.secret)
+        this.$message.success('登录成功')
         this.$router.push({ name: 'dashboard' })
         this.submitting = false
       }, ({body}) => {
@@ -71,7 +70,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .banner {
   text-align: center;
