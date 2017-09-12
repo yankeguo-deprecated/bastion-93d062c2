@@ -6,10 +6,10 @@
       </el-col>
     </el-row>
     <el-row v-if="!hidesSidebar">
-      <el-col :md="{ span: 6}">
+      <el-col :md="{ span: 6}" :lg="{ span: 4 }">
         <router-view name="sidebar"></router-view>
       </el-col>
-      <el-col :md="{ span: 18}">
+      <el-col :md="{ span: 18}" :lg="{ span: 20 }">
         <router-view></router-view>
       </el-col>
     </el-row>
