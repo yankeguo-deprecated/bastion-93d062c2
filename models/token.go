@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// AccessToken 代表一个用户的访问 Token
-type AccessToken struct {
+// Token 代表一个用户的访问 Token
+type Token struct {
 	gorm.Model
 	// UserID 用户 ID
 	UserID uint `gorm:"index"`
@@ -17,12 +17,12 @@ type AccessToken struct {
 	// Desc 描述
 	Desc string `gorm:"type:text"`
 	// UsedAt 最后一次使用时间
-	UsedAt time.Time
+	UsedAt *time.Time
 }
 
 // GenerateSecret 创建一个新的 Secret
-func (at *AccessToken) GenerateSecret() (err error) {
-	buf := make([]byte, 16)
+func (at *Token) GenerateSecret() (err error) {
+	buf := make([]byte, 32)
 	if _, err = rand.Read(buf); err != nil {
 		return
 	}

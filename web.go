@@ -25,6 +25,10 @@ func execWebCommand(c *cli.Context) (err error) {
 	// create macaron instance
 	m := macaron.Classic()
 	m.Use(macaron.Renderer())
+	m.Use(utils.Renderer())
+	m.Use(func(ctx *macaron.Context) {
+		ctx.Data["Version"] = VERSION
+	})
 
 	// decode config
 	var cfg *utils.Config

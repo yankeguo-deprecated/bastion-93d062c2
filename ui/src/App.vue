@@ -23,29 +23,24 @@
 
 <script>
 
-function shouldHidesSidebar ($route) {
-  return !!$route.matched.some((r) => r.meta.hidesSidebar)
-}
-
-function shouldHidesNavbar ($route) {
-  return !!$route.matched.some((r) => r.meta.hidesNavbar)
-}
-
 export default {
   name: 'app',
   data: function () {
     return {
-      hidesSidebar: shouldHidesSidebar(this.$route),
-      hidesNavbar: shouldHidesNavbar(this.$route)
+      hidesSidebar: false,
+      hidesNavbar: false
     }
+  },
+  created () {
+    this.updateBars()
   },
   watch: {
     '$route': 'updateBars'
   },
   methods: {
     updateBars () {
-      this.hidesSidebar = shouldHidesSidebar(this.$route)
-      this.hidesNavbar = shouldHidesNavbar(this.$route)
+      this.hidesSidebar = !!this.$route.matched.some((r) => r.meta.hidesSidebar)
+      this.hidesNavbar = !!this.$route.matched.some((r) => r.meta.hidesNavbar)
     }
   }
 }

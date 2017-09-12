@@ -20,11 +20,16 @@
         </el-form>
       </el-col>
     </el-row>
+    <el-row>
+      <el-col class="info">
+        <small>{{ info }}</small>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-// import Auth from '../lib/auth'
+import Auth from '../lib/auth'
 
 export default {
   name: 'index',
@@ -33,21 +38,34 @@ export default {
       inner: '欢迎使用'
     }
   },
+  created () {
+    this.$http.get('').then(({body}) => {
+      this.info = body.name + ' v' + body.version
+    }, (response) => {})
+  },
   data () {
     return {
+      submitting: false,
       title: '欢迎使用',
       subTitle: '请登录',
-      submitting: false,
+      info: null,
       form: {
+        login: null,
+        password: null
       }
     }
   },
   methods: {
     submitForm () {
       this.submitting = true
-      setTimeout(() => {
+      this.$http.post('tokens/create', this.form).then(({body}) => {
+        Auth.setToken(body.token.secret)
+        this.$router.push({ name: 'dashboard' })
         this.submitting = false
-      }, 3000)
+      }, ({body}) => {
+        this.$message.error(body.message)
+        this.submitting = false
+      })
     }
   }
 }
@@ -60,21 +78,8 @@ export default {
   margin-bottom: 1rem;
 }
 
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
+.info {
+  color: #999;
+  text-align: center;
 }
 </style>

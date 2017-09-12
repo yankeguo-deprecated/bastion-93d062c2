@@ -62,6 +62,10 @@
 			"Rev": "1c35d901db3da928c72a72d8458480cc9ade058f"
 		},
 		{
+			"ImportPath": "github.com/pagoda-tech/binding",
+			"Rev": "014405b3a7ce59167cdf3aceb5dfa58b2b3fce43"
+		},
+		{
 			"ImportPath": "github.com/pagoda-tech/macaron",
 			"Comment": "v1.2.2-4-ge874198",
 			"Rev": "e87419849ae3276d4d96973524570f104d23efb3"

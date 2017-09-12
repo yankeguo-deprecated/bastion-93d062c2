@@ -7,7 +7,7 @@ authorized_keys_file = "/tmp/.ssh/authorized_keys"
 
 [db]
 
-url = "root@tcp(localhost:3306)/bastion"
+url = "root@tcp(localhost:3306)/bastion?parseTime=true"
 
 [redis]
 

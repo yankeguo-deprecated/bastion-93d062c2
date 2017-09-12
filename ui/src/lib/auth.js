@@ -1,12 +1,32 @@
 import Vue from 'vue'
-var accessToken = localStorage.getItem('access_token')
 
 export default class {
+
   static isSignedIn () {
-    return !!accessToken
+    return !!this.token
   }
-  static setAccessToken (at) {
-    accessToken = at
-    Vue.http.headers.common['Authorization'] = `Token ${at}`
+
+  static setToken (token) {
+    this.token = token
+    if (token) {
+      localStorage.setItem('access_token', this.token)
+    } else {
+      localStorage.removeItem('access_token')
+    }
+    this.configureVue()
   }
+
+  static init () {
+    this.token = localStorage.getItem('access_token')
+    this.configureVue()
+  }
+
+  static configureVue () {
+    if (this.token) {
+      Vue.http.headers.common['Authorization'] = `Token ${this.token}`
+    } else {
+      delete Vue.http.headers.common['Authorization']
+    }
+  }
+
 }

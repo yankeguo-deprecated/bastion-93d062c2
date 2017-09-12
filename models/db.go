@@ -28,5 +28,5 @@ func NewDB(cfg *utils.Config) (db *DB, err error) {
 
 // AutoMigrate 自动执行数据库更新
 func (db *DB) AutoMigrate() {
-	db.DB.AutoMigrate(AccessToken{}, Server{}, SSHKey{}, User{})
+	db.DB.AutoMigrate(Token{}, Server{}, SSHKey{}, User{})
 }
