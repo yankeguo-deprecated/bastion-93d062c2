@@ -9,13 +9,13 @@
       <el-col :md="{span:6, offset:9}">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="登录名">
-            <el-input placeholder="输入用户名" v-model="form.login"></el-input>
+            <el-input placeholder="输入用户名" v-model="form.login" :disabled="submitting"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input placeholder="输入密码" type="password" v-model="form.password"></el-input>
+            <el-input placeholder="输入密码" type="password" v-model="form.password" :disabled="submitting"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="large">登录</el-button>
+            <el-button type="primary" size="large" :loading="submitting" @click="submitForm">登录</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+// import Auth from '../lib/auth'
+
 export default {
   name: 'index',
   head: {
@@ -33,10 +35,19 @@ export default {
   },
   data () {
     return {
-      title: '欢迎使用 Bastion',
+      title: '欢迎使用',
       subTitle: '请登录',
+      submitting: false,
       form: {
       }
+    }
+  },
+  methods: {
+    submitForm () {
+      this.submitting = true
+      setTimeout(() => {
+        this.submitting = false
+      }, 3000)
     }
   }
 }

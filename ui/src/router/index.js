@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Auth from '../lib/auth'
 import Hello from '@/components/Hello'
 import Dashboard from '@/components/Dashboard'
 import Navbar from '@/components/Navbar'
@@ -32,23 +33,19 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  next()
-  return
-  /*
   if (to.name === 'index') {
-    if (localStorage.getItem('access_token')) {
+    if (Auth.isSignedIn()) {
       next({name: 'dashboard'})
     } else {
       next()
     }
   } else {
-    if (!localStorage.getItem('access_token')) {
+    if (!Auth.isSignedIn()) {
       next({name: 'index'})
     } else {
       next()
     }
   }
-  */
 })
 
 export default router
