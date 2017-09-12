@@ -10,32 +10,20 @@ type Render struct {
 	macaron.Render
 }
 
-// MapBuilder Map 组装函数
-type MapBuilder func(m utils.Map)
-
 // Success 返回 code = 200，并构建 Map
 func (r *Render) Success(args ...interface{}) {
 	var m utils.Map
 	if len(args) == 1 {
 		a := args[0]
-		switch a.(type) {
-		case utils.Map:
-			{
-				m = a.(utils.Map)
-			}
-		case map[string]interface{}:
-			{
-				m = utils.Map(a.(map[string]interface{}))
-			}
-		case MapBuilder:
-			{
-				m = utils.Map{}
-				a.(MapBuilder)(m)
-			}
-		default:
-			{
-				m = utils.Map{}
-			}
+		if v, ok := a.(utils.Map); ok {
+			m = v
+		} else if v, ok := a.(map[string]interface{}); ok {
+			m = utils.Map(v)
+		} else if v, ok := a.(func(utils.Map)); ok {
+			m = utils.Map{}
+			v(m)
+		} else {
+			m = utils.Map{}
 		}
 	} else if len(args) > 0 && len(args)%2 == 0 {
 		m = utils.NewMap(args...)

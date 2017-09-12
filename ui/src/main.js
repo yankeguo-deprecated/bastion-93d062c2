@@ -1,14 +1,17 @@
 import Vue from 'vue'
-import ElementUI from 'element-ui'
-import 'normalize.css/normalize.css'
-import 'element-ui/lib/theme-default/index.css'
 import VueHead from 'vue-head'
 import VueResource from 'vue-resource'
-import Api from './api'
+import BootstrapVue from 'bootstrap-vue'
 
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue)
 Vue.use(VueResource)
 Vue.use(VueHead)
-Vue.use(ElementUI)
+
+import Api from './api'
+
 Vue.use(Api)
 
 import App from './App'

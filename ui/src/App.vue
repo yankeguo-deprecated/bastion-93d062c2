@@ -1,24 +1,23 @@
 <template>
-  <div id="app">
-    <el-row v-if="!hidesNavbar">
-      <el-col :span="24">
+  <b-container fluid id="app">
+
+    <!-- Navbar -->
+    <b-row v-if="!hidesNavbar">
+      <b-col>
         <router-view name="navbar"></router-view>
-      </el-col>
-    </el-row>
-    <el-row v-if="!hidesSidebar">
-      <el-col :md="{ span: 6}" :lg="{ span: 4 }">
+      </b-col>
+    </b-row>
+
+    <!-- Sidebar with Content -->
+    <b-row>
+      <b-col v-if="!hidesSidebar" md="2">
         <router-view name="sidebar"></router-view>
-      </el-col>
-      <el-col :md="{ span: 18}" :lg="{ span: 20 }">
+      </b-col>
+      <b-col>
         <router-view></router-view>
-      </el-col>
-    </el-row>
-    <el-row v-if="hidesSidebar">
-      <el-col>
-        <router-view></router-view>
-      </el-col>
-    </el-row>
-  </div>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -53,9 +52,3 @@ export default {
   }
 }
 </script>
-
-<style>
-li.el-menu-item > a {
-  text-decoration: none;
-}
-</style>

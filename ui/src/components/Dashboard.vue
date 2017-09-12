@@ -1,5 +1,9 @@
 <template>
-  <div></div>
+  <b-row>
+    <b-col>
+
+    </b-col>
+  </b-row>
 </template>
 
 <script>

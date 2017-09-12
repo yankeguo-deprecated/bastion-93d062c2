@@ -1,7 +1,7 @@
 <template>
-  <el-menu theme="light" mode="horizontal">
-    <p>hello</p>
-  </el-menu>
+  <div>
+    <h1>Hello Sidebar</h1>
+  </div>
 </template>
 
 <script>

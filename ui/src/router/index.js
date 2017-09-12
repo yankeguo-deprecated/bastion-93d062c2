@@ -28,6 +28,9 @@ const router = new Router({
         default: Dashboard,
         navbar: Navbar,
         sidebar: Sidebar
+      },
+      meta: {
+        hidesSidebar: true
       }
     },
     {

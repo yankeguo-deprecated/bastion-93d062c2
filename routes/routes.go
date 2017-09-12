@@ -15,10 +15,9 @@ func Mount(m *macaron.Macaron) {
 	m.Get("/api", apiAction)
 	m.Post("/api/tokens/create", binding.Bind(token.CreateForm{}), token.Create)
 	m.Get("/api/users/:id", middlewares.Authenticate(), user.Show)
+	m.Post("/api/tokens/:id/destroy", middlewares.Authenticate(), token.Destroy)
 }
 
 func apiAction(ctx *macaron.Context, r *middlewares.Render) {
-	r.Success(func(m utils.Map) {
-		m.Set("name", "bastion").Set("version", ctx.Data["Version"])
-	})
+	r.Success(utils.NewMap("name", "bastion", "version", ctx.Data["Version"]))
 }

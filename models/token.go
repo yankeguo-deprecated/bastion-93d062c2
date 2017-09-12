@@ -11,13 +11,13 @@ import (
 type Token struct {
 	gorm.Model
 	// UserID 用户 ID
-	UserID uint `gorm:"index"`
+	UserID uint `gorm:"index" json:"userId"`
 	// Token 随机 Token
-	Secret string `gorm:"unique_index"`
+	Secret string `gorm:"unique_index" json:"-"`
 	// Desc 描述
-	Desc string `gorm:"type:text"`
+	Desc string `gorm:"type:text" json:"desc"`
 	// UsedAt 最后一次使用时间
-	UsedAt *time.Time
+	UsedAt *time.Time `json:"usedAt"`
 }
 
 // GenerateSecret 创建一个新的 Secret
