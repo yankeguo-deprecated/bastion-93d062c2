@@ -1,23 +1,23 @@
 <template>
   <b-row>
     <b-col>
+      <h1>SSHKeys</h1>
     </b-col>
   </b-row>
 </template>
 
 <script>
 export default {
-  name: 'dashboard',
+  name: 'ssh-keys',
   head: {
     title: {
-      inner: '仪表盘'
+      inner: 'SSH 密钥'
     }
+  },
+  created () {
   },
   data () {
     return {
-      msg: '欢迎使用 Bastion',
-      form: {
-      }
     }
   }
 }

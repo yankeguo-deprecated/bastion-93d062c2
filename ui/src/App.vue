@@ -1,8 +1,7 @@
 <template>
   <b-container id="app">
-
     <!-- Navbar -->
-    <b-row v-if="components.navbar">
+    <b-row>
       <b-col>
         <router-view name="navbar"></router-view>
       </b-col>
@@ -10,9 +9,6 @@
 
     <!-- Sidebar with Content -->
     <b-row>
-      <b-col v-if="components.sidebar" md="3">
-        <router-view name="sidebar"></router-view>
-      </b-col>
       <b-col>
         <router-view></router-view>
       </b-col>
@@ -24,27 +20,15 @@
 export default {
   name: 'app',
   data: function () {
-    return {
-      components: {
-        navbar: false,
-        sidebar: false
-      }
-    }
+    return {}
   },
   created () {
-    this.updateComponents()
     this.fetchCurrentUserIfNeeded()
   },
   watch: {
-    '$route': ['updateComponents', 'fetchCurrentUserIfNeeded']
+    '$route': ['fetchCurrentUserIfNeeded']
   },
   methods: {
-    updateComponents () {
-      this.components = {
-        navbar: !this.$route.matched.some((r) => r.meta.hidesNavbar),
-        sidebar: !this.$route.matched.some((r) => r.meta.hidesSidebar)
-      }
-    },
     fetchCurrentUserIfNeeded () {
       if (this.$store.getters.isSignedIn && !this.$store.getters.hasCurrentUser) {
         this.$api.fetchCurrentUser().then(({body}) => {
@@ -56,3 +40,9 @@ export default {
   }
 }
 </script>
+
+<style>
+a {
+  color: #17a2b8;
+}
+</style>

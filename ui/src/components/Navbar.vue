@@ -12,7 +12,7 @@
           <template slot="button-content">
             <em>{{ currentUser.nickname }}</em>
           </template>
-          <b-dropdown-item :to="{name:'profile'}">个人信息</b-dropdown-item>
+          <b-dropdown-item :to="{name:'profile'}">设置</b-dropdown-item>
           <b-dropdown-divider></b-dropdown-divider>
           <b-dropdown-item @click="signout">退出登录</b-dropdown-item>
         </b-nav-item-dropdown>

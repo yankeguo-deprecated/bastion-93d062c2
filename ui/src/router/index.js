@@ -3,8 +3,10 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Dashboard from '@/components/Dashboard'
 import Navbar from '@/components/Navbar'
-import Sidebar from '@/components/Sidebar'
 import Profile from '@/components/Profile'
+import Settings from '@/components/Settings'
+import ChangePassword from '@/components/ChangePassword'
+import SSHKeys from '@/components/SSHKeys'
 import store from '../store'
 
 Vue.use(Router)
@@ -12,34 +14,46 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     {
-      // hello, i.e. Login
       path: '/',
       name: 'index',
-      component: Hello,
-      meta: {
-        hidesNavbar: true,
-        hidesSidebar: true
-      }
+      component: Hello
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       components: {
         default: Dashboard,
-        navbar: Navbar,
-        sidebar: Sidebar
-      },
-      meta: {
-        hidesSidebar: true
+        navbar: Navbar
       }
     },
     {
-      path: '/profile',
-      name: 'profile',
+      path: '/settings',
       components: {
-        default: Profile,
-        navbar: Navbar,
-        sidebar: Sidebar
+        default: Settings,
+        navbar: Navbar
+      },
+      children: [
+        {
+          path: 'profile',
+          name: 'profile',
+          component: Profile
+        },
+        {
+          path: 'change-password',
+          name: 'change-password',
+          component: ChangePassword
+        },
+        {
+          path: 'ssh-keys',
+          name: 'ssh-keys',
+          component: SSHKeys
+        }
+      ]
+    },
+    {
+      path: '/*',
+      redirect: {
+        name: 'dashboard'
       }
     }
   ]
