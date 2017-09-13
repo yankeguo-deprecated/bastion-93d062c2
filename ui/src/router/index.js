@@ -7,6 +7,7 @@ import Profile from '@/components/Profile'
 import Settings from '@/components/Settings'
 import ChangePassword from '@/components/ChangePassword'
 import SSHKeys from '@/components/SSHKeys'
+import Tokens from '@/components/Tokens'
 import store from '../store'
 
 Vue.use(Router)
@@ -47,6 +48,11 @@ const router = new Router({
           path: 'ssh-keys',
           name: 'ssh-keys',
           component: SSHKeys
+        },
+        {
+          path: 'tokens',
+          name: 'tokens',
+          component: Tokens
         }
       ]
     },

@@ -1,24 +1,23 @@
 <template>
   <b-row>
     <b-col>
-      <h3>Hello Dashboard</h3>
+      <h1>Tokens</h1>
     </b-col>
   </b-row>
 </template>
 
 <script>
 export default {
-  name: 'dashboard',
+  name: 'tokens',
   head: {
     title: {
-      inner: '仪表盘'
+      inner: '令牌'
     }
+  },
+  created () {
   },
   data () {
     return {
-      msg: '欢迎使用 Bastion',
-      form: {
-      }
     }
   }
 }

@@ -23,6 +23,20 @@ func Destroy(ctx *macaron.Context, r *middlewares.Render, a middlewares.Auth, db
 		return
 	}
 
-	//TODO: add deletion of other tokens
-	r.Fail("not_supported", "当前请求暂时不被支持")
+	// check user
+	t := &models.Token{}
+	db.First(t, id)
+	if db.NewRecord(t) {
+		r.Fail("not_found", "没有找到该令牌")
+		return
+	}
+
+	// check user belongs
+	if a.CurrentUser.ID == t.UserID || a.CurrentUser.IsAdmin {
+		db.Delete(t)
+		r.Success()
+		return
+	}
+
+	r.Fail("no_permission", "没有权限")
 }

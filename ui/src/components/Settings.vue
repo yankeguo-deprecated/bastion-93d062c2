@@ -12,6 +12,7 @@
             <b-nav-item :to="{ name: 'profile' }">个人信息</b-nav-item>
             <b-nav-item :to="{ name: 'change-password' }">修改密码</b-nav-item>
             <b-nav-item :to="{ name: 'ssh-keys' }">SSH 公钥</b-nav-item>
+            <b-nav-item :to="{ name: 'tokens' }">令牌</b-nav-item>
           </b-nav>
         </b-col>
       </b-row>
