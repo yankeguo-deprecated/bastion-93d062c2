@@ -15,7 +15,7 @@
                   <b-form-input id="name-input" type="text" v-model="form.name" placeholder="输入名称，20字以内"></b-form-input>
                 </b-form-group>
                 <b-form-group label="公钥" label-for="public-key-input">
-                  <b-form-textarea id="public-key-input" :rows="3" v-model="form.publicKey" placeholder="ssh-rsa AAA..."></b-form-textarea>
+                  <b-form-textarea id="public-key-input" :rows="3" v-model="form.publicKey" required placeholder="ssh-rsa AAA..."></b-form-textarea>
                 </b-form-group>
                 <b-form-group v-if="form.error">
                   <b-form-text text-variant="danger">{{form.error}}</b-form-text>
