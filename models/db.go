@@ -1,6 +1,7 @@
 package models
 
 import (
+	"time"
 	"github.com/pagoda-tech/bastion/utils"
 	"github.com/pagoda-tech/gorm"
 	"github.com/pagoda-tech/macaron"
@@ -29,4 +30,9 @@ func NewDB(cfg *utils.Config) (db *DB, err error) {
 // AutoMigrate 自动执行数据库更新
 func (db *DB) AutoMigrate() {
 	db.DB.AutoMigrate(Token{}, Server{}, SSHKey{}, User{})
+}
+
+// Touch 更新一个模型的 UsedAt 字段
+func (db *DB) Touch(m interface{}) {
+	db.DB.Model(m).UpdateColumn("UsedAt", time.Now())
 }

@@ -1,9 +1,6 @@
 package routes
 
 import (
-	"github.com/pagoda-tech/bastion/routes/middlewares"
-	"github.com/pagoda-tech/bastion/routes/token"
-	"github.com/pagoda-tech/bastion/routes/user"
 	"github.com/pagoda-tech/bastion/utils"
 	"github.com/pagoda-tech/binding"
 	"github.com/pagoda-tech/macaron"
@@ -11,13 +8,15 @@ import (
 
 // Mount 将所有路由挂载到 macaron 上
 func Mount(m *macaron.Macaron) {
-	m.Use(middlewares.Renderer())
-	m.Get("/api", apiAction)
-	m.Post("/api/tokens/create", binding.Bind(token.CreateForm{}), token.Create)
-	m.Get("/api/users/:id", middlewares.Authenticate(), user.Show)
-	m.Post("/api/tokens/:id/destroy", middlewares.Authenticate(), token.Destroy)
+	m.Use(APIRenderer())
+	m.Use(Authenticator())
+	m.Get( "/api", apiAction)
+	m.Post("/api/tokens/create", binding.Bind(TokenCreateForm{}), TokenCreate)
+	m.Get( "/api/users/:userId/tokens", RequireAuth(), TokenList)
+	m.Post("/api/tokens/:id/destroy", RequireAuth(), TokenDestroy)
+	m.Get( "/api/users/:id", RequireAuth(), UserShow)
 }
 
-func apiAction(ctx *macaron.Context, r *middlewares.Render) {
+func apiAction(ctx *macaron.Context, r APIRender) {
 	r.Success(utils.NewMap("name", "bastion", "version", ctx.Data["Version"]))
 }

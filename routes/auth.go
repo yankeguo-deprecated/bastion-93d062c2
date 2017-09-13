@@ -1,4 +1,4 @@
-package middlewares
+package routes
 
 import (
 	"github.com/pagoda-tech/bastion/models"
@@ -19,12 +19,12 @@ func (a Auth) SignedIn() bool {
 	return a.CurrentToken != nil && a.CurrentUser != nil
 }
 
-// Authenticate 创建认证中间件
-func Authenticate() interface{} {
-	return func(ctx *macaron.Context, db *models.DB) {
+// Authenticator 创建认证中间件
+func Authenticator() interface{} {
+	return func(ctx *macaron.Context, db *models.DB, r APIRender) {
 		a := Auth{}
 
-		k := extractAuthorization(ctx.Req)
+		k := extractBearer(ctx.Req)
 
 		if len(k) > 0 {
 			// find a Token
@@ -37,6 +37,10 @@ func Authenticate() interface{} {
 				db.First(u, t.UserID)
 
 				if u.ID > 0 && !u.IsBlocked {
+					// touch token and user
+					db.Touch(t)
+					db.Touch(u)
+
 					// assign user / token
 					a.CurrentUser = u
 					a.CurrentToken = t
@@ -44,19 +48,28 @@ func Authenticate() interface{} {
 			}
 
 			if a.CurrentUser == nil || a.CurrentToken == nil {
-				a.Code = "invalid_credentials"
-				a.Message = "无效的登录凭证"
+				a.Code = CredentialsInvalid
+				a.Message = "无效的凭证"
 			}
 		} else {
-			a.Code = "not_signed_in"
-			a.Message = "尚未登录"
+			a.Code = CredentialsMissing
+			a.Message = "没有凭证"
 		}
 
 		ctx.Map(a)
 	}
 }
 
-func extractAuthorization(req macaron.Request) (k string) {
+// RequireAuth 检验认证结果
+func RequireAuth() interface{} {
+	return func(ctx *macaron.Context, a Auth, r APIRender) {
+		if !a.SignedIn() {
+			r.Fail(a.Code, a.Message)
+		}
+	}
+}
+
+func extractBearer(req macaron.Request) (k string) {
 	h := req.Header["Authorization"]
 	if h != nil && len(h) > 0 {
 		vs := strings.Split(strings.TrimSpace(h[len(h)-1]), " ")

@@ -1,17 +1,24 @@
-package middlewares
+package routes
 
 import (
 	"github.com/pagoda-tech/bastion/utils"
 	"github.com/pagoda-tech/macaron"
 )
 
-// Render 封装后的 macaron.Render
-type Render struct {
+// APIRender 封装后的 macaron.Render
+type APIRender interface {
+	macaron.Render
+	Success(args ...interface{})
+	Fail(code string, message string)
+}
+
+// apiRenderImpl 封装后的 macaron.Render
+type apiRenderImpl struct {
 	macaron.Render
 }
 
 // Success 返回 code = 200，并构建 Map
-func (r *Render) Success(args ...interface{}) {
+func (r *apiRenderImpl) Success(args ...interface{}) {
 	var m utils.Map
 	if len(args) == 1 {
 		a := args[0]
@@ -35,14 +42,14 @@ func (r *Render) Success(args ...interface{}) {
 }
 
 // Fail 返回 code = 400，并构建 Map
-func (r *Render) Fail(code string, msg string) {
+func (r *apiRenderImpl) Fail(code string, msg string) {
 	r.JSON(400, utils.NewMap("code", code, "message", msg))
 }
 
-// Renderer 为 macaron.Context 注入 utils.Render
-func Renderer() interface{} {
+// APIRenderer 为 macaron.Context 注入 utils.Render
+func APIRenderer() interface{} {
 	return func(r macaron.Render, ctx *macaron.Context) {
-		render := &Render{r}
-		ctx.Map(render)
+		render := &apiRenderImpl{r}
+		ctx.MapTo(render, (*APIRender)(nil))
 	}
 }

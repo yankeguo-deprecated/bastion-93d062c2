@@ -15,6 +15,7 @@ export default {
     }
   },
   created () {
+    this.$api.listTokens({userId: 'current'})
   },
   data () {
     return {
