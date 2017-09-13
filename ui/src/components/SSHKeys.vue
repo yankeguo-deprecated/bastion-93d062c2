@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     currentUser () {
-      return this.$store.state.user.currentUser || { publicKey: '正在加载', fingerprint: '正在加载' }
+      return this.$store.state.user.currentUser
     }
   },
   created () {

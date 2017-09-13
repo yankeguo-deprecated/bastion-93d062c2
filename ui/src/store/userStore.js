@@ -1,6 +1,11 @@
 export default {
   state: {
-    currentUser: null
+    currentUser: {
+      nickname: '正在加载',
+      login: '正在加载',
+      fingerprint: '正在加载',
+      publicKey: '正在加载'
+    }
   },
   mutations: {
     setCurrentUser (state, user) {
@@ -9,7 +14,7 @@ export default {
   },
   getters: {
     hasCurrentUser (state) {
-      return !!state.currentUser
+      return !!state.currentUser.id
     }
   }
 }

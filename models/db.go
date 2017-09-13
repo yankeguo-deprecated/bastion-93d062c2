@@ -1,10 +1,10 @@
 package models
 
 import (
-	"time"
 	"github.com/pagoda-tech/bastion/utils"
 	"github.com/pagoda-tech/gorm"
 	"github.com/pagoda-tech/macaron"
+	"time"
 )
 
 // DB 封装 gorm.DB

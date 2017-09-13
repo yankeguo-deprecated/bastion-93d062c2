@@ -3,13 +3,13 @@ package routes
 import (
 	"github.com/pagoda-tech/bastion/models"
 	"github.com/pagoda-tech/macaron"
-	"strings"
 	"golang.org/x/crypto/ssh"
+	"strings"
 )
 
 // SSHKeyCreateForm 创建 SSHKey 的表单
 type SSHKeyCreateForm struct {
-	Name string `json:"name"`
+	Name      string `json:"name"`
 	PublicKey string `json:"publicKey"`
 }
 
@@ -91,7 +91,7 @@ func SSHKeyList(ctx *macaron.Context, db *models.DB, r APIRender, a Auth) {
 // SSHKeyDestroy 删除 SSH 公钥
 func SSHKeyDestroy(ctx *macaron.Context, db *models.DB, r APIRender, a Auth) {
 	id := uint(ctx.ParamsInt(":id"))
-	
+
 	// find sk
 	sk := &models.SSHKey{}
 	db.First(sk, id)
@@ -104,4 +104,3 @@ func SSHKeyDestroy(ctx *macaron.Context, db *models.DB, r APIRender, a Auth) {
 	db.Unscoped().Delete(sk)
 	r.Success()
 }
-

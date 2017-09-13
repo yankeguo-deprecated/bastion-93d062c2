@@ -26,7 +26,7 @@ export default {
   name: 'navbar',
   computed: {
     currentUser () {
-      return this.$store.state.user.currentUser || { nickname: '正在加载' }
+      return this.$store.state.user.currentUser
     }
   },
   data () {

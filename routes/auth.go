@@ -1,10 +1,10 @@
 package routes
 
 import (
+	"fmt"
 	"github.com/pagoda-tech/bastion/models"
 	"github.com/pagoda-tech/macaron"
 	"strings"
-	"fmt"
 )
 
 // Auth 认证结果

@@ -32,8 +32,7 @@ export default {
     fetchCurrentUserIfNeeded () {
       if (this.$store.getters.isSignedIn && !this.$store.getters.hasCurrentUser) {
         this.$api.fetchUser({id: 'current'}).then(({body}) => {
-          const {user} = body
-          this.$store.commit('setCurrentUser', user)
+          this.$store.commit('setCurrentUser', body.user)
         })
       }
     }
