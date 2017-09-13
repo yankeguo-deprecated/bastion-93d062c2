@@ -1,7 +1,11 @@
 <template>
   <b-row>
     <b-col>
-      <h3>Hello Dashboard</h3>
+      <b-row class="dashboard-title">
+        <b-col>
+          <h3>仪表盘</h3>
+        </b-col>
+      </b-row>
     </b-col>
   </b-row>
 </template>
@@ -23,3 +27,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.dashboard-title {
+  margin-top: 16px;
+}
+</style>

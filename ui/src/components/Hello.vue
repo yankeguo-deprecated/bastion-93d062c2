@@ -32,7 +32,9 @@
             <b-form-group label="密码:" label-for="password-input">
               <b-form-input id="password-input" type="password" v-model="form.data.password" required placeholder="输入密码"></b-form-input>
             </b-form-group>
-            <b-button type="submit" :block="true" :disabled="form.submitting" variant="primary">登录</b-button>
+            <b-form-group>
+              <b-button type="submit" :block="true" :disabled="form.submitting" variant="primary">登录</b-button>
+            </b-form-group>
           </b-form>
         </b-col>
       </b-row>

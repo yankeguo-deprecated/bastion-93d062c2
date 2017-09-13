@@ -32,7 +32,7 @@ type User struct {
 	// Fingerprint Sandbox 公钥指纹
 	Fingerprint string `gorm:"unique_index" json:"fingerprint"`
 	// PublicKey Sandbox 公钥
-	PublicKey string `gorm:"type:text" json:"-"`
+	PublicKey string `gorm:"type:text" json:"publicKey"`
 	// PrivateKey Sandbox 私钥
 	PrivateKey string `gorm:"type:text" json:"-"`
 	// UsedAt 最后一次使用时间

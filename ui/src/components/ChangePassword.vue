@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'change-password',
+  name: 'change_password',
   head: {
     title: {
       inner: '修改密码'

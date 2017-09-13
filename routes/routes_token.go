@@ -4,7 +4,6 @@ import (
 	"github.com/pagoda-tech/bastion/models"
 	"github.com/pagoda-tech/bastion/utils"
 	"github.com/pagoda-tech/macaron"
-	"fmt"
 )
 
 // TokenCreateForm 创建 Token 表单
@@ -48,15 +47,16 @@ func TokenCreate(ctx *macaron.Context, db *models.DB, f TokenCreateForm, r APIRe
 
 // TokenDestroy 删除一个 Token
 func TokenDestroy(ctx *macaron.Context, r APIRender, a Auth, db *models.DB) {
-	// extract current token if 'current'
-	id := ctx.Params(":id")
-	if id == "current" || id == fmt.Sprint(a.CurrentToken.ID) {
+	id := uint(ctx.ParamsInt(":id"))
+
+	// if is current user, delete directly
+	if id == a.CurrentToken.ID {
 		db.Delete(a.CurrentToken)
 		r.Success()
 		return
 	}
 
-	// check user
+	// find user
 	t := &models.Token{}
 	db.First(t, id)
 	if db.NewRecord(t) {
@@ -65,26 +65,22 @@ func TokenDestroy(ctx *macaron.Context, r APIRender, a Auth, db *models.DB) {
 	}
 
 	// check user belongs
-	if a.CurrentUser.ID == t.UserID || a.CurrentUser.IsAdmin {
-		db.Delete(t)
-		r.Success()
+	if !a.CanAccessUser(t.UserID) {
+		r.Fail(TokenNotFound, "没有找该令牌")
 		return
 	}
 
-	r.Fail(TokenNotFound, "没有找该令牌")
+	db.Delete(t)
+	r.Success()
 }
 
 // TokenList 列出 Token
 func TokenList(ctx *macaron.Context, db *models.DB, r APIRender, a Auth) {
-	userID := ctx.Params(":userId")
+	userID := uint(ctx.ParamsInt(":userid"))
 
-	if userID == "current" {
-		userID = fmt.Sprint(a.CurrentUser.ID)
-	} else {
-		if userID != fmt.Sprint(a.CurrentUser.ID) && !a.CurrentUser.IsAdmin {
-			r.Fail(UserNotFound, "没有找到该用户")
-			return
-		}
+	if !a.CanAccessUser(userID) {
+		r.Fail(UserNotFound, "没有找到该用户")
+		return
 	}
 
 	tokens := []models.Token{}

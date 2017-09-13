@@ -12,9 +12,12 @@ func Mount(m *macaron.Macaron) {
 	m.Use(Authenticator())
 	m.Get( "/api", apiAction)
 	m.Post("/api/tokens/create", binding.Bind(TokenCreateForm{}), TokenCreate)
-	m.Get( "/api/users/:userId/tokens", RequireAuth(), TokenList)
-	m.Post("/api/tokens/:id/destroy", RequireAuth(), TokenDestroy)
-	m.Get( "/api/users/:id", RequireAuth(), UserShow)
+	m.Post("/api/tokens/:id/destroy", RequireAuth(), ResolveCurrentToken(":id"), TokenDestroy)
+	m.Get( "/api/users/:userid/tokens", RequireAuth(), ResolveCurrentUser(":userid"), TokenList)
+	m.Get( "/api/users/:userid/ssh_keys", RequireAuth(), ResolveCurrentUser(":userid"), SSHKeyList)
+	m.Post("/api/users/:userid/ssh_keys/create", binding.Bind(SSHKeyCreateForm{}), RequireAuth(), ResolveCurrentUser(":userid"), SSHKeyCreate)
+	m.Get( "/api/users/:id", RequireAuth(), ResolveCurrentUser(":id"), UserShow)
+	m.Post("/api/ssh_keys/:id/destroy", RequireAuth(), SSHKeyDestroy)
 }
 
 func apiAction(ctx *macaron.Context, r APIRender) {

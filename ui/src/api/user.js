@@ -1,5 +1,5 @@
 export default {
-  fetchCurrentUser: function () {
-    return this.http.get('users/current')
+  fetchUser: function ({id}) {
+    return this.http.get(`users/${id}`)
   }
 }

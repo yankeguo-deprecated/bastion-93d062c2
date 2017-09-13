@@ -14,4 +14,10 @@ const (
 
 	// UserNotFound 没有找到 User
 	UserNotFound = "user.not_found"
+
+	// SSHKeyNotFound 没有找到 User
+	SSHKeyNotFound = "ssh_key.not_found"
+
+	// InternalError 内部错误
+	InternalError = "internal_error"
 )

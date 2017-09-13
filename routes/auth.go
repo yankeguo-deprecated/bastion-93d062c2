@@ -4,6 +4,7 @@ import (
 	"github.com/pagoda-tech/bastion/models"
 	"github.com/pagoda-tech/macaron"
 	"strings"
+	"fmt"
 )
 
 // Auth 认证结果
@@ -17,6 +18,11 @@ type Auth struct {
 // SignedIn 是否已经登录
 func (a Auth) SignedIn() bool {
 	return a.CurrentToken != nil && a.CurrentUser != nil
+}
+
+// CanAccessUser 是否具有该用户的权限
+func (a Auth) CanAccessUser(userID uint) bool {
+	return a.SignedIn() && a.CurrentUser.ID == userID || a.CurrentUser.IsAdmin
 }
 
 // Authenticator 创建认证中间件
@@ -65,6 +71,26 @@ func RequireAuth() interface{} {
 	return func(ctx *macaron.Context, a Auth, r APIRender) {
 		if !a.SignedIn() {
 			r.Fail(a.Code, a.Message)
+		}
+	}
+}
+
+// ResolveCurrentUser 修正 current 为当前用户 ID
+func ResolveCurrentUser(key string) interface{} {
+	return func(ctx *macaron.Context, a Auth, r APIRender) {
+		id := ctx.Params(key)
+		if id == "current" {
+			ctx.SetParams(key, fmt.Sprint(a.CurrentUser.ID))
+		}
+	}
+}
+
+// ResolveCurrentToken 修正 current 为当前 Token ID
+func ResolveCurrentToken(key string) interface{} {
+	return func(ctx *macaron.Context, a Auth, r APIRender) {
+		id := ctx.Params(key)
+		if id == "current" {
+			ctx.SetParams(key, fmt.Sprint(a.CurrentToken.ID))
 		}
 	}
 }

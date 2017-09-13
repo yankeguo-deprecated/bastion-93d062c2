@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"github.com/pagoda-tech/bastion/models"
 	"github.com/pagoda-tech/macaron"
 )
@@ -9,14 +8,14 @@ import (
 // UserShow 显示一个用户
 func UserShow(ctx *macaron.Context, r APIRender, a Auth, db *models.DB) {
 	// extract current user if 'current'
-	id := ctx.Params(":id")
-	if id == "current" || id == fmt.Sprint(a.CurrentUser.ID) {
+	id := uint(ctx.ParamsInt(":id"))
+	if id == a.CurrentUser.ID {
 		r.Success("user", a.CurrentUser)
 		return
 	}
 
 	// check IsAdmin
-	if !a.CurrentUser.IsAdmin {
+	if !a.CanAccessUser(id) {
 		r.Fail(UserNotFound, "没有找到该用户")
 		return
 	}
@@ -25,9 +24,10 @@ func UserShow(ctx *macaron.Context, r APIRender, a Auth, db *models.DB) {
 	u := &models.User{}
 	db.First(u, id)
 
-	if !db.NewRecord(u) {
-		r.Success("user", u)
-	} else {
+	if db.NewRecord(u) {
 		r.Fail(UserNotFound, "没有找到该用户")
+		return
 	}
+
+	r.Success("user", u)
 }

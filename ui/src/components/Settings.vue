@@ -10,8 +10,8 @@
         <b-col>
           <b-nav tabs>
             <b-nav-item :to="{ name: 'profile' }">个人信息</b-nav-item>
-            <b-nav-item :to="{ name: 'change-password' }">修改密码</b-nav-item>
-            <b-nav-item :to="{ name: 'ssh-keys' }">SSH 公钥</b-nav-item>
+            <b-nav-item :to="{ name: 'change_password' }">修改密码</b-nav-item>
+            <b-nav-item :to="{ name: 'ssh_keys' }">SSH 公钥</b-nav-item>
             <b-nav-item :to="{ name: 'tokens' }">令牌</b-nav-item>
           </b-nav>
         </b-col>

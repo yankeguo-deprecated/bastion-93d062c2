@@ -40,13 +40,13 @@ const router = new Router({
           component: Profile
         },
         {
-          path: 'change-password',
-          name: 'change-password',
+          path: 'change_password',
+          name: 'change_password',
           component: ChangePassword
         },
         {
-          path: 'ssh-keys',
-          name: 'ssh-keys',
+          path: 'ssh_keys',
+          name: 'ssh_keys',
           component: SSHKeys
         },
         {
