@@ -34,11 +34,12 @@ export default {
   },
   methods: {
     signout () {
-      this.$api.destroyToken({ id: 'current' }).then(() => {
-        this.$store.commit('setToken', null)
-        this.$store.commit('setCurrentUser', null)
-        this.$router.push({ name: 'index' })
-      })
+      this.$api.destroyToken({ id: 'current' }).then(() => this.doSignout(), () => this.doSignout())
+    },
+    doSignout () {
+      this.$store.commit('setCurrentToken', null)
+      this.$store.commit('setCurrentUser', null)
+      this.$router.push({ name: 'index' })
     }
   }
 }

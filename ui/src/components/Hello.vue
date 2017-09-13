@@ -85,7 +85,7 @@ export default {
     submitForm () {
       this.form.submitting = true
       this.$api.createToken(this.form.data).then(({body}) => {
-        this.$store.commit('setToken', body.token.secret)
+        this.$store.commit('setCurrentToken', body.token)
         this.$router.push({ name: 'dashboard' })
         this.form.submitting = false
       }, ({body}) => {

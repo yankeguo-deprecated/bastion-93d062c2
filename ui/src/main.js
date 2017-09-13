@@ -23,7 +23,7 @@ Vue.http.options.root = '/api'
 
 Vue.http.interceptors.push(function (request, next) {
   if (store.getters.isSignedIn) {
-    request.headers.set('Authorization', `Bearer ${store.state.token.token}`)
+    request.headers.set('Authorization', `Bearer ${store.getters.currentTokenSecret}`)
   }
   next()
 })
