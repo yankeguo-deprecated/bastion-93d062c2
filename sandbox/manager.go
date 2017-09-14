@@ -17,8 +17,8 @@ const dirPerm = os.FileMode(0750)
 
 // ManagerOptions 沙箱管理器选项
 type ManagerOptions struct {
-	ImageName string
-	DataDir   string
+	Image   string
+	DataDir string
 }
 
 // Manager 沙箱管理器
@@ -57,7 +57,7 @@ func (m managerImpl) GetOrCreate(u models.User) (Sandbox, error) {
 }
 
 func (m managerImpl) create(s Sandbox) error {
-	if err := os.MkdirAll(s.RootDir, dirPerm); err != nil {
+	if err := os.MkdirAll(s.PrivateDir, dirPerm); err != nil {
 		return err
 	}
 	if err := os.MkdirAll(s.SharedDir, dirPerm); err != nil {
@@ -65,11 +65,11 @@ func (m managerImpl) create(s Sandbox) error {
 	}
 	ccfg := &container.Config{
 		Hostname: s.Hostname(),
-		Image:    m.options.ImageName,
+		Image:    m.options.Image,
 	}
 	hcfg := &container.HostConfig{
 		Binds: []string{
-			fmt.Sprintf("%s:/root", s.RootDir),
+			fmt.Sprintf("%s:/root", s.PrivateDir),
 			fmt.Sprintf("%s:/shared", s.SharedDir),
 		},
 		RestartPolicy: container.RestartPolicy{

@@ -7,8 +7,8 @@ import (
 
 func TestManagerGetOrCreate(t *testing.T) {
 	opt := ManagerOptions{
-		ImageName: "pagodatech/sandbox",
-		DataDir:   "/tmp/test-bastion",
+		Image:   "pagodatech/sandbox",
+		DataDir: "/tmp/test-bastion",
 	}
 	m, err := NewManager(opt)
 	if err != nil {

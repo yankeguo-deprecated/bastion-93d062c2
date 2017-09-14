@@ -6,10 +6,8 @@ func TestConfig(t *testing.T) {
 	const c = `
 [bastion]
 env = "a"
-sandbox_dir = "b"
 master_key_file = "c"
 authorized_keys_file = "d"
-sandbox_image = "d1"
 [db]
 url = "e"
 [redis]
@@ -18,7 +16,10 @@ url = "f"
 domain = "g"
 host = "h"
 port = 9
-	`
+[sandbox]
+data_dir = "b"
+image = "d1"
+`
 	cfg, err := ParseConfig(c)
 	if err != nil {
 		t.Fatal(err)
@@ -26,8 +27,8 @@ port = 9
 	if cfg.Bastion.Env != "a" {
 		t.Fatal("bastion.env failed")
 	}
-	if cfg.Bastion.SandboxDir != "b" {
-		t.Fatal("bastion.sandbox_dir failed")
+	if cfg.Sandbox.DataDir != "b" {
+		t.Fatal("sandbox.data_dir failed")
 	}
 	if cfg.Bastion.MasterKeyFile != "c" {
 		t.Fatal("bastion.master_key_file failed")
@@ -50,7 +51,7 @@ port = 9
 	if cfg.Web.Port != 9 {
 		t.Fatal("web.port failed")
 	}
-	if cfg.Bastion.SandboxImage != "d1" {
-		t.Fatal("bastion.sandbox_image failed")
+	if cfg.Sandbox.Image != "d1" {
+		t.Fatal("sandbox.image failed")
 	}
 }

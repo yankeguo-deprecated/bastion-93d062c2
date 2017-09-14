@@ -43,8 +43,8 @@ func execWebCommand(c *cli.Context) (err error) {
 
 	// create sandbox.Manager
 	smc := sandbox.ManagerOptions{
-		ImageName: cfg.Bastion.SandboxImage,
-		DataDir:   cfg.Bastion.SandboxDir,
+		Image:   cfg.Sandbox.Image,
+		DataDir: cfg.Sandbox.DataDir,
 	}
 	var sm sandbox.Manager
 	if sm, err = sandbox.NewManager(smc); err != nil {

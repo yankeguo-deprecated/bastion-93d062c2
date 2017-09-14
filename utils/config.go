@@ -26,15 +26,17 @@ type Config struct {
 	Bastion struct {
 		// Env 运行环境，可以是 development, production, test
 		Env string `toml:"env"`
-		// SandboxImage 沙箱要用的镜像名
-		SandboxImage string `toml:"sandbox_image"`
-		// SandboxDir 沙箱的数据地址
-		SandboxDir string `toml:"sandbox_dir"`
 		// MasterKeyFile Bastion 主密钥的地址
 		MasterKeyFile string `toml:"master_key_file"`
 		// AuthorizedKeys Bastion 要写入的 autorized_keys 文件
 		AuthorizedKeysFile string `toml:"authorized_keys_file"`
 	} `toml:"bastion"`
+	Sandbox struct {
+		// 沙箱的镜像名称
+		Image string `toml:"image"`
+		// 沙箱的数据地址
+		DataDir string `toml:"data_dir"`
+	} `toml:"sandbox"`
 }
 
 // ParseConfigFile 加载一个 TOML 配置文件

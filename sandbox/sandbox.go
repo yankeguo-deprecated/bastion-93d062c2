@@ -15,7 +15,7 @@ func newSandbox(u models.User, dataDir string) Sandbox {
 	}
 
 	s.SharedDir = path.Join(dataDir, "shared")
-	s.RootDir = path.Join(dataDir, s.ContainerName())
+	s.PrivateDir = path.Join(dataDir, s.ContainerName())
 	return s
 }
 
@@ -26,8 +26,8 @@ type Sandbox struct {
 	UserPublicKey  string
 	UserPrivateKey string
 
-	RootDir   string
-	SharedDir string
+	PrivateDir string
+	SharedDir  string
 }
 
 // ContainerName 返回沙箱的容器名

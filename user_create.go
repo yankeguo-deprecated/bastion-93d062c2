@@ -83,8 +83,8 @@ func execNewUserCommand(c *cli.Context) (err error) {
 	}
 
 	smc := sandbox.ManagerOptions{
-		ImageName: cfg.Bastion.SandboxImage,
-		DataDir:   cfg.Bastion.SandboxDir,
+		Image:   cfg.Sandbox.Image,
+		DataDir: cfg.Sandbox.DataDir,
 	}
 
 	sbm, err := sandbox.NewManager(smc)

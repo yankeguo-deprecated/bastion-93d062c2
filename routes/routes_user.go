@@ -12,7 +12,7 @@ type UserUpdateForm struct {
 
 // UserUpdatePasswordForm 更新用户密码表单
 type UserUpdatePasswordForm struct {
-	Password string `json:"password"`
+	Password    string `json:"password"`
 	NewPassword string `json:"newPassword"`
 }
 
