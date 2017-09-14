@@ -37,6 +37,14 @@ type Config struct {
 		// 沙箱的数据地址
 		DataDir string `toml:"data_dir"`
 	} `toml:"sandbox"`
+	SSHD struct {
+		// SSHD 服务的绑定地址
+		Host string `toml:"host"`
+		// SSHD 服务的端口号
+		Port int `toml:"port"`
+		// SSHD 的主机密钥地址，RSA
+		HostKeyFile string `toml:"host_key_file"`
+	}
 }
 
 // ParseConfigFile 加载一个 TOML 配置文件

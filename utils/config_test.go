@@ -19,6 +19,10 @@ port = 9
 [sandbox]
 data_dir = "b"
 image = "d1"
+[sshd]
+host = "00"
+port = 222
+host_key_file = "ss"
 `
 	cfg, err := ParseConfig(c)
 	if err != nil {
@@ -26,9 +30,6 @@ image = "d1"
 	}
 	if cfg.Bastion.Env != "a" {
 		t.Fatal("bastion.env failed")
-	}
-	if cfg.Sandbox.DataDir != "b" {
-		t.Fatal("sandbox.data_dir failed")
 	}
 	if cfg.Bastion.MasterKeyFile != "c" {
 		t.Fatal("bastion.master_key_file failed")
@@ -53,5 +54,17 @@ image = "d1"
 	}
 	if cfg.Sandbox.Image != "d1" {
 		t.Fatal("sandbox.image failed")
+	}
+	if cfg.Sandbox.DataDir != "b" {
+		t.Fatal("sandbox.data_dir failed")
+	}
+	if cfg.SSHD.Host != "00" {
+		t.Fatal("sshd.host failed")
+	}
+	if cfg.SSHD.Port != 222 {
+		t.Fatal("sshd.port failed")
+	}
+	if cfg.SSHD.HostKeyFile != "ss" {
+		t.Fatal("sshd.host_key_file failed")
 	}
 }
