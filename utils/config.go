@@ -26,6 +26,8 @@ type Config struct {
 	Bastion struct {
 		// Env 运行环境，可以是 development, production, test
 		Env string `toml:"env"`
+		// SandboxImage 沙箱要用的镜像名
+		SandboxImage string `toml:"sandbox_image"`
 		// SandboxDir 沙箱的数据地址
 		SandboxDir string `toml:"sandbox_dir"`
 		// MasterKeyFile Bastion 主密钥的地址

@@ -9,6 +9,7 @@ env = "a"
 sandbox_dir = "b"
 master_key_file = "c"
 authorized_keys_file = "d"
+sandbox_image = "d1"
 [db]
 url = "e"
 [redis]
@@ -48,5 +49,8 @@ port = 9
 	}
 	if cfg.Web.Port != 9 {
 		t.Fatal("web.port failed")
+	}
+	if cfg.Bastion.SandboxImage != "d1" {
+		t.Fatal("bastion.sandbox_image failed")
 	}
 }

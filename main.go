@@ -18,8 +18,8 @@ func main() {
 	}
 	app.Commands = []cli.Command{
 		webCommand,
-		handleCommand,
-		newUserCommand,
+		sandboxAttachCommand,
+		userCreateCommand,
 	}
 	app.Run(os.Args)
 }

@@ -5,6 +5,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/pagoda-tech/bastion/models"
 	"github.com/pagoda-tech/bastion/routes"
+	"github.com/pagoda-tech/bastion/sandbox"
 	"github.com/pagoda-tech/bastion/utils"
 	"github.com/pagoda-tech/macaron"
 	"github.com/urfave/cli"
@@ -39,6 +40,18 @@ func execWebCommand(c *cli.Context) (err error) {
 	// map config
 	m.SetEnv(cfg.Bastion.Env)
 	m.Map(cfg)
+
+	// create sandbox.Manager
+	smc := sandbox.ManagerOptions{
+		ImageName: cfg.Bastion.SandboxImage,
+		DataDir:   cfg.Bastion.SandboxDir,
+	}
+	var sm sandbox.Manager
+	if sm, err = sandbox.NewManager(smc); err != nil {
+		log.Fatalln(err)
+		return
+	}
+	m.Map(sm)
 
 	// map DB
 	var db *models.DB

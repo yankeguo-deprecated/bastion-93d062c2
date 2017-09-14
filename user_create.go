@@ -8,9 +8,9 @@ import (
 	"log"
 )
 
-// newUserCommand 用来启动 Web 服务
-var newUserCommand = cli.Command{
-	Name:   "new-user",
+// userCreateCommand 用来启动 Web 服务
+var userCreateCommand = cli.Command{
+	Name:   "user:create",
 	Usage:  "create a user",
 	Action: execNewUserCommand,
 	Flags: []cli.Flag{
