@@ -5,7 +5,7 @@ import Dashboard from '@/components/Dashboard'
 import Navbar from '@/components/Navbar'
 import Profile from '@/components/Profile'
 import Settings from '@/components/Settings'
-import ChangePassword from '@/components/ChangePassword'
+import Security from '@/components/Security'
 import SSHKeys from '@/components/SSHKeys'
 import Tokens from '@/components/Tokens'
 import store from '../store'
@@ -40,9 +40,9 @@ const router = new Router({
           component: Profile
         },
         {
-          path: 'change_password',
-          name: 'change_password',
-          component: ChangePassword
+          path: 'security',
+          name: 'security',
+          component: Security
         },
         {
           path: 'ssh_keys',

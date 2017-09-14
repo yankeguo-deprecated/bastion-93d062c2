@@ -28,10 +28,10 @@
 
 <script>
 export default {
-  name: 'change_password',
+  name: 'security',
   head: {
     title: {
-      inner: '修改密码'
+      inner: '密码和安全'
     }
   },
   created () {
