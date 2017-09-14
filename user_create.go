@@ -3,6 +3,7 @@ package main
 import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/pagoda-tech/bastion/models"
+	"github.com/pagoda-tech/bastion/sandbox"
 	"github.com/pagoda-tech/bastion/utils"
 	"github.com/urfave/cli"
 	"log"
@@ -79,6 +80,22 @@ func execNewUserCommand(c *cli.Context) (err error) {
 	if err = db.Create(user).Error; err != nil {
 		log.Fatalln(err)
 		return
+	}
+
+	smc := sandbox.ManagerOptions{
+		ImageName: cfg.Bastion.SandboxImage,
+		DataDir:   cfg.Bastion.SandboxDir,
+	}
+
+	sbm, err := sandbox.NewManager(smc)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	_, err = sbm.GetOrCreate(*user)
+	if err != nil {
+		log.Fatalln(err)
 	}
 
 	return

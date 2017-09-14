@@ -24,5 +24,8 @@ func TestManagerGetOrCreate(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(s)
+
+	if s.UserID != 1 {
+		t.Error("failed to get")
+	}
 }

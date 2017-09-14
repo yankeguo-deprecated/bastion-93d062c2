@@ -9,4 +9,8 @@ dist:
 	cp config.sample.toml dist/
 lint:
 	gofmt -s -w */*.go *.go
-.PHONY: build lint dist
+pre-test:
+	docker stop sandbox-test || true
+	docker rm sandbox-test || true
+	rm -rf /tmp/test-bastion
+.PHONY: build lint dist pre-test

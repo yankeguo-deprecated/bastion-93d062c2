@@ -1,12 +1,14 @@
 package sandbox
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/pagoda-tech/bastion/models"
+	"io"
 	"os"
 	"sync"
 )
@@ -48,7 +50,7 @@ func (m managerImpl) GetOrCreate(u models.User) (Sandbox, error) {
 	s := newSandbox(u, m.options.DataDir)
 
 	if e, err := m.exists(s); e || err != nil {
-		return Sandbox{}, err
+		return s, err
 	}
 
 	return s, m.create(s)
@@ -75,13 +77,42 @@ func (m managerImpl) create(s Sandbox) error {
 		},
 	}
 
-	ret, err := cli.ContainerCreate(context.Background(), ccfg, hcfg, nil, s.ContainerName())
+	if _, err := cli.ContainerCreate(context.Background(), ccfg, hcfg, nil, s.ContainerName()); err != nil {
+		return err
+	}
 
+	if err := cli.ContainerStart(context.Background(), s.ContainerName(), types.ContainerStartOptions{}); err != nil {
+		return err
+	}
+
+	return m.exec(s, scriptSeedSSH(s.UserPublicKey, s.UserPrivateKey))
+}
+
+func (m managerImpl) exec(s Sandbox, sc string) error {
+	id, err := cli.ContainerExecCreate(
+		context.Background(),
+		s.ContainerName(),
+		types.ExecConfig{
+			AttachStdin: true,
+			Cmd: []string{
+				"/bin/bash",
+			},
+		},
+	)
 	if err != nil {
 		return err
 	}
 
-	return cli.ContainerStart(context.Background(), ret.ID, types.ContainerStartOptions{})
+	r, err := cli.ContainerExecAttach(context.Background(), id.ID, types.ExecConfig{})
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+
+	scr := bytes.NewReader([]byte(sc))
+	_, err = io.Copy(r.Conn, scr)
+
+	return err
 }
 
 // NewManager 创建
