@@ -18,6 +18,7 @@ func Mount(m *macaron.Macaron) {
 	m.Post("/api/users/:userid/ssh_keys/create", binding.Bind(SSHKeyCreateForm{}), RequireAuth(), ResolveCurrentUser(":userid"), SSHKeyCreate)
 	m.Get("/api/users/:id", RequireAuth(), ResolveCurrentUser(":id"), UserShow)
 	m.Post("/api/users/:id/update", RequireAuth(), ResolveCurrentUser(":id"), binding.Bind(UserUpdateForm{}), UserUpdate)
+	m.Post("/api/users/:id/update_password", RequireAuth(), ResolveCurrentUser(":id"), binding.Bind(UserUpdatePasswordForm{}), UserUpdatePassword)
 	m.Post("/api/ssh_keys/:id/destroy", RequireAuth(), SSHKeyDestroy)
 }
 
