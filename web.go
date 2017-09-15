@@ -2,11 +2,11 @@ package main
 
 import (
 	"github.com/go-redis/redis"
-	"github.com/pagoda-tech/bastion/models"
-	"github.com/pagoda-tech/bastion/routes"
-	"github.com/pagoda-tech/bastion/sandbox"
-	"github.com/pagoda-tech/bastion/utils"
 	"github.com/urfave/cli"
+	"ireul.com/bastion/models"
+	"ireul.com/bastion/routes"
+	"ireul.com/bastion/sandbox"
+	"ireul.com/bastion/utils"
 	"ireul.com/web"
 	"log"
 )

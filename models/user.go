@@ -1,8 +1,8 @@
 package models
 
 import (
-	"github.com/pagoda-tech/bastion/utils"
 	"golang.org/x/crypto/bcrypt"
+	"ireul.com/bastion/utils"
 	"ireul.com/orm"
 	"regexp"
 	"time"

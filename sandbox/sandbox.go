@@ -2,7 +2,7 @@ package sandbox
 
 import (
 	"fmt"
-	"github.com/pagoda-tech/bastion/models"
+	"ireul.com/bastion/models"
 	"path"
 )
 

@@ -2,7 +2,7 @@ package sandbox
 
 import (
 	"bytes"
-	"github.com/pagoda-tech/bastion/utils"
+	"ireul.com/bastion/utils"
 	"log"
 	"text/template"
 )

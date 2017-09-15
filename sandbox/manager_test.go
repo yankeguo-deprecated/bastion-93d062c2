@@ -1,7 +1,7 @@
 package sandbox
 
 import (
-	"github.com/pagoda-tech/bastion/models"
+	"ireul.com/bastion/models"
 	"testing"
 )
 

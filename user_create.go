@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/pagoda-tech/bastion/models"
-	"github.com/pagoda-tech/bastion/sandbox"
-	"github.com/pagoda-tech/bastion/utils"
 	"github.com/urfave/cli"
+	"ireul.com/bastion/models"
+	"ireul.com/bastion/sandbox"
+	"ireul.com/bastion/utils"
 	"log"
 )
 

@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/pagoda-tech/bastion/utils"
+	"ireul.com/bastion/utils"
 	"ireul.com/orm"
 	"ireul.com/web"
 	"time"

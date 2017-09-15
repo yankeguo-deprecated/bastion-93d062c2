@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/pagoda-tech/bastion/utils"
+	"ireul.com/bastion/utils"
 	"ireul.com/web"
 )
 
