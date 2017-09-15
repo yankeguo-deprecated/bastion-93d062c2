@@ -5,12 +5,12 @@ import (
 	"io"
 	"log"
 
-	gossh "golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh"
 	"ireul.com/bastion/models"
 	"ireul.com/bastion/sandbox"
 	"ireul.com/bastion/utils"
 	"ireul.com/cli"
-	"ireul.com/ssh"
+	"ireul.com/sshd"
 )
 
 // sshdCommand 用来提供 authorized_keys 中的自定义 command
@@ -51,7 +51,7 @@ func execSSHDCommand(c *cli.Context) (err error) {
 	}
 
 	// handle
-	ssh.Handle(func(s ssh.Session) {
+	sshd.Handle(func(s sshd.Session) {
 		// extract User
 		u := s.Context().Value("User").(models.User)
 		// ensure command
@@ -104,13 +104,13 @@ func execSSHDCommand(c *cli.Context) (err error) {
 	})
 
 	// options
-	options := []ssh.Option{
+	options := []sshd.Option{
 		// set host_key
-		ssh.HostKeyFile(cfg.SSHD.HostKeyFile),
+		sshd.HostKeyFile(cfg.SSHD.HostKeyFile),
 		// auth public_key
-		ssh.PublicKeyAuth(func(ctx ssh.Context, key ssh.PublicKey) bool {
+		sshd.PublicKeyAuth(func(ctx sshd.Context, key sshd.PublicKey) bool {
 			// get fingerprint
-			fp := gossh.FingerprintSHA256(key)
+			fp := ssh.FingerprintSHA256(key)
 			// find SSHKey
 			k := models.SSHKey{}
 			db.Where("fingerprint = ?", fp).First(&k)
@@ -133,6 +133,6 @@ func execSSHDCommand(c *cli.Context) (err error) {
 	}
 
 	log.Printf("Listening at %s:%d\n", cfg.SSHD.Host, cfg.SSHD.Port)
-	log.Fatal(ssh.ListenAndServe(fmt.Sprintf("%s:%d", cfg.SSHD.Host, cfg.SSHD.Port), nil, options...))
+	log.Fatal(sshd.ListenAndServe(fmt.Sprintf("%s:%d", cfg.SSHD.Host, cfg.SSHD.Port), nil, options...))
 	return nil
 }
