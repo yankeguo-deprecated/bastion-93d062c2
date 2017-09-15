@@ -2,19 +2,19 @@ package routes
 
 import (
 	"github.com/pagoda-tech/bastion/utils"
-	"github.com/pagoda-tech/macaron"
+	"ireul.com/web"
 )
 
-// APIRender 封装后的 macaron.Render
+// APIRender 封装后的 web.Render
 type APIRender interface {
-	macaron.Render
+	web.Render
 	Success(args ...interface{})
 	Fail(code string, message string)
 }
 
-// apiRenderImpl 封装后的 macaron.Render
+// apiRenderImpl 封装后的 web.Render
 type apiRenderImpl struct {
-	macaron.Render
+	web.Render
 }
 
 // Success 返回 code = 200，并构建 Map
@@ -46,9 +46,9 @@ func (r *apiRenderImpl) Fail(code string, msg string) {
 	r.JSON(400, utils.NewMap("code", code, "message", msg))
 }
 
-// APIRenderer 为 macaron.Context 注入 utils.Render
+// APIRenderer 为 web.Context 注入 utils.Render
 func APIRenderer() interface{} {
-	return func(r macaron.Render, ctx *macaron.Context) {
+	return func(r web.Render, ctx *web.Context) {
 		render := &apiRenderImpl{r}
 		ctx.MapTo(render, (*APIRender)(nil))
 	}

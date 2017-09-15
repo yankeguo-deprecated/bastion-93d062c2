@@ -2,8 +2,8 @@ package models
 
 import (
 	"github.com/pagoda-tech/bastion/utils"
-	"github.com/pagoda-tech/macaron"
 	"ireul.com/orm"
+	"ireul.com/web"
 	"time"
 )
 
@@ -21,7 +21,7 @@ func NewDB(cfg *utils.Config) (db *DB, err error) {
 	// create
 	db = &DB{db0}
 	// enable log if dev
-	if cfg.Bastion.Env == macaron.DEV {
+	if cfg.Bastion.Env == web.DEV {
 		db.LogMode(true)
 	}
 	return

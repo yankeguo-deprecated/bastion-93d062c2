@@ -2,12 +2,12 @@ package routes
 
 import (
 	"github.com/pagoda-tech/bastion/utils"
-	"github.com/pagoda-tech/binding"
-	"github.com/pagoda-tech/macaron"
+	"ireul.com/web"
+	"ireul.com/web/binding"
 )
 
-// Mount 将所有路由挂载到 macaron 上
-func Mount(m *macaron.Macaron) {
+// Mount 将所有路由挂载到 web 上
+func Mount(m *web.Web) {
 	m.Use(APIRenderer())
 	m.Use(Authenticator())
 	m.Get("/api", apiAction)
@@ -22,6 +22,6 @@ func Mount(m *macaron.Macaron) {
 	m.Post("/api/ssh_keys/:id/destroy", RequireAuth(), SSHKeyDestroy)
 }
 
-func apiAction(ctx *macaron.Context, r APIRender) {
+func apiAction(ctx *web.Context, r APIRender) {
 	r.Success(utils.NewMap("name", "bastion", "version", ctx.Data["Version"]))
 }

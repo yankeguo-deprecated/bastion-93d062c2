@@ -2,13 +2,12 @@ package main
 
 import (
 	"github.com/go-redis/redis"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/pagoda-tech/bastion/models"
 	"github.com/pagoda-tech/bastion/routes"
 	"github.com/pagoda-tech/bastion/sandbox"
 	"github.com/pagoda-tech/bastion/utils"
-	"github.com/pagoda-tech/macaron"
 	"github.com/urfave/cli"
+	"ireul.com/web"
 	"log"
 )
 
@@ -23,10 +22,10 @@ func execWebCommand(c *cli.Context) (err error) {
 	// setup log
 	log.SetPrefix("[bastion-web] ")
 
-	// create macaron instance
-	m := macaron.Classic()
-	m.Use(macaron.Renderer())
-	m.Use(func(ctx *macaron.Context) {
+	// create web instance
+	m := web.Classic()
+	m.Use(web.Renderer())
+	m.Use(func(ctx *web.Context) {
 		ctx.Data["Version"] = VERSION
 	})
 
@@ -74,7 +73,7 @@ func execWebCommand(c *cli.Context) (err error) {
 	// routes
 	routes.Mount(m)
 
-	// run macaron instance
+	// run web instance
 	m.Run(cfg.Web.Host, cfg.Web.Port)
 	return
 }

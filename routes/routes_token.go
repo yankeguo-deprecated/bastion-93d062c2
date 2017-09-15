@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/pagoda-tech/bastion/models"
 	"github.com/pagoda-tech/bastion/utils"
-	"github.com/pagoda-tech/macaron"
+	"ireul.com/web"
 )
 
 // TokenCreateForm 创建 Token 表单
@@ -14,7 +14,7 @@ type TokenCreateForm struct {
 }
 
 // TokenCreate 创建 Token 路由
-func TokenCreate(ctx *macaron.Context, db *models.DB, f TokenCreateForm, r APIRender) {
+func TokenCreate(ctx *web.Context, db *models.DB, f TokenCreateForm, r APIRender) {
 	u := &models.User{}
 	// find
 	db.Where("login = ?", f.Login).First(u)
@@ -46,7 +46,7 @@ func TokenCreate(ctx *macaron.Context, db *models.DB, f TokenCreateForm, r APIRe
 }
 
 // TokenDestroy 删除一个 Token
-func TokenDestroy(ctx *macaron.Context, r APIRender, a Auth, db *models.DB) {
+func TokenDestroy(ctx *web.Context, r APIRender, a Auth, db *models.DB) {
 	id := uint(ctx.ParamsInt(":id"))
 
 	// if is current user, delete directly
@@ -75,7 +75,7 @@ func TokenDestroy(ctx *macaron.Context, r APIRender, a Auth, db *models.DB) {
 }
 
 // TokenList 列出 Token
-func TokenList(ctx *macaron.Context, db *models.DB, r APIRender, a Auth) {
+func TokenList(ctx *web.Context, db *models.DB, r APIRender, a Auth) {
 	userID := uint(ctx.ParamsInt(":userid"))
 
 	if !a.CanAccessUser(userID) {

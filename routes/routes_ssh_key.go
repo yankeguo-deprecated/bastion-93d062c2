@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/pagoda-tech/bastion/models"
-	"github.com/pagoda-tech/macaron"
 	"golang.org/x/crypto/ssh"
+	"ireul.com/web"
 	"strings"
 )
 
@@ -14,7 +14,7 @@ type SSHKeyCreateForm struct {
 }
 
 // SSHKeyCreate 为一个用户创建 SSHKey
-func SSHKeyCreate(ctx *macaron.Context, db *models.DB, r APIRender, a Auth, f SSHKeyCreateForm) {
+func SSHKeyCreate(ctx *web.Context, db *models.DB, r APIRender, a Auth, f SSHKeyCreateForm) {
 	// userID
 	userID := uint(ctx.ParamsInt(":userid"))
 
@@ -73,7 +73,7 @@ func SSHKeyCreate(ctx *macaron.Context, db *models.DB, r APIRender, a Auth, f SS
 }
 
 // SSHKeyList 列出 SSH 公钥
-func SSHKeyList(ctx *macaron.Context, db *models.DB, r APIRender, a Auth) {
+func SSHKeyList(ctx *web.Context, db *models.DB, r APIRender, a Auth) {
 	userID := uint(ctx.ParamsInt(":userid"))
 
 	if !a.CanAccessUser(userID) {
@@ -89,7 +89,7 @@ func SSHKeyList(ctx *macaron.Context, db *models.DB, r APIRender, a Auth) {
 }
 
 // SSHKeyDestroy 删除 SSH 公钥
-func SSHKeyDestroy(ctx *macaron.Context, db *models.DB, r APIRender, a Auth) {
+func SSHKeyDestroy(ctx *web.Context, db *models.DB, r APIRender, a Auth) {
 	id := uint(ctx.ParamsInt(":id"))
 
 	// find sk

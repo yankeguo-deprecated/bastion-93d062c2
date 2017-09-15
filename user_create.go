@@ -1,7 +1,6 @@
 package main
 
 import (
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/pagoda-tech/bastion/models"
 	"github.com/pagoda-tech/bastion/sandbox"
 	"github.com/pagoda-tech/bastion/utils"

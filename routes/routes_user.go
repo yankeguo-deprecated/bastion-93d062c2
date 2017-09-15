@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/pagoda-tech/bastion/models"
-	"github.com/pagoda-tech/macaron"
+	"ireul.com/web"
 )
 
 // UserUpdateForm 更新用户表单
@@ -17,7 +17,7 @@ type UserUpdatePasswordForm struct {
 }
 
 // UserShow 显示一个用户
-func UserShow(ctx *macaron.Context, r APIRender, a Auth, db *models.DB) {
+func UserShow(ctx *web.Context, r APIRender, a Auth, db *models.DB) {
 	// extract current user if 'current'
 	id := uint(ctx.ParamsInt(":id"))
 	if id == a.CurrentUser.ID {
@@ -44,7 +44,7 @@ func UserShow(ctx *macaron.Context, r APIRender, a Auth, db *models.DB) {
 }
 
 // UserUpdatePassword 修改密码
-func UserUpdatePassword(ctx *macaron.Context, r APIRender, a Auth, db *models.DB, f UserUpdatePasswordForm) {
+func UserUpdatePassword(ctx *web.Context, r APIRender, a Auth, db *models.DB, f UserUpdatePasswordForm) {
 	if len(f.NewPassword) < models.UserPasswordMinLen {
 		r.Fail(ParamsInvalid, "新密码过短")
 		return
@@ -84,7 +84,7 @@ func UserUpdatePassword(ctx *macaron.Context, r APIRender, a Auth, db *models.DB
 }
 
 // UserUpdate 更新一个用户信息
-func UserUpdate(ctx *macaron.Context, r APIRender, a Auth, db *models.DB, f UserUpdateForm) {
+func UserUpdate(ctx *web.Context, r APIRender, a Auth, db *models.DB, f UserUpdateForm) {
 	if len(f.Nickname) >= 20 {
 		r.Fail(ParamsInvalid, "昵称过长")
 		return

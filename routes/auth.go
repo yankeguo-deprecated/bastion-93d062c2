@@ -3,7 +3,7 @@ package routes
 import (
 	"fmt"
 	"github.com/pagoda-tech/bastion/models"
-	"github.com/pagoda-tech/macaron"
+	"ireul.com/web"
 	"strings"
 )
 
@@ -27,7 +27,7 @@ func (a Auth) CanAccessUser(userID uint) bool {
 
 // Authenticator 创建认证中间件
 func Authenticator() interface{} {
-	return func(ctx *macaron.Context, db *models.DB, r APIRender) {
+	return func(ctx *web.Context, db *models.DB, r APIRender) {
 		a := Auth{}
 
 		k := extractBearer(ctx.Req)
@@ -68,7 +68,7 @@ func Authenticator() interface{} {
 
 // RequireAuth 检验认证结果
 func RequireAuth() interface{} {
-	return func(ctx *macaron.Context, a Auth, r APIRender) {
+	return func(ctx *web.Context, a Auth, r APIRender) {
 		if !a.SignedIn() {
 			r.Fail(a.Code, a.Message)
 		}
@@ -77,7 +77,7 @@ func RequireAuth() interface{} {
 
 // ResolveCurrentUser 修正 current 为当前用户 ID
 func ResolveCurrentUser(key string) interface{} {
-	return func(ctx *macaron.Context, a Auth, r APIRender) {
+	return func(ctx *web.Context, a Auth, r APIRender) {
 		id := ctx.Params(key)
 		if id == "current" {
 			ctx.SetParams(key, fmt.Sprint(a.CurrentUser.ID))
@@ -87,7 +87,7 @@ func ResolveCurrentUser(key string) interface{} {
 
 // ResolveCurrentToken 修正 current 为当前 Token ID
 func ResolveCurrentToken(key string) interface{} {
-	return func(ctx *macaron.Context, a Auth, r APIRender) {
+	return func(ctx *web.Context, a Auth, r APIRender) {
 		id := ctx.Params(key)
 		if id == "current" {
 			ctx.SetParams(key, fmt.Sprint(a.CurrentToken.ID))
@@ -95,7 +95,7 @@ func ResolveCurrentToken(key string) interface{} {
 	}
 }
 
-func extractBearer(req macaron.Request) (k string) {
+func extractBearer(req web.Request) (k string) {
 	h := req.Header["Authorization"]
 	if h != nil && len(h) > 0 {
 		vs := strings.Split(strings.TrimSpace(h[len(h)-1]), " ")

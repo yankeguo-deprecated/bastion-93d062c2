@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/urfave/cli"
+	_ "ireul.com/mysql"
 	"os"
 )
 
