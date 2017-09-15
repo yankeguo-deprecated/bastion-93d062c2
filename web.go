@@ -1,14 +1,15 @@
 package main
 
 import (
-	"github.com/go-redis/redis"
+	"log"
+
 	"ireul.com/bastion/models"
 	"ireul.com/bastion/routes"
 	"ireul.com/bastion/sandbox"
 	"ireul.com/bastion/utils"
 	"ireul.com/cli"
+	"ireul.com/redis"
 	"ireul.com/web"
-	"log"
 )
 
 // webCommand 用来启动 Web 服务
