@@ -69,30 +69,32 @@ func execSSHDCommand(c *cli.Context) (err error) {
 		// attach sandbox
 		pty, sshwinch, isPty := s.Pty()
 
-		snbwinch := make(chan sandbox.Window, 1)
-
 		// create opts
 		opts := sandbox.ExecAttachOptions{
-			Command:    cmd,
-			Reader:     s,
-			Writer:     s,
-			IsPty:      isPty,
-			WindowChan: snbwinch,
-			Term:       pty.Term,
+			Command: cmd,
+			Reader:  s,
+			Writer:  s,
+			IsPty:   isPty,
+			Term:    pty.Term,
 		}
 
-		// convert channel sshwinch -> snbwinch
-		go func() {
-			for {
-				s, live := <-sshwinch
-				if live {
-					snbwinch <- sandbox.Window{Height: uint(s.Height), Width: uint(s.Width)}
-				} else {
-					close(snbwinch)
-					break
+		if isPty {
+			snbwinch := make(chan sandbox.Window, 1)
+			opts.WindowChan = snbwinch
+
+			// convert channel sshwinch -> snbwinch
+			go func() {
+				for {
+					s, live := <-sshwinch
+					if live {
+						snbwinch <- sandbox.Window{Height: uint(s.Height), Width: uint(s.Width)}
+					} else {
+						close(snbwinch)
+						break
+					}
 				}
-			}
-		}()
+			}()
+		}
 
 		err = sm.ExecAttach(snb, opts)
 
