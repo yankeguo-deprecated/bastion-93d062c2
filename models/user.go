@@ -2,8 +2,8 @@ package models
 
 import (
 	"github.com/pagoda-tech/bastion/utils"
-	"github.com/pagoda-tech/gorm"
 	"golang.org/x/crypto/bcrypt"
+	"ireul.com/orm"
 	"regexp"
 	"time"
 )
@@ -16,25 +16,25 @@ const UserPasswordMinLen = 6
 
 // User 代表一个用户
 type User struct {
-	gorm.Model
+	orm.Model
 
 	// Login 登录名
-	Login string `gorm:"unique_index" json:"login"`
+	Login string `orm:"unique_index" json:"login"`
 	// Nickname 昵称
 	Nickname string `json:"nickname"`
 	// PasswordDigest bcrypt 加密后的密码
-	PasswordDigest string `gorm:"type:text" json:"-"`
+	PasswordDigest string `orm:"type:text" json:"-"`
 	// IsBlocked 用户是否被禁用
-	IsBlocked bool `gorm:"not null" json:"isBlocked"`
+	IsBlocked bool `orm:"not null" json:"isBlocked"`
 	// IsAdmin 用户是否是管理员
-	IsAdmin bool `gorm:"not null" json:"isAdmin"`
+	IsAdmin bool `orm:"not null" json:"isAdmin"`
 
 	// Fingerprint Sandbox 公钥指纹
-	Fingerprint string `gorm:"unique_index" json:"fingerprint"`
+	Fingerprint string `orm:"unique_index" json:"fingerprint"`
 	// PublicKey Sandbox 公钥
-	PublicKey string `gorm:"type:text" json:"publicKey"`
+	PublicKey string `orm:"type:text" json:"publicKey"`
 	// PrivateKey Sandbox 私钥
-	PrivateKey string `gorm:"type:text" json:"-"`
+	PrivateKey string `orm:"type:text" json:"-"`
 	// UsedAt 最后一次使用时间
 	UsedAt *time.Time `json:"usedAt"`
 }

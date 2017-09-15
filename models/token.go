@@ -3,19 +3,19 @@ package models
 import (
 	"crypto/rand"
 	"encoding/hex"
-	"github.com/pagoda-tech/gorm"
+	"ireul.com/orm"
 	"time"
 )
 
 // Token 代表一个用户的访问 Token
 type Token struct {
-	gorm.Model
+	orm.Model
 	// UserID 用户 ID
-	UserID uint `gorm:"index" json:"userId"`
+	UserID uint `orm:"index" json:"userId"`
 	// Token 随机 Token
-	Secret string `gorm:"unique_index" json:"-"`
+	Secret string `orm:"unique_index" json:"-"`
 	// Desc 描述
-	Desc string `gorm:"type:text" json:"desc"`
+	Desc string `orm:"type:text" json:"desc"`
 	// UsedAt 最后一次使用时间
 	UsedAt *time.Time `json:"usedAt"`
 }

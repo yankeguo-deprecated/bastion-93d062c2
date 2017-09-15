@@ -2,20 +2,20 @@ package models
 
 import (
 	"github.com/pagoda-tech/bastion/utils"
-	"github.com/pagoda-tech/gorm"
 	"github.com/pagoda-tech/macaron"
+	"ireul.com/orm"
 	"time"
 )
 
-// DB 封装 gorm.DB
+// DB 封装 orm.DB
 type DB struct {
-	*gorm.DB
+	*orm.DB
 }
 
 // NewDB 创建一个新的 DB 实例
 func NewDB(cfg *utils.Config) (db *DB, err error) {
-	var db0 *gorm.DB
-	if db0, err = gorm.Open("mysql", cfg.Database.URL); err != nil {
+	var db0 *orm.DB
+	if db0, err = orm.Open("mysql", cfg.Database.URL); err != nil {
 		return nil, err
 	}
 	// create
