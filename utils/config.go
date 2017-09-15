@@ -3,7 +3,7 @@ package utils
 import (
 	"io/ioutil"
 
-	"github.com/BurntSushi/toml"
+	"ireul.com/toml"
 )
 
 // Config 配置
