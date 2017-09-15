@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/urfave/cli"
+	"ireul.com/cli"
 	_ "ireul.com/mysql"
 	"os"
 )
@@ -19,7 +19,7 @@ func main() {
 	}
 	app.Commands = []cli.Command{
 		webCommand,
-		sandboxAttachCommand,
+		sshdCommand,
 		userCreateCommand,
 	}
 	app.Run(os.Args)
