@@ -7,7 +7,6 @@ func TestConfig(t *testing.T) {
 [bastion]
 env = "a"
 master_key_file = "c"
-authorized_keys_file = "d"
 [db]
 url = "e"
 [redis]
@@ -33,9 +32,6 @@ host_key_file = "ss"
 	}
 	if cfg.Bastion.MasterKeyFile != "c" {
 		t.Fatal("bastion.master_key_file failed")
-	}
-	if cfg.Bastion.AuthorizedKeysFile != "d" {
-		t.Fatal("bastion.authorized_keys_file failed")
 	}
 	if cfg.Database.URL != "e" {
 		t.Fatal("db.url failed")

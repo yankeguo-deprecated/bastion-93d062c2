@@ -1,10 +1,11 @@
 package routes
 
 import (
+	"strings"
+
 	"golang.org/x/crypto/ssh"
 	"ireul.com/bastion/models"
 	"ireul.com/web"
-	"strings"
 )
 
 // SSHKeyCreateForm 创建 SSHKey 的表单

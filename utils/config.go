@@ -1,8 +1,9 @@
 package utils
 
 import (
-	"github.com/BurntSushi/toml"
 	"io/ioutil"
+
+	"github.com/BurntSushi/toml"
 )
 
 // Config 配置
@@ -28,8 +29,6 @@ type Config struct {
 		Env string `toml:"env"`
 		// MasterKeyFile Bastion 主密钥的地址
 		MasterKeyFile string `toml:"master_key_file"`
-		// AuthorizedKeys Bastion 要写入的 autorized_keys 文件
-		AuthorizedKeysFile string `toml:"authorized_keys_file"`
 	} `toml:"bastion"`
 	Sandbox struct {
 		// 沙箱的镜像名称
