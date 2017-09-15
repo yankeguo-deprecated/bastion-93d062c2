@@ -2,9 +2,10 @@ package sandbox
 
 import (
 	"bytes"
-	"ireul.com/bastion/utils"
 	"log"
 	"text/template"
+
+	"ireul.com/bastion/utils"
 )
 
 const tplSeedSSH = `#!/bin/bash

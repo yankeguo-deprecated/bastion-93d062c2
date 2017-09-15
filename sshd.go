@@ -7,6 +7,7 @@ import (
 
 	gossh "golang.org/x/crypto/ssh"
 	"ireul.com/bastion/models"
+	"ireul.com/bastion/sandbox"
 	"ireul.com/bastion/utils"
 	"ireul.com/cli"
 	"ireul.com/ssh"
@@ -39,21 +40,65 @@ func execSSHDCommand(c *cli.Context) (err error) {
 	db.AutoMigrate()
 
 	// create sandbox.Manager
-	/*
-		smc := sandbox.ManagerOptions{
-			Image:   cfg.Sandbox.Image,
-			DataDir: cfg.Sandbox.DataDir,
-		}
-		var sm sandbox.Manager
-		if sm, err = sandbox.NewManager(smc); err != nil {
-			log.Fatalln(err)
-			return
-		}
-	*/
+	smc := sandbox.ManagerOptions{
+		Image:   cfg.Sandbox.Image,
+		DataDir: cfg.Sandbox.DataDir,
+	}
+	var sm sandbox.Manager
+	if sm, err = sandbox.NewManager(smc); err != nil {
+		log.Fatalln(err)
+		return
+	}
 
 	// handle
 	ssh.Handle(func(s ssh.Session) {
-		io.WriteString(s, fmt.Sprintf("Hello world, user %d\n", s.Context().Value("UserID")))
+		// extract User
+		u := s.Context().Value("User").(models.User)
+		// ensure command
+		cmd := s.Command()
+		if len(cmd) == 0 {
+			cmd = []string{"/bin/bash"}
+		}
+		// get sandbox
+		snb, err := sm.GetOrCreate(u)
+		if err != nil {
+			io.WriteString(s, fmt.Sprintf("Internal Error: %s\n", err.Error()))
+			s.Exit(1)
+			return
+		}
+		// attach sandbox
+		pty, sshwinch, isPty := s.Pty()
+
+		snbwinch := make(chan sandbox.Window, 1)
+
+		// create opts
+		opts := sandbox.ExecAttachOptions{
+			Command:    cmd,
+			Reader:     s,
+			Writer:     s,
+			IsPty:      isPty,
+			WindowChan: snbwinch,
+			Term:       pty.Term,
+		}
+
+		// convert channel sshwinch -> snbwinch
+		go func() {
+			for {
+				s, live := <-sshwinch
+				if live {
+					snbwinch <- sandbox.Window{Height: uint(s.Height), Width: uint(s.Width)}
+				} else {
+					close(snbwinch)
+					break
+				}
+			}
+		}()
+
+		err = sm.ExecAttach(snb, opts)
+
+		if err != nil {
+			log.Printf("ERROR: Sandbox ExecAttach Failed: %s\n", err.Error())
+		}
 	})
 
 	// options
@@ -62,21 +107,25 @@ func execSSHDCommand(c *cli.Context) (err error) {
 		ssh.HostKeyFile(cfg.SSHD.HostKeyFile),
 		// auth public_key
 		ssh.PublicKeyAuth(func(ctx ssh.Context, key ssh.PublicKey) bool {
+			// get fingerprint
 			fp := gossh.FingerprintSHA256(key)
+			// find SSHKey
 			k := models.SSHKey{}
 			db.Where("fingerprint = ?", fp).First(&k)
 			if db.NewRecord(k) {
-				log.Println("key not found:", fp)
+				log.Printf("ERROR: Invalid Key, FP=%s", fp)
 				return false
 			}
+			// find User
 			u := models.User{}
 			db.First(&u, k.UserID)
 			if db.NewRecord(u) || u.IsBlocked {
-				log.Println("user id not found or blocked:", k.UserID, ", fingerprint:", fp)
+				log.Printf("ERROR: User Not Found / Blocked, UserID=%d, FP=%s\n", k.UserID, fp)
 				return false
 			}
-			log.Println("user signed in:", k.UserID, ", fingerprint:", fp)
-			ctx.SetValue("UserID", k.UserID)
+			// set User.ID
+			log.Printf("Signed In, UserID=%d, FP=%s\n", k.UserID, fp)
+			ctx.SetValue("User", u)
 			return true
 		}),
 	}

@@ -1,8 +1,9 @@
 package sandbox
 
 import (
-	"ireul.com/bastion/models"
 	"testing"
+
+	"ireul.com/bastion/models"
 )
 
 func TestManagerGetOrCreate(t *testing.T) {
