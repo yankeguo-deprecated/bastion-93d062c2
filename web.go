@@ -24,7 +24,10 @@ func execWebCommand(c *cli.Context) (err error) {
 	log.SetPrefix("[bastion-web] ")
 
 	// create web instance
-	m := web.Classic()
+	m := web.New()
+	m.Use(web.Logger())
+	m.Use(web.Recovery())
+	m.Use(web.Static("public"))
 	m.Use(web.Renderer())
 	m.Use(func(ctx *web.Context) {
 		ctx.Data["Version"] = VERSION
