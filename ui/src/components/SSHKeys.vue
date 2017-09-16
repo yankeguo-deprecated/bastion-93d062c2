@@ -5,11 +5,12 @@
         <b-col :md="4">
           <b-row>
             <b-col>
-              <h5 class="text-info">新建公钥</h5>
+              <h5 class="text-info">新建沙箱连接公钥</h5>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
+              <p>沙箱连接公钥用于从外部连接沙箱环境</p>
               <b-form @submit="createSSHKey">
                 <b-form-group label="名称" label-for="name-input">
                   <b-form-input id="name-input" type="text" v-model="form.name" placeholder="输入名称，20字以内"></b-form-input>
@@ -30,8 +31,8 @@
         <b-col>
           <b-row>
             <b-col>
-              <h5 class="text-info">沙箱公钥</h5>
-              <p>沙箱公钥位于沙箱环境内 <code>/root/.ssh/id_rsa.pub</code>，请勿修改</p>
+              <h5 class="text-info">目标公钥</h5>
+              <p>目标公钥用于从沙箱连接目标服务器，位于沙箱内 <code>/root/.ssh/id_rsa.pub</code>，请勿修改</p>
               <p><code>{{ currentUser.fingerprint }}</code></p>
               <p><b-form-textarea :rows="8" v-model="currentUser.publicKey" disabled></b-form-textarea></p>
             </b-col>
@@ -44,7 +45,7 @@
       </b-row>
       <b-row>
         <b-col>
-          <h5 class="text-info">SSH 公钥</h5>
+          <h5 class="text-info">沙箱连接公钥</h5>
         </b-col>
       </b-row>
       <b-row>
