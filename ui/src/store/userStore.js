@@ -1,15 +1,23 @@
+function createEmptyUser () {
+  return {
+    nickname: '正在加载',
+    login: '正在加载',
+    fingerprint: '正在加载',
+    publicKey: '正在加载'
+  }
+}
+
 export default {
   state: {
-    currentUser: {
-      nickname: '正在加载',
-      login: '正在加载',
-      fingerprint: '正在加载',
-      publicKey: '正在加载'
-    }
+    currentUser: createEmptyUser()
   },
   mutations: {
     setCurrentUser (state, user) {
-      state.currentUser = user
+      if (user) {
+        state.currentUser = user
+      } else {
+        state.currentUser = createEmptyUser()
+      }
     }
   },
   getters: {
