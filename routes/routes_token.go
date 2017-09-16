@@ -51,27 +51,21 @@ func TokenCreate(ctx *web.Context, db *models.DB, f TokenCreateForm, r APIRender
 func TokenDestroy(ctx *web.Context, r APIRender, a Auth, db *models.DB) {
 	id := uint(ctx.ParamsInt(":id"))
 
-	// if is current user, delete directly
-	if id == a.CurrentToken.ID {
-		db.Delete(a.CurrentToken)
-		r.Success()
-		return
-	}
-
-	// find user
 	t := &models.Token{}
-	db.First(t, id)
-	if db.NewRecord(t) {
-		r.Fail(TokenNotFound, "没有找该令牌")
-		return
+
+	if id == a.CurrentToken.ID {
+		t = a.CurrentToken
+	} else {
+		db.First(t, id)
 	}
 
 	// check user belongs
-	if !a.CanAccessUser(t.UserID) {
+	if db.NewRecord(t) || !a.CanAccessUser(t.UserID) {
 		r.Fail(TokenNotFound, "没有找该令牌")
 		return
 	}
-	// soft delete
+
+	// Delete
 	db.Delete(t)
 	// audit
 	db.Audit(a.CurrentUser, "tokens.destroy", t)
