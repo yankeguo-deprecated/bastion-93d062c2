@@ -10,6 +10,10 @@ export default {
     return this.http.post(`tokens/${id}/destroy`)
   },
   listTokens: function ({userId}) {
-    return this.http.get(`users/${userId}/tokens`)
+    return this.http.get(`users/${userId}/tokens`).then((resp) => {
+      this.transformModelsDate(resp.body.tokens, 'createdAt')
+      this.transformModelsDate(resp.body.tokens, 'usedAt')
+      return resp
+    })
   }
 }
