@@ -4,7 +4,7 @@
     <router-link class="navbar-brand" :to="{ name: 'dashboard' }">Bastion</router-link>
     <b-collapse is-nav id="nav_collapse">
       <b-nav is-nav-bar>
-        <b-nav-item :to="{name:'dashboard'}">仪表盘</b-nav-item>
+        <b-nav-item :to="{name:'dashboard'}">工作台</b-nav-item>
       </b-nav>
 
       <b-nav is-nav-bar class="ml-auto">

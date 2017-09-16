@@ -3,7 +3,7 @@
     <b-col>
       <b-row class="dashboard-title">
         <b-col>
-          <h3>仪表盘</h3>
+          <h3>工作台</h3>
         </b-col>
       </b-row>
     </b-col>
@@ -15,7 +15,7 @@ export default {
   name: 'dashboard',
   head: {
     title: {
-      inner: '仪表盘'
+      inner: '工作台'
     }
   },
   data () {
