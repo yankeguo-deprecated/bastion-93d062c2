@@ -4,6 +4,7 @@
       <b-row>
         <b-col>
           <h5 class="text-info">当前令牌</h5>
+          <p>令牌用于 API 访问授权，Web 界面使用 HTML LocalStorage 存储令牌</p>
         </b-col>
       </b-row>
       <b-row>
