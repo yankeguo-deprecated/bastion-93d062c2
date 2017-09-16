@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"regexp"
+	"strings"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -69,6 +70,18 @@ func (u *User) CheckPassword(p string) bool {
 // AuditableName implements types.Auditable
 func (u User) AuditableName() string {
 	return fmt.Sprintf("User(%d:%s)", u.ID, u.Login)
+}
+
+// AuditableDetail implements types.Auditable
+func (u User) AuditableDetail() string {
+	attrs := []string{}
+	if u.IsBlocked {
+		attrs = append(attrs, "blocked")
+	}
+	if u.IsAdmin {
+		attrs = append(attrs, "admin")
+	}
+	return strings.Join(attrs, ",")
 }
 
 // AuditableUserID implements types.UserAuditable

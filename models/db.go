@@ -42,10 +42,12 @@ func (db *DB) Touch(m interface{}) {
 // Audit create a new AuditLog
 func (db *DB) Audit(source types.UserAuditable, action string, target types.Auditable) error {
 	al := AuditLog{
-		UserID: source.AuditableUserID(),
-		Source: source.AuditableName(),
-		Action: action,
-		Target: target.AuditableName(),
+		UserID:       source.AuditableUserID(),
+		Source:       source.AuditableName(),
+		SourceDetail: source.AuditableDetail(),
+		Action:       action,
+		Target:       target.AuditableName(),
+		TargetDetail: target.AuditableDetail(),
 	}
 	return db.Create(&al).Error
 }

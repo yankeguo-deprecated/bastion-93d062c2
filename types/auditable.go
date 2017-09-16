@@ -4,6 +4,7 @@ package types
 type Auditable interface {
 	// AuditableName auditable naming of a model
 	AuditableName() string
+	AuditableDetail() string
 }
 
 // UserAuditable interface of a model that is auditable as a User

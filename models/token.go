@@ -37,6 +37,11 @@ func (t Token) AuditableName() string {
 	return fmt.Sprintf("Token(%d)", t.ID)
 }
 
+// AuditableDetail implements Auditable
+func (t Token) AuditableDetail() string {
+	return t.Desc
+}
+
 // AuditableUserID implements UserAuditable
 func (t Token) AuditableUserID() uint {
 	return t.UserID

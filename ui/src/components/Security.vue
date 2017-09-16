@@ -23,6 +23,11 @@
         </b-form-group>
       </b-form>
     </b-col>
+    <b-col>
+      <h5 class="text-info">操作记录<small>(最近30条)</small></h5>
+      <b-table striped hover :items="auditLogs.data" :fields="auditLogs.fields">
+      </b-table>
+    </b-col>
   </b-row>
 </template>
 
@@ -35,6 +40,7 @@ export default {
     }
   },
   created () {
+    this.updateAuditLogs()
   },
   data () {
     return {
@@ -45,6 +51,27 @@ export default {
         newPasswordConfirmation: null,
         success: null,
         error: null
+      },
+      auditLogs: {
+        data: [],
+        fields: {
+          id: {
+            label: 'ID',
+            sortable: true
+          },
+          createdAt: {
+            label: '日期'
+          },
+          source: {
+            label: '来源'
+          },
+          action: {
+            label: '动作'
+          },
+          target: {
+            label: '目标'
+          }
+        }
       }
     }
   },
@@ -67,6 +94,12 @@ export default {
         this.form.password = null
         this.form.error = body.message
         this.loading = false
+      })
+    },
+    updateAuditLogs () {
+      this.$api.listAuditLogsByUser({userId: 'current'}).then(({body}) => {
+        this.auditLogs.data = body.auditLogs
+      }, ({body}) => {
       })
     }
   }

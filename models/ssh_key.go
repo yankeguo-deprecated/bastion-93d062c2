@@ -25,7 +25,12 @@ type SSHKey struct {
 
 // AuditableName implements Auditable
 func (t SSHKey) AuditableName() string {
-	return fmt.Sprintf("SSHKey(%d:%s)", t.ID, t.Fingerprint)
+	return fmt.Sprintf("SSHKey(%d)", t.ID)
+}
+
+// AuditableDetail implements Auditable
+func (t SSHKey) AuditableDetail() string {
+	return t.Fingerprint
 }
 
 // AuditableUserID implements UserAuditable

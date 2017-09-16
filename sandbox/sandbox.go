@@ -46,6 +46,11 @@ func (s Sandbox) AuditableName() string {
 	return fmt.Sprintf("Sandbox(%s)", s.ContainerName())
 }
 
+// AuditableDetail implements Auditable
+func (s Sandbox) AuditableDetail() string {
+	return fmt.Sprintf("privateDir=%s, sharedDir=%s", s.PrivateDir, s.SharedDir)
+}
+
 // AuditableUserID implements UserAuditable
 func (s Sandbox) AuditableUserID() uint {
 	return s.UserID
