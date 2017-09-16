@@ -1,10 +1,12 @@
 package models
 
 import (
+	"time"
+
+	"ireul.com/bastion/types"
 	"ireul.com/bastion/utils"
 	"ireul.com/orm"
 	"ireul.com/web"
-	"time"
 )
 
 // DB 封装 orm.DB
@@ -29,10 +31,21 @@ func NewDB(cfg *utils.Config) (db *DB, err error) {
 
 // AutoMigrate 自动执行数据库更新
 func (db *DB) AutoMigrate() {
-	db.DB.AutoMigrate(Token{}, Server{}, SSHKey{}, User{})
+	db.DB.AutoMigrate(AuditLog{}, Token{}, Server{}, SSHKey{}, User{})
 }
 
 // Touch 更新一个模型的 UsedAt 字段
 func (db *DB) Touch(m interface{}) {
 	db.DB.Model(m).UpdateColumn("UsedAt", time.Now())
+}
+
+// Audit create a new AuditLog
+func (db *DB) Audit(source types.UserAuditable, action string, target types.Auditable) error {
+	al := AuditLog{
+		UserID: source.AuditableUserID(),
+		Source: source.AuditableName(),
+		Action: action,
+		Target: target.AuditableName(),
+	}
+	return db.Create(&al).Error
 }

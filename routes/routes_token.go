@@ -34,6 +34,8 @@ func TokenCreate(ctx *web.Context, db *models.DB, f TokenCreateForm, r APIRender
 	}
 	t.GenerateSecret()
 	db.Create(t)
+	// audit
+	db.Audit(u, "tokens.create", t)
 	// return data
 	r.Success(func(m utils.Map) {
 		m.Set("token", utils.NewMap(
@@ -69,8 +71,10 @@ func TokenDestroy(ctx *web.Context, r APIRender, a Auth, db *models.DB) {
 		r.Fail(TokenNotFound, "没有找该令牌")
 		return
 	}
-
+	// soft delete
 	db.Delete(t)
+	// audit
+	db.Audit(a.CurrentUser, "tokens.destroy", t)
 	r.Success()
 }
 

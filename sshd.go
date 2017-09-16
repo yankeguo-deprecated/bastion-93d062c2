@@ -54,11 +54,7 @@ func execSSHDCommand(c *cli.Context) (err error) {
 	sshd.Handle(func(s sshd.Session) {
 		// extract User
 		u := s.Context().Value("User").(models.User)
-		// ensure command
-		cmd := s.Command()
-		if len(cmd) == 0 {
-			cmd = []string{"/bin/bash"}
-		}
+		k := s.Context().Value("SSHKey").(models.SSHKey)
 		// get sandbox
 		snb, err := sm.GetOrCreate(u)
 		if err != nil {
@@ -66,10 +62,24 @@ func execSSHDCommand(c *cli.Context) (err error) {
 			s.Exit(1)
 			return
 		}
-		// attach sandbox
-		pty, sshwinch, isPty := s.Pty()
-
+		// check u.IsBlocked
+		if u.IsBlocked {
+			db.Audit(k, "ssh.blocked", snb)
+			io.WriteString(s, fmt.Sprintf("User(%d:%s) is blocked, this incident will be reported.\n", u.ID, u.Login))
+			s.Exit(1)
+			return
+		}
+		// touch and audit
+		db.Touch(u)
+		db.Touch(k)
+		db.Audit(k, "ssh.success", snb)
+		// ensure command
+		cmd := s.Command()
+		if len(cmd) == 0 {
+			cmd = []string{"/bin/bash"}
+		}
 		// create opts
+		pty, sshwinch, isPty := s.Pty()
 		opts := sandbox.ExecAttachOptions{
 			Command: cmd,
 			Reader:  s,
@@ -77,12 +87,11 @@ func execSSHDCommand(c *cli.Context) (err error) {
 			IsPty:   isPty,
 			Term:    pty.Term,
 		}
-
+		// convert channel sshwinch -> snbwinch
 		if isPty {
 			snbwinch := make(chan sandbox.Window, 1)
 			opts.WindowChan = snbwinch
 
-			// convert channel sshwinch -> snbwinch
 			go func() {
 				for {
 					s, live := <-sshwinch
@@ -95,11 +104,12 @@ func execSSHDCommand(c *cli.Context) (err error) {
 				}
 			}()
 		}
-
+		// attach sandbox
 		err = sm.ExecAttach(snb, opts)
-
 		if err != nil {
 			log.Printf("ERROR: Sandbox ExecAttach Failed: %s\n", err.Error())
+			io.WriteString(s, fmt.Sprintf("Failed to attach sandbox %s, %s\n", snb.ContainerName(), err.Error()))
+			s.Exit(1)
 		}
 	})
 
@@ -121,13 +131,14 @@ func execSSHDCommand(c *cli.Context) (err error) {
 			// find User
 			u := models.User{}
 			db.First(&u, k.UserID)
-			if db.NewRecord(u) || u.IsBlocked {
-				log.Printf("ERROR: User Not Found / Blocked, UserID=%d, FP=%s\n", k.UserID, fp)
+			if db.NewRecord(u) {
+				log.Printf("ERROR: User Not Found, UserID=%d, FP=%s\n", k.UserID, fp)
 				return false
 			}
-			// set User.ID
+			// set User / SSHKey
 			log.Printf("Signed In, UserID=%d, FP=%s\n", k.UserID, fp)
 			ctx.SetValue("User", u)
+			ctx.SetValue("SSHKey", k)
 			return true
 		}),
 	}

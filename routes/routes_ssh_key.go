@@ -70,6 +70,9 @@ func SSHKeyCreate(ctx *web.Context, db *models.DB, r APIRender, a Auth, f SSHKey
 		return
 	}
 
+	// audit
+	db.Audit(a.CurrentUser, "ssh_keys.create", sk)
+
 	r.Success("ssh_key", sk)
 }
 
@@ -101,6 +104,9 @@ func SSHKeyDestroy(ctx *web.Context, db *models.DB, r APIRender, a Auth) {
 		r.Fail(SSHKeyNotFound, "没有找到 SSH 公钥")
 		return
 	}
+
+	// audit
+	db.Audit(a.CurrentUser, "ssh_keys.destroy", sk)
 
 	db.Unscoped().Delete(sk)
 	r.Success()

@@ -2,8 +2,9 @@ package sandbox
 
 import (
 	"fmt"
-	"ireul.com/bastion/models"
 	"path"
+
+	"ireul.com/bastion/models"
 )
 
 func newSandbox(u models.User, dataDir string) Sandbox {
@@ -38,4 +39,14 @@ func (s Sandbox) ContainerName() string {
 // Hostname 返回沙箱的内部主机名
 func (s Sandbox) Hostname() string {
 	return fmt.Sprintf("%s.sandbox", s.UserLogin)
+}
+
+// AuditableName implements Auditable
+func (s Sandbox) AuditableName() string {
+	return fmt.Sprintf("Sandbox(%s)", s.ContainerName())
+}
+
+// AuditableUserID implements UserAuditable
+func (s Sandbox) AuditableUserID() uint {
+	return s.UserID
 }

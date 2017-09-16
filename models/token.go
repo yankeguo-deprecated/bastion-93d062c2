@@ -3,8 +3,10 @@ package models
 import (
 	"crypto/rand"
 	"encoding/hex"
-	"ireul.com/orm"
+	"fmt"
 	"time"
+
+	"ireul.com/orm"
 )
 
 // Token 代表一个用户的访问 Token
@@ -21,11 +23,21 @@ type Token struct {
 }
 
 // GenerateSecret 创建一个新的 Secret
-func (at *Token) GenerateSecret() (err error) {
+func (t *Token) GenerateSecret() (err error) {
 	buf := make([]byte, 32)
 	if _, err = rand.Read(buf); err != nil {
 		return
 	}
-	at.Secret = hex.EncodeToString(buf)
+	t.Secret = hex.EncodeToString(buf)
 	return
+}
+
+// AuditableName implements Auditable
+func (t Token) AuditableName() string {
+	return fmt.Sprintf("Token(%d)", t.ID)
+}
+
+// AuditableUserID implements UserAuditable
+func (t Token) AuditableUserID() uint {
+	return t.UserID
 }

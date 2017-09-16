@@ -1,11 +1,13 @@
 package models
 
 import (
+	"fmt"
+	"regexp"
+	"time"
+
 	"golang.org/x/crypto/bcrypt"
 	"ireul.com/bastion/utils"
 	"ireul.com/orm"
-	"regexp"
-	"time"
 )
 
 // UserLoginRegexp 用户登录名正则表达式
@@ -62,4 +64,14 @@ func (u *User) SetPassword(p string) (err error) {
 // CheckPassword 检查密码
 func (u *User) CheckPassword(p string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(u.PasswordDigest), []byte(p)) == nil
+}
+
+// AuditableName implements types.Auditable
+func (u User) AuditableName() string {
+	return fmt.Sprintf("User(%d:%s)", u.ID, u.Login)
+}
+
+// AuditableUserID implements types.UserAuditable
+func (u User) AuditableUserID() uint {
+	return u.ID
 }
