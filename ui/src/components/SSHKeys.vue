@@ -121,6 +121,7 @@ export default {
     },
     createSSHKey () {
       this.loading = true
+      this.form.error = null
       this.$api.createSSHKey({
         userId: 'current',
         name: this.form.name,

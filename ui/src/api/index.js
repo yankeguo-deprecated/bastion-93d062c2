@@ -3,6 +3,7 @@ import userApi from './user'
 import miscApi from './misc'
 import sshKeyApi from './sshKey'
 import auditLogApi from './auditLog'
+import serverApi from './server'
 import utils from './utils'
 
 function createApi (http) {
@@ -13,7 +14,8 @@ function createApi (http) {
     userApi,
     miscApi,
     sshKeyApi,
-    auditLogApi
+    auditLogApi,
+    serverApi
   )
 }
 

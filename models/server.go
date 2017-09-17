@@ -1,11 +1,24 @@
 package models
 
 import (
+	"regexp"
 	"strings"
 
 	"ireul.com/com"
 	"ireul.com/orm"
 )
+
+// ServerTagDefault is the default server tag applied to all server automatically
+const ServerTagDefault = "default"
+
+// ServerNameRegexp 用户登录名正则表达式
+var ServerNameRegexp = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9_-]{2,23}$`)
+
+// ServerTagRegexp regexp for a single tag
+var ServerTagRegexp = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9_-]{0,23}$`)
+
+// ServerAddressMaxLen max length of address
+const ServerAddressMaxLen = 36
 
 // Server 代表一个受管理的远端服务器
 type Server struct {
@@ -16,11 +29,15 @@ type Server struct {
 	Fingerprint string   `json:"fingerprint" orm:"index"`
 	Tag         string   `json:"-" orm:"index"`
 	Tags        []string `json:"tags" orm:"-"`
+	Desc        string   `json:"desc" orm:"type:text"`
 }
 
 // BeforeSave save Tag from Tags, and append port 22 if necessary
 func (s *Server) BeforeSave() error {
+	// create Tag from Tags
+	s.Tags = com.CompactSliceStr(append(s.Tags, ServerTagDefault))
 	s.Tag = strings.Join(s.Tags, ",") + ","
+	// assign port 22 by default
 	if s.Port == 0 {
 		s.Port = 22
 	}
@@ -29,6 +46,7 @@ func (s *Server) BeforeSave() error {
 
 // AfterFind set Tags from Tag
 func (s *Server) AfterFind() error {
+	// recover Tags from Tag
 	s.Tags = com.CompactSliceStr(strings.Split(s.Tag, ","))
 	return nil
 }
