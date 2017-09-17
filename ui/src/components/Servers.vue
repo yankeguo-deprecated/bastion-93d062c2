@@ -48,9 +48,9 @@
         <b-form-group label="端口号" label-for="port-input">
           <b-form-input id="port-input" type="text" disabled v-model="formEdit.data.port"></b-form-input>
         </b-form-group>
-        <b-form-group label="主机密钥" label-for="fingerprint-input">
-          <b-form-input id="fingerprint-input" type="text" disabled v-model="formEdit.data.fingerprint"></b-form-input>
-          <b-form-text text-variant="muted">主机密钥会在堡垒第一次连接受控服务器时记录</b-form-text>
+        <b-form-group label="访问密钥" label-for="token-input">
+          <b-form-input id="token-input" type="text" disabled v-model="formEdit.data.token"></b-form-input>
+          <b-form-text text-variant="muted">访问密钥用于从受控服务器访问堡垒API</b-form-text>
         </b-form-group>
         <b-form-group label="标签" label-for="tag-input">
           <b-form-input id="tag-input" type="text" v-model="formEdit.data.tag" required placeholder="输入标签"></b-form-input>
@@ -186,7 +186,13 @@ export default {
       this.$api.updateServer(this.formEdit.data).then(({body}) => {
         this.loading = false
         this.$refs.modalEdit.hide()
-        this.reloadServers()
+        const server = body.server
+        for (let s of this.servers) {
+          if (s.id === server.id) {
+            s.tags = server.tags
+            s.desc = server.desc
+          }
+        }
       }, ({body}) => {
         this.loading = false
         this.formEdit.error = body.message

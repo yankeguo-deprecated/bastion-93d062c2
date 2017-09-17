@@ -1,6 +1,8 @@
 package models
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"regexp"
 	"strings"
 
@@ -30,6 +32,7 @@ type Server struct {
 	Tag         string   `json:"-" orm:"index"`
 	Tags        []string `json:"tags" orm:"-"`
 	Desc        string   `json:"desc" orm:"type:text"`
+	Token       string   `json:"token" orm:"unique_index"`
 }
 
 // BeforeSave save Tag from Tags, and append port 22 if necessary
@@ -40,6 +43,12 @@ func (s *Server) BeforeSave() error {
 	// assign port 22 by default
 	if s.Port == 0 {
 		s.Port = 22
+	}
+	// assign random token
+	if len(s.Token) == 0 {
+		bytes := make([]byte, 16)
+		rand.Read(bytes)
+		s.Token = hex.EncodeToString(bytes)
 	}
 	return nil
 }
