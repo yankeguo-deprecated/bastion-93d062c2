@@ -7,5 +7,8 @@ export default {
   },
   createServer ({name, address, port, tag, desc}) {
     return this.http.post('servers/create', {name, address, port, tag, desc})
+  },
+  updateServer ({id, tag, desc}) {
+    return this.http.post(`servers/${id}/update`, {tag, desc})
   }
 }
