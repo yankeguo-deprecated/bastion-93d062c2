@@ -2,9 +2,10 @@ package routes
 
 import (
 	"fmt"
+	"strings"
+
 	"ireul.com/bastion/models"
 	"ireul.com/web"
-	"strings"
 )
 
 // Auth 认证结果
@@ -71,6 +72,19 @@ func RequireAuth() interface{} {
 	return func(ctx *web.Context, a Auth, r APIRender) {
 		if !a.SignedIn() {
 			r.Fail(a.Code, a.Message)
+		}
+	}
+}
+
+// RequireAdmin validates access user is admin
+func RequireAdmin() interface{} {
+	return func(ctx *web.Context, a Auth, r APIRender) {
+		if !a.SignedIn() {
+			r.Fail(a.Code, a.Message)
+			return
+		}
+		if !a.CurrentUser.IsAdmin {
+			r.Fail(PermissionDeny, "权限不足")
 		}
 	}
 }

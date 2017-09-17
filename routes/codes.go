@@ -9,6 +9,9 @@ const (
 	// CredentialsInvalid 无效的凭证
 	CredentialsInvalid = "credentials.invalid"
 
+	// PermissionDeny permission deny
+	PermissionDeny = "permission.deny"
+
 	// TokenNotFound 没有找到 Token
 	TokenNotFound = "token.not_found"
 
