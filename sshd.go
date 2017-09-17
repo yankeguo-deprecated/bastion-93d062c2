@@ -30,6 +30,10 @@ func execSSHDCommand(c *cli.Context) (err error) {
 		log.Fatalln(err)
 		return
 	}
+	if err = cfg.Validate(); err != nil {
+		log.Fatalln(err)
+		return
+	}
 
 	// create models.DB
 	var db *models.DB

@@ -39,6 +39,10 @@ func execWebCommand(c *cli.Context) (err error) {
 		log.Fatalln(err)
 		return
 	}
+	if err = cfg.Validate(); err != nil {
+		log.Fatalln(err)
+		return
+	}
 
 	// map config
 	m.SetEnv(cfg.Bastion.Env)

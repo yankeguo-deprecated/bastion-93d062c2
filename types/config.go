@@ -2,6 +2,7 @@ package types
 
 import (
 	"io/ioutil"
+	"os"
 
 	"ireul.com/toml"
 )
@@ -62,4 +63,15 @@ func ParseConfig(s string) (*Config, error) {
 		return nil, err
 	}
 	return &config, nil
+}
+
+// Validate validate the Config file
+func (c Config) Validate() (err error) {
+	if _, err = os.Stat(c.SSHD.HostKeyFile); err != nil {
+		return
+	}
+	if _, err = os.Stat(c.Bastion.MasterKeyFile); err != nil {
+		return
+	}
+	return nil
 }
