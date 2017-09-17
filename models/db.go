@@ -4,9 +4,7 @@ import (
 	"time"
 
 	"ireul.com/bastion/types"
-	"ireul.com/bastion/utils"
 	"ireul.com/orm"
-	"ireul.com/web"
 )
 
 // DB 封装 orm.DB
@@ -15,15 +13,15 @@ type DB struct {
 }
 
 // NewDB 创建一个新的 DB 实例
-func NewDB(cfg *utils.Config) (db *DB, err error) {
-	var db0 *orm.DB
-	if db0, err = orm.Open("mysql", cfg.Database.URL); err != nil {
+func NewDB(env, url string) (db *DB, err error) {
+	var d *orm.DB
+	if d, err = orm.Open("mysql", url); err != nil {
 		return nil, err
 	}
 	// create
-	db = &DB{db0}
+	db = &DB{d}
 	// enable log if dev
-	if cfg.Bastion.Env == web.DEV {
+	if env == types.DEV {
 		db.LogMode(true)
 	}
 	return

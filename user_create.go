@@ -1,11 +1,12 @@
 package main
 
 import (
+	"log"
+
 	"ireul.com/bastion/models"
 	"ireul.com/bastion/sandbox"
-	"ireul.com/bastion/utils"
+	"ireul.com/bastion/types"
 	"ireul.com/cli"
-	"log"
 )
 
 // userCreateCommand 用来启动 Web 服务
@@ -48,15 +49,15 @@ func execNewUserCommand(c *cli.Context) (err error) {
 	}
 
 	// decode config
-	var cfg *utils.Config
-	if cfg, err = utils.ParseConfigFile(c.GlobalString("config")); err != nil {
+	var cfg *types.Config
+	if cfg, err = types.ParseConfigFile(c.GlobalString("config")); err != nil {
 		log.Fatalln(err)
 		return
 	}
 
 	// db
 	var db *models.DB
-	if db, err = models.NewDB(cfg); err != nil {
+	if db, err = models.NewDB(cfg.Bastion.Env, cfg.Database.URL); err != nil {
 		log.Fatalln(err)
 		return
 	}

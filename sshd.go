@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/ssh"
 	"ireul.com/bastion/models"
 	"ireul.com/bastion/sandbox"
-	"ireul.com/bastion/utils"
+	"ireul.com/bastion/types"
 	"ireul.com/cli"
 	"ireul.com/sshd"
 )
@@ -25,15 +25,15 @@ func execSSHDCommand(c *cli.Context) (err error) {
 	log.SetPrefix("[bastion-sshd] ")
 
 	// decode config
-	var cfg *utils.Config
-	if cfg, err = utils.ParseConfigFile(c.GlobalString("config")); err != nil {
+	var cfg *types.Config
+	if cfg, err = types.ParseConfigFile(c.GlobalString("config")); err != nil {
 		log.Fatalln(err)
 		return
 	}
 
 	// create models.DB
 	var db *models.DB
-	if db, err = models.NewDB(cfg); err != nil {
+	if db, err = models.NewDB(cfg.Bastion.Env, cfg.Database.URL); err != nil {
 		log.Fatalln(err)
 		return
 	}
