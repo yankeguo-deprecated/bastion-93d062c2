@@ -1,12 +1,5 @@
 package types
 
-import (
-	"io/ioutil"
-	"os"
-
-	"ireul.com/toml"
-)
-
 // Config 配置
 type Config struct {
 	Web struct {
@@ -30,6 +23,8 @@ type Config struct {
 		Env string `toml:"env"`
 		// MasterKeyFile Bastion 主密钥的地址
 		MasterKeyFile string `toml:"master_key_file"`
+		// MasterPublicKey master private key in SSH wired format
+		MasterPublicKey string `toml:"-"`
 	} `toml:"bastion"`
 	Sandbox struct {
 		// 沙箱的镜像名称
@@ -45,33 +40,4 @@ type Config struct {
 		// SSHD 的主机密钥地址，RSA
 		HostKeyFile string `toml:"host_key_file"`
 	}
-}
-
-// ParseConfigFile 加载一个 TOML 配置文件
-func ParseConfigFile(file string) (*Config, error) {
-	bs, err := ioutil.ReadFile(file)
-	if err != nil {
-		return nil, err
-	}
-	return ParseConfig(string(bs))
-}
-
-// ParseConfig 解析 TOML
-func ParseConfig(s string) (*Config, error) {
-	config := Config{}
-	if _, err := toml.Decode(s, &config); err != nil {
-		return nil, err
-	}
-	return &config, nil
-}
-
-// Validate validate the Config file
-func (c Config) Validate() (err error) {
-	if _, err = os.Stat(c.SSHD.HostKeyFile); err != nil {
-		return
-	}
-	if _, err = os.Stat(c.Bastion.MasterKeyFile); err != nil {
-		return
-	}
-	return nil
 }

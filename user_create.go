@@ -6,6 +6,7 @@ import (
 	"ireul.com/bastion/models"
 	"ireul.com/bastion/sandbox"
 	"ireul.com/bastion/types"
+	"ireul.com/bastion/utils"
 	"ireul.com/cli"
 )
 
@@ -50,11 +51,11 @@ func execNewUserCommand(c *cli.Context) (err error) {
 
 	// decode config
 	var cfg *types.Config
-	if cfg, err = types.ParseConfigFile(c.GlobalString("config")); err != nil {
+	if cfg, err = utils.ParseConfigFile(c.GlobalString("config")); err != nil {
 		log.Fatalln(err)
 		return
 	}
-	if err = cfg.Validate(); err != nil {
+	if err = utils.ValidateConfig(cfg); err != nil {
 		log.Fatalln(err)
 		return
 	}
