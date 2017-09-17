@@ -4,7 +4,7 @@
       <b-row>
         <b-col :md="4">
           <h5 class="text-info">添加服务器</h5>
-          <p>添加服务器前，请确认<b>堡垒主密钥</b>已经添加到目标服务器 root 用户的<code>authorized_keys</code>中</p>
+          <p>添加服务器前，请确认<b>堡垒主密钥</b>已经添加到目标服务器<code>root</code>用户的<code>authorized_keys</code>中</p>
         </b-col>
         <b-col>
           <h5 class="text-info">堡垒主密钥</h5>
