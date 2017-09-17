@@ -8,6 +8,8 @@ import Settings from '@/components/Settings'
 import Security from '@/components/Security'
 import SSHKeys from '@/components/SSHKeys'
 import Tokens from '@/components/Tokens'
+import Admin from '@/components/Admin'
+import Servers from '@/components/Servers'
 import store from '../store'
 
 Vue.use(Router)
@@ -28,10 +30,32 @@ const router = new Router({
       }
     },
     {
+      path: '/admin',
+      name: 'admin',
+      components: {
+        default: Admin,
+        navbar: Navbar
+      },
+      redirect: {
+        name: 'servers'
+      },
+      children: [
+        {
+          path: 'servers',
+          name: 'servers',
+          component: Servers
+        }
+      ]
+    },
+    {
       path: '/settings',
+      name: 'settings',
       components: {
         default: Settings,
         navbar: Navbar
+      },
+      redirect: {
+        name: 'profile'
       },
       children: [
         {

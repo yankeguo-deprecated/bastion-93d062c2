@@ -8,11 +8,12 @@
       </b-nav>
 
       <b-nav is-nav-bar class="ml-auto">
+        <b-nav-item right v-if="currentUser.isAdmin" :to="{name:'admin'}">系统管理</b-nav-item>
         <b-nav-item-dropdown right>
           <template slot="button-content">
             <em>{{ currentUser.nickname }}</em>
           </template>
-          <b-dropdown-item :to="{name:'profile'}">设置</b-dropdown-item>
+          <b-dropdown-item :to="{name:'settings'}">设置</b-dropdown-item>
           <b-dropdown-divider></b-dropdown-divider>
           <b-dropdown-item @click="signout">退出登录</b-dropdown-item>
         </b-nav-item-dropdown>
