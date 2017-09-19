@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -12,6 +13,7 @@ import (
 	"ireul.com/passwd"
 )
 
+// Account is something hold a account information
 type Account struct {
 	Login string
 	Sudo  bool
@@ -54,6 +56,7 @@ func main() {
 func syncAccounts() {
 	// request API
 	res, err := makeRequest()
+	fmt.Println(res)
 	if err != nil {
 		log.Println("failed to request bastion host: ", err.Error())
 		return
@@ -69,7 +72,8 @@ func syncAccounts() {
 
 	// ban not existed users
 	for name, e := range entries {
-		if strings.HasPrefix(name, AccountPrefix) {
+		if strings.HasPrefix(name, types.AccountPrefix) {
+			fmt.Println(script, e)
 		}
 	}
 }

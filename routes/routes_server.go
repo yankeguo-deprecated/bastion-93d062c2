@@ -145,7 +145,7 @@ func ServerSync(ctx *web.Context, r APIRender, s *models.Server, db *models.DB) 
 		})
 	}
 	// render
-	ctx.JSON(200, types.ServerSyncResponse{
+	r.JSON(200, types.ServerSyncResponse{
 		Accounts: as,
 	})
 }
