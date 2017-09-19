@@ -2,7 +2,7 @@ package routes
 
 import (
 	"ireul.com/bastion/models"
-	"ireul.com/bastion/utils"
+	"ireul.com/com"
 	"ireul.com/web"
 )
 
@@ -37,8 +37,8 @@ func TokenCreate(ctx *web.Context, db *models.DB, f TokenCreateForm, r APIRender
 	// audit
 	db.Audit(u, "tokens.create", t)
 	// return data
-	r.Success(func(m utils.Map) {
-		m.Set("token", utils.NewMap(
+	r.Success(func(m com.Map) {
+		m.Set("token", com.NewMap(
 			"id",
 			t.ID,
 			"secret",

@@ -5,7 +5,7 @@ import (
 	"log"
 	"text/template"
 
-	"ireul.com/bastion/utils"
+	"ireul.com/com"
 )
 
 const tplSeedSSH = `#!/bin/bash
@@ -24,7 +24,7 @@ chmod 600 id_rsa
 echo "id_rsa 和 id_rsa.pub 受 Bunker 管理，请勿修改" > README
 `
 
-func createScript(name string, tmpl string, data utils.Map) string {
+func createScript(name string, tmpl string, data com.Map) string {
 	t, err := template.New(name).Parse(tmpl)
 	if err != nil {
 		log.Fatal(err)
@@ -38,6 +38,6 @@ func scriptSeedSSH(publicKey string, privateKey string) string {
 	return createScript(
 		"seed-ssh",
 		tplSeedSSH,
-		utils.NewMap("PublicKey", publicKey, "PrivateKey", privateKey),
+		com.NewMap("PublicKey", publicKey, "PrivateKey", privateKey),
 	)
 }

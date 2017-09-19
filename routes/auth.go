@@ -76,6 +76,28 @@ func RequireAuth() interface{} {
 	}
 }
 
+// RequireServerToken require the server token should be set with Bearer Authorization
+func RequireServerToken() interface{} {
+	return func(ctx *web.Context, r APIRender, db *models.DB) {
+		token := extractBearer(ctx.Req)
+
+		if len(token) == 0 {
+			r.Fail(CredentialsMissing, "credentials is missing")
+			return
+		}
+
+		s := &models.Server{}
+		db.Where("token = ?", token).First(s)
+
+		if db.NewRecord(s) {
+			r.Fail(CredentialsInvalid, "credentials is missing")
+			return
+		}
+
+		ctx.Map(s)
+	}
+}
+
 // RequireAdmin validates access user is admin
 func RequireAdmin() interface{} {
 	return func(ctx *web.Context, a Auth, r APIRender) {

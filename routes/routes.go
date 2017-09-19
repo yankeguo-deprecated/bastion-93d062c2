@@ -2,7 +2,7 @@ package routes
 
 import (
 	"ireul.com/bastion/types"
-	"ireul.com/bastion/utils"
+	"ireul.com/com"
 	"ireul.com/web"
 	"ireul.com/web/binding"
 )
@@ -29,7 +29,7 @@ func Mount(m *web.Web) {
 }
 
 func apiAction(ctx *web.Context, r APIRender) {
-	r.Success(utils.NewMap(
+	r.Success(com.NewMap(
 		"name",
 		"bastion",
 		"version",
@@ -38,7 +38,7 @@ func apiAction(ctx *web.Context, r APIRender) {
 }
 
 func apiAdminAction(ctx *web.Context, r APIRender, cfg *types.Config) {
-	r.Success(utils.NewMap(
+	r.Success(com.NewMap(
 		"name",
 		"bastion",
 		"version",

@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"ireul.com/bastion/utils"
+	"ireul.com/com"
 	"ireul.com/web"
 )
 
@@ -19,23 +19,23 @@ type apiRenderImpl struct {
 
 // Success 返回 code = 200，并构建 Map
 func (r *apiRenderImpl) Success(args ...interface{}) {
-	var m utils.Map
+	var m com.Map
 	if len(args) == 1 {
 		a := args[0]
-		if v, ok := a.(utils.Map); ok {
+		if v, ok := a.(com.Map); ok {
 			m = v
 		} else if v, ok := a.(map[string]interface{}); ok {
-			m = utils.Map(v)
-		} else if v, ok := a.(func(utils.Map)); ok {
-			m = utils.Map{}
+			m = com.Map(v)
+		} else if v, ok := a.(func(com.Map)); ok {
+			m = com.Map{}
 			v(m)
 		} else {
-			m = utils.Map{}
+			m = com.Map{}
 		}
 	} else if len(args) > 0 && len(args)%2 == 0 {
-		m = utils.NewMap(args...)
+		m = com.NewMap(args...)
 	} else {
-		m = utils.Map{}
+		m = com.Map{}
 	}
 	m.Set("code", "ok")
 	r.JSON(200, m)
@@ -43,10 +43,10 @@ func (r *apiRenderImpl) Success(args ...interface{}) {
 
 // Fail 返回 code = 400，并构建 Map
 func (r *apiRenderImpl) Fail(code string, msg string) {
-	r.JSON(400, utils.NewMap("code", code, "message", msg))
+	r.JSON(400, com.NewMap("code", code, "message", msg))
 }
 
-// APIRenderer 为 web.Context 注入 utils.Render
+// APIRenderer 为 web.Context 注入 com.Render
 func APIRenderer() interface{} {
 	return func(r web.Render, ctx *web.Context) {
 		render := &apiRenderImpl{r}
