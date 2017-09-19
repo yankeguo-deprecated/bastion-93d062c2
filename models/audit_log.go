@@ -1,6 +1,7 @@
 package models
 
 import (
+	"ireul.com/bastion/types"
 	"ireul.com/orm"
 )
 
@@ -14,4 +15,17 @@ type AuditLog struct {
 	Action       string `json:"action"`
 	Target       string `json:"target"`
 	TargetDetail string `json:"targetDetail"`
+}
+
+// Audit create a new AuditLog
+func (db *DB) Audit(source types.UserAuditable, action string, target types.Auditable) (AuditLog, error) {
+	al := AuditLog{
+		UserID:       source.AuditableUserID(),
+		Source:       source.AuditableName(),
+		SourceDetail: source.AuditableDetail(),
+		Action:       action,
+		Target:       target.AuditableName(),
+		TargetDetail: target.AuditableDetail(),
+	}
+	return al, db.Create(&al).Error
 }

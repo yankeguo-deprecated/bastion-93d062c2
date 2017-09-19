@@ -12,7 +12,7 @@ import (
 )
 
 // UserLoginRegexp 用户登录名正则表达式
-var UserLoginRegexp = regexp.MustCompile(`^[a-zA-Z]\w{3,15}$`)
+var UserLoginRegexp = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9_-]{3,15}$`)
 
 // UserPasswordMinLen 用户密码最短长度
 const UserPasswordMinLen = 6
@@ -40,6 +40,17 @@ type User struct {
 	PrivateKey string `orm:"type:text" json:"-"`
 	// UsedAt 最后一次使用时间
 	UsedAt *time.Time `json:"usedAt"`
+}
+
+// BeforeSave automatically set Nickname, PublicKey, PrivateKey and Fingerprint
+func (u *User) BeforeSave() error {
+	if len(u.Nickname) == 0 {
+		u.Nickname = u.Login
+	}
+	if len(u.Fingerprint) == 0 || len(u.PublicKey) == 0 || len(u.PrivateKey) == 0 {
+		return u.GenerateSSHKey()
+	}
+	return nil
 }
 
 // GenerateSSHKey 为该用户填充一个新的 SSH 密钥对

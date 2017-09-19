@@ -21,31 +21,25 @@ func NewDB(env, url string) (db *DB, err error) {
 	// create
 	db = &DB{d}
 	// enable log if dev
-	if env == types.DEV {
+	if env == types.DEV || env == types.TEST {
 		db.LogMode(true)
 	}
 	return
 }
 
 // AutoMigrate 自动执行数据库更新
-func (db *DB) AutoMigrate() {
-	db.DB.AutoMigrate(AuditLog{}, Token{}, Server{}, SSHKey{}, User{})
+func (db *DB) AutoMigrate() error {
+	return db.DB.AutoMigrate(
+		AuditLog{},
+		Grant{},
+		Token{},
+		Server{},
+		SSHKey{},
+		User{},
+	).Error
 }
 
 // Touch 更新一个模型的 UsedAt 字段
 func (db *DB) Touch(m interface{}) {
 	db.DB.Model(m).UpdateColumn("UsedAt", time.Now())
-}
-
-// Audit create a new AuditLog
-func (db *DB) Audit(source types.UserAuditable, action string, target types.Auditable) error {
-	al := AuditLog{
-		UserID:       source.AuditableUserID(),
-		Source:       source.AuditableName(),
-		SourceDetail: source.AuditableDetail(),
-		Action:       action,
-		Target:       target.AuditableName(),
-		TargetDetail: target.AuditableDetail(),
-	}
-	return db.Create(&al).Error
 }

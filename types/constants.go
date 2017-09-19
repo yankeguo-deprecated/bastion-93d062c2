@@ -7,3 +7,5 @@ const (
 	PROD = web.PROD
 	TEST = web.TEST
 )
+
+const AccountPrefix = "bastion-"

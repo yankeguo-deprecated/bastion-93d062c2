@@ -2,8 +2,10 @@ package routes
 
 import (
 	"strings"
+	"time"
 
 	"ireul.com/bastion/models"
+	"ireul.com/bastion/types"
 	"ireul.com/web"
 )
 
@@ -118,4 +120,32 @@ func ServerList(ctx *web.Context, db *models.DB, r APIRender, a Auth) {
 	list := []models.Server{}
 	db.Find(&list)
 	r.Success("servers", list)
+}
+
+// ServerSync sync a server's account information
+func ServerSync(ctx *web.Context, r APIRender, s *models.Server, db *models.DB) {
+	// find grants
+	all := []models.Grant{}
+	db.Where("( expires_at > ? OR expires_at IS NULL ) AND tag IN (?)", time.Now(), s.Tags).Find(&all)
+	gs := models.CompactSliceGrant(all)
+	// collect ids
+	ids := make([]uint, len(gs), len(gs))
+	for id := range gs {
+		ids = append(ids, id)
+	}
+	// users
+	us := []models.User{}
+	db.Where("id IN (?)", ids).Find(&us)
+	// build result
+	as := make([]types.ServerAccount, 0, len(us))
+	for _, u := range us {
+		as = append(as, types.ServerAccount{
+			Account: types.AccountPrefix + u.Login,
+			CanSudo: gs[u.ID].CanSudo,
+		})
+	}
+	// render
+	ctx.JSON(200, types.ServerSyncResponse{
+		Accounts: as,
+	})
 }

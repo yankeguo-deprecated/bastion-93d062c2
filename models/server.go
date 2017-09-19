@@ -39,7 +39,7 @@ type Server struct {
 func (s *Server) BeforeSave() error {
 	// create Tag from Tags
 	s.Tags = com.CompactSliceStr(append(s.Tags, ServerTagDefault))
-	s.Tag = strings.Join(s.Tags, ",") + ","
+	s.Tag = "," + strings.Join(s.Tags, ",") + ","
 	// assign port 22 by default
 	if s.Port == 0 {
 		s.Port = 22

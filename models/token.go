@@ -22,6 +22,14 @@ type Token struct {
 	UsedAt *time.Time `json:"usedAt"`
 }
 
+// BeforeSave automatically generate secret if not set
+func (t *Token) BeforeSave() error {
+	if len(t.Secret) == 0 {
+		return t.GenerateSecret()
+	}
+	return nil
+}
+
 // GenerateSecret 创建一个新的 Secret
 func (t *Token) GenerateSecret() (err error) {
 	buf := make([]byte, 32)

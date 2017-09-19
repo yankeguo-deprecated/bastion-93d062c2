@@ -23,6 +23,7 @@ func Mount(m *web.Web) {
 	m.Post("/api/users/:id/update_password", RequireAuth(), ResolveCurrentUser(":id"), binding.Bind(UserUpdatePasswordForm{}), UserUpdatePassword)
 	m.Get("/api/users/:id/audit_logs", RequireAuth(), ResolveCurrentUser(":id"), AuditLogsListByUser)
 	m.Get("/api/servers", RequireAdmin(), ServerList)
+	m.Post("/api/servers/sync", RequireServerToken(), ServerSync)
 	m.Post("/api/servers/create", RequireAdmin(), binding.Bind(ServerCreateForm{}), ServerCreate)
 	m.Post("/api/servers/:id/update", RequireAdmin(), binding.Bind(ServerUpdateForm{}), ServerUpdate)
 	m.Post("/api/ssh_keys/:id/destroy", RequireAuth(), SSHKeyDestroy)
