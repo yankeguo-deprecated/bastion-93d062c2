@@ -6,18 +6,13 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 
 	"ireul.com/bastion/types"
-	"ireul.com/passwd"
+	"ireul.com/etc/passwd"
 )
-
-// Account is something hold a account information
-type Account struct {
-	Login string
-	Sudo  bool
-}
 
 var host = os.Getenv("BASTION_HOST")
 var token = os.Getenv("BASTION_TOKEN")
@@ -58,23 +53,58 @@ func syncAccounts() {
 	res, err := makeRequest()
 	fmt.Println(res)
 	if err != nil {
-		log.Println("failed to request bastion host: ", err.Error())
+		log.Println("failed to request bastion host:", err.Error())
 		return
 	}
-	// read /etc/passwd
-	entries, err := passwd.ParseFile("passwd")
-	if err != nil {
-		log.Println("failed to parse /etc/passwd, ", err.Error())
-		return
-	}
-	// prepare script
-	script := ""
 
-	// ban not existed users
-	for name, e := range entries {
-		if strings.HasPrefix(name, types.AccountPrefix) {
-			fmt.Println(script, e)
+	// read data
+	as, err := readAccounts()
+	if err != nil {
+		log.Println("failed to read accounts from /etc/passwd:", err.Error())
+	}
+
+	// compute
+	data := SyncData{
+		BaseDir:  home,
+		Accounts: res.Accounts,
+	}
+
+	adds := []string{}
+	dels := []string{}
+
+	// missing accounts
+	for _, a := range res.Accounts {
+		if as[a.Account].UID == "" {
+			adds = append(adds, a.Account)
 		}
+	}
+
+	// disabled accounts
+OUTER:
+	for k := range as {
+		for _, a := range res.Accounts {
+			if a.Account == k {
+				continue OUTER
+			}
+		}
+		dels = append(dels, k)
+	}
+
+	data.AccountsAdd = adds
+	data.AccountsRemove = dels
+
+	// execute script
+	script := GenerateSyncScript(data)
+	cmd := exec.Command("/bin/bash")
+	cmd.Stdin = strings.NewReader(script)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Println("failed to execute sync shell:", err.Error())
+	}
+	if debug {
+		log.Println("--- DEBUG sync script output")
+		log.Println([]byte(out))
+		log.Println("--- DEBUG sync script output")
 	}
 }
 
@@ -93,4 +123,22 @@ func makeRequest() (res types.ServerSyncResponse, err error) {
 	defer r.Body.Close()
 	err = json.NewDecoder(r.Body).Decode(&res)
 	return
+}
+
+func readAccounts() (map[string]passwd.Entry, error) {
+	var file = "/etc/passwd"
+	if debug {
+		file = "passwd"
+	}
+	all, err := passwd.ParseFile(file)
+	if err != nil {
+		return nil, err
+	}
+	ret := make(map[string]passwd.Entry)
+	for k, v := range all {
+		if strings.HasPrefix(k, types.AccountPrefix) {
+			ret[k] = v
+		}
+	}
+	return ret, nil
 }

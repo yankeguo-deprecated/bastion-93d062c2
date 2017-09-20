@@ -137,11 +137,12 @@ func ServerSync(ctx *web.Context, r APIRender, s *models.Server, db *models.DB) 
 	us := []models.User{}
 	db.Where("id IN (?)", ids).Find(&us)
 	// build result
-	as := make([]types.ServerAccount, 0, len(us))
+	as := make([]types.Account, 0, len(us))
 	for _, u := range us {
-		as = append(as, types.ServerAccount{
-			Account: types.AccountPrefix + u.Login,
-			CanSudo: gs[u.ID].CanSudo,
+		as = append(as, types.Account{
+			Account:   types.AccountPrefix + u.Login,
+			CanSudo:   gs[u.ID].CanSudo,
+			PublicKey: u.PublicKey,
 		})
 	}
 	// render

@@ -1,7 +1,7 @@
 package types
 
-// ServerAccount represents a linux local account on remote server, the name is not actual account name
-type ServerAccount struct {
+// Account represents a linux local account on remote server, the name is not actual account name
+type Account struct {
 	Account   string
 	CanSudo   bool
 	PublicKey string
@@ -9,5 +9,5 @@ type ServerAccount struct {
 
 // ServerSyncResponse is response for servers/sync
 type ServerSyncResponse struct {
-	Accounts []ServerAccount
+	Accounts []Account
 }
