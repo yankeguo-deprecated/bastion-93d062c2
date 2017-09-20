@@ -79,7 +79,7 @@
           <p>标签默认包含<code>default</code></p>
           <b-table striped hover :items="servers" :fields="fields">
             <template slot="tags" scope="data">
-              <b-badge pill v-for="t in data.item.tags" variant="info">{{t}}</b-badge>
+              <b-badge pill v-for="t in data.item.tags" :key="t" variant="info">{{t}}</b-badge>
             </template>
             <template slot="operation" scope="data">
               <b-button :disabled="loading" size="sm" variant="info" @click="showModalEdit(data.index)">详情</b-button>
@@ -137,22 +137,9 @@ export default {
     }
   },
   created () {
-    this.reloadAdminInfo()
     this.reloadServers()
   },
   methods: {
-    formatTags (value) {
-      return value.filter((k) => k !== 'default').join(',')
-    },
-    reloadAdminInfo () {
-      this.loading = true
-      this.$api.adminCheck().then(({body}) => {
-        this.loading = false
-        this.masterPublicKey = body.masterPublicKey
-      }, ({body}) => {
-        this.loading = false
-      })
-    },
     createServer () {
       this.formAdd.data.port = parseInt(this.formAdd.data.port) || 22
       this.loading = true
