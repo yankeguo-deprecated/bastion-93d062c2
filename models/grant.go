@@ -15,6 +15,25 @@ type Grant struct {
 	CanSudo   bool       `json:"canSudo"`
 }
 
+// GrantResolved is a Grant with IsExpired determined
+type GrantResolved struct {
+	Grant
+	IsExpired bool `json:"isExpired"`
+}
+
+// ConvertGrantResolved convert []Grant to []GrantResolved
+func ConvertGrantResolved(gs []Grant) []GrantResolved {
+	ret := make([]GrantResolved, len(gs))
+	now := time.Now()
+	for i, g := range gs {
+		ret[i] = GrantResolved{
+			Grant:     g,
+			IsExpired: g.IsExpired(now),
+		}
+	}
+	return ret
+}
+
 // IsExpiredNow check if Grant is expired now
 func (n Grant) IsExpiredNow() bool {
 	return n.ExpiresAt != nil && n.IsExpired(time.Now())
