@@ -2,9 +2,9 @@
   <b-row>
     <b-modal ref="modalAdd" :hide-footer="true">
       <template slot="modal-title">
-        <span class="text-info">添加受控服务器</span>
+        <span class="text-info">添加受管服务器</span>
       </template>
-      <p>添加服务器前，请确认<b>堡垒主密钥</b>已经添加到受控服务器<code>root</code>用户的<code>authorized_keys</code>中</p>
+      <p>添加服务器前，请确认<b>堡垒主密钥</b>已经添加到受管服务器<code>root</code>用户的<code>authorized_keys</code>中</p>
       <b-form @submit="createServer">
         <b-form-group label="名称" label-for="name-input">
           <b-form-input id="name-input" type="text" v-model="formAdd.data.name" placeholder="输入名称"></b-form-input>
@@ -36,7 +36,7 @@
     </b-modal>
     <b-modal ref="modalEdit" :hide-footer="true">
       <template slot="modal-title">
-        <span class="text-info">编辑受控服务器</span>
+        <span class="text-info">编辑受管服务器</span>
       </template>
       <b-form @submit="updateServer">
         <b-form-group label="名称" label-for="name-input">
@@ -50,7 +50,7 @@
         </b-form-group>
         <b-form-group label="访问密钥" label-for="token-input">
           <b-form-input id="token-input" type="text" disabled v-model="formEdit.data.token"></b-form-input>
-          <b-form-text text-variant="muted">访问密钥用于从受控服务器访问堡垒API</b-form-text>
+          <b-form-text text-variant="muted">访问密钥用于从受管服务器访问堡垒API</b-form-text>
         </b-form-group>
         <b-form-group label="标签" label-for="tag-input">
           <b-form-input id="tag-input" type="text" v-model="formEdit.data.tag" required placeholder="输入标签"></b-form-input>
@@ -71,19 +71,19 @@
     <b-col>
       <b-row>
         <b-col :md="4">
-          <h5 class="text-info">添加受控服务器</h5>
-          <p>添加服务器前，请确认<b>堡垒主密钥</b>已经添加到受控服务器<code>root</code>用户的<code>authorized_keys</code>中</p>
+          <h5 class="text-info">添加受管服务器</h5>
+          <p>添加服务器前，请确认<b>堡垒主密钥</b>已经添加到受管服务器<code>root</code>用户的<code>authorized_keys</code>中</p>
           <b-button :block="true" :disabled="loading" variant="info" @click="showModalAdd">添加</b-button>
         </b-col>
         <b-col>
           <h5 class="text-info">堡垒主密钥</h5>
-          <p>堡垒使用以下密钥以<code>root</code>身份登录受控服务器，执行管理操作。</p>
+          <p>堡垒使用以下密钥以<code>root</code>身份登录受管服务器，执行管理操作。</p>
           <p><b-form-textarea :rows="8" v-model="masterPublicKey" disabled></b-form-textarea></p>
         </b-col>
       </b-row>
       <b-row>
         <b-col>
-          <h5 class="text-info">受控服务器</h5>
+          <h5 class="text-info">受管服务器</h5>
           <p>标签默认包含<code>default</code></p>
           <b-table striped hover :items="servers" :fields="fields">
             <template slot="tags" scope="data">
