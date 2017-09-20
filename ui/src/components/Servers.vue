@@ -86,6 +86,9 @@
           <h5 class="text-info">受控服务器</h5>
           <p>标签默认包含<code>default</code></p>
           <b-table striped hover :items="servers" :fields="fields">
+            <template slot="tags" scope="data">
+              <b-badge pill v-for="t in data.item.tags" variant="info">{{t}}</b-badge>
+            </template>
             <template slot="operation" scope="data">
               <b-button :disabled="loading" size="sm" variant="info" @click="showModalEdit(data.index)">详情</b-button>
             </template>
@@ -133,8 +136,7 @@ export default {
           label: '地址'
         },
         tags: {
-          label: '标签',
-          formatter: 'formatTags'
+          label: '标签'
         },
         operation: {
           label: '操作'
@@ -176,6 +178,9 @@ export default {
     reloadServers () {
       this.loading = true
       this.$api.listServers().then(({body}) => {
+        body.servers.forEach(function (s) {
+          s.tags = s.tags.filter((t) => t !== 'default')
+        })
         this.servers = body.servers
         this.loading = false
       })
@@ -211,3 +216,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+span.badge {
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+}
+</style>
