@@ -19,15 +19,15 @@ type GrantCreateForm struct {
 	UserID    uint   `json:"userId"`
 	Tag       string `json:"tag"`
 	CanSudo   bool   `json:"canSudo"`
-	ExpiresAt int64  `json:"expiresAt"`
+	ExpiresIn int64  `json:"expiresIn"`
 }
 
-// ExpiresAtTime convert ExpiresAt to *time.Time
-func (f GrantCreateForm) ExpiresAtTime() *time.Time {
+// ExpiresAt convert ExpiresAt to *time.Time
+func (f GrantCreateForm) ExpiresAt() *time.Time {
 	// convert to time.Time
 	var t *time.Time
-	if f.ExpiresAt != 0 {
-		*t = time.Unix(f.ExpiresAt, 0)
+	if f.ExpiresIn != 0 {
+		*t = time.Now().Add(time.Second * time.Duration(f.ExpiresIn))
 	}
 	return t
 }
@@ -41,11 +41,11 @@ func GrantCreate(ctx *web.Context, r APIRender, db *models.DB, f GrantCreateForm
 			UserID:    f.UserID,
 			Tag:       f.Tag,
 			CanSudo:   f.CanSudo,
-			ExpiresAt: f.ExpiresAtTime(),
+			ExpiresAt: f.ExpiresAt(),
 		}
 		db.Create(g)
 	} else {
-		db.Model(g).Update(map[string]interface{}{"CanSudo": f.CanSudo, "ExpiresAt": f.ExpiresAtTime()})
+		db.Model(g).Update(map[string]interface{}{"CanSudo": f.CanSudo, "ExpiresAt": f.ExpiresAt()})
 	}
 	r.Success("grant", g)
 }
