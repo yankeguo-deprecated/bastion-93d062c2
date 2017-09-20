@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"ireul.com/bastion/types"
 	"ireul.com/com"
 	"ireul.com/web"
 	"ireul.com/web/binding"
@@ -12,7 +11,6 @@ func Mount(m *web.Web) {
 	m.Use(APIRenderer())
 	m.Use(Authenticator())
 	m.Get("/api", apiAction)
-	m.Get("/api/admin", RequireAdmin(), apiAdminAction)
 	m.Post("/api/tokens/create", binding.Bind(TokenCreateForm{}), TokenCreate)
 	m.Post("/api/tokens/:id/destroy", RequireAuth(), ResolveCurrentToken(":id"), TokenDestroy)
 	m.Get("/api/users/:userid/tokens", RequireAuth(), ResolveCurrentUser(":userid"), TokenList)
@@ -38,16 +36,5 @@ func apiAction(ctx *web.Context, r APIRender) {
 		"bastion",
 		"version",
 		ctx.Data["Version"],
-	))
-}
-
-func apiAdminAction(ctx *web.Context, r APIRender, cfg *types.Config) {
-	r.Success(com.NewMap(
-		"name",
-		"bastion",
-		"version",
-		ctx.Data["Version"],
-		"masterPublicKey",
-		cfg.Bastion.MasterPublicKey,
 	))
 }

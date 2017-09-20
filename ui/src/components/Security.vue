@@ -1,6 +1,6 @@
 <template>
   <b-row>
-    <b-col md="4">
+    <b-col md="3">
       <h5 class="text-info">修改密码</h5>
       <b-form @submit="updateUserPassword">
         <b-form-group label="旧密码" label-for="password-input">

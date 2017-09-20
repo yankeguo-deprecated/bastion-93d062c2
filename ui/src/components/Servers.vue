@@ -4,7 +4,6 @@
       <template slot="modal-title">
         <span class="text-info">添加受管服务器</span>
       </template>
-      <p>添加服务器前，请确认<b>堡垒主密钥</b>已经添加到受管服务器<code>root</code>用户的<code>authorized_keys</code>中</p>
       <b-form @submit="createServer">
         <b-form-group label="名称" label-for="name-input">
           <b-form-input id="name-input" type="text" v-model="formAdd.data.name" placeholder="输入名称"></b-form-input>
@@ -70,18 +69,11 @@
     </b-modal>
     <b-col>
       <b-row>
-        <b-col :md="4">
+        <b-col :md="3">
           <h5 class="text-info">添加受管服务器</h5>
-          <p>添加服务器前，请确认<b>堡垒主密钥</b>已经添加到受管服务器<code>root</code>用户的<code>authorized_keys</code>中</p>
+          <p>添加服务器后，在右边<code>详情</code>按钮查看<code>访问密钥</code>，并参照文档在受管服务器上建立守护进程</p>
           <b-button :block="true" :disabled="loading" variant="info" @click="showModalAdd">添加</b-button>
         </b-col>
-        <b-col>
-          <h5 class="text-info">堡垒主密钥</h5>
-          <p>堡垒使用以下密钥以<code>root</code>身份登录受管服务器，执行管理操作。</p>
-          <p><b-form-textarea :rows="8" v-model="masterPublicKey" disabled></b-form-textarea></p>
-        </b-col>
-      </b-row>
-      <b-row>
         <b-col>
           <h5 class="text-info">受管服务器</h5>
           <p>标签默认包含<code>default</code></p>

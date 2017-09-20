@@ -21,10 +21,6 @@ type Config struct {
 	Bastion struct {
 		// Env 运行环境，可以是 development, production, test
 		Env string `toml:"env"`
-		// MasterKeyFile Bastion 主密钥的地址
-		MasterKeyFile string `toml:"master_key_file"`
-		// MasterPublicKey master private key in SSH wired format
-		MasterPublicKey string `toml:"-"`
 	} `toml:"bastion"`
 	Sandbox struct {
 		// 沙箱的镜像名称

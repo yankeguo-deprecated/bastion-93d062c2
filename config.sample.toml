@@ -1,7 +1,6 @@
 [bastion]
 
 env = "development"
-master_key_file = "/tmp/.ssh/id_rsa"
 
 [db]
 

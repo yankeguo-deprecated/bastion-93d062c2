@@ -2,7 +2,7 @@
   <b-row>
     <b-col>
       <b-row>
-        <b-col :md="4">
+        <b-col :md="3">
           <b-row>
             <b-col>
               <h5 class="text-info">新建沙箱连接公钥</h5>
