@@ -150,3 +150,10 @@ func ServerSync(ctx *web.Context, r APIRender, s *models.Server, db *models.DB) 
 		Accounts: as,
 	})
 }
+
+// ServerDestroy destroy a server
+func ServerDestroy(ctx *web.Context, r APIRender, db *models.DB) {
+	id := ctx.Params(":id")
+	db.Where("id = ?", id).Unscoped().Delete(&models.Server{})
+	r.Success()
+}

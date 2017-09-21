@@ -82,7 +82,8 @@
               <b-badge pill v-for="t in data.item.tags" :key="t" variant="info">{{t}}</b-badge>
             </template>
             <template slot="operation" scope="data">
-              <b-button :disabled="loading" size="sm" variant="info" @click="showModalEdit(data.index)">详情</b-button>
+              <b-link href="" :disabled="loading" @click="showModalEdit(data.index)" class="text-info">详情</b-link>&nbsp;|&nbsp;
+              <b-link href="" :disabled="loading" @click="destroyServer(data.item.id)" class="text-danger">删除</b-link>
             </template>
           </b-table>
         </b-col>
@@ -183,6 +184,17 @@ export default {
       })
     },
     destroyServer (id) {
+      if (!confirm('确认要删除该服务器么？')) {
+        return
+      }
+      this.loading = true
+      this.$api.destroyServer({id}).then(() => {
+        this.loading = false
+        this.reloadServers()
+      }, ({body}) => {
+        this.loading = false
+        alert(body.message)
+      })
     },
     showModalAdd () {
       this.$refs.modalAdd.show()

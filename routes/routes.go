@@ -24,6 +24,7 @@ func Mount(m *web.Web) {
 	m.Post("/api/servers/sync", RequireServerToken(), ServerSync)
 	m.Post("/api/servers/create", RequireAdmin(), binding.Bind(ServerCreateForm{}), ServerCreate)
 	m.Post("/api/servers/:id/update", RequireAdmin(), binding.Bind(ServerUpdateForm{}), ServerUpdate)
+	m.Post("/api/servers/:id/destroy", RequireAdmin(), ServerDestroy)
 	m.Post("/api/ssh_keys/:id/destroy", RequireAuth(), SSHKeyDestroy)
 	m.Get("/api/grants", RequireAdmin(), GrantList)
 	m.Post("/api/grants/create", RequireAdmin(), binding.Bind(GrantCreateForm{}), GrantCreate)

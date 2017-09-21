@@ -10,5 +10,8 @@ export default {
   },
   updateServer ({id, tag, desc}) {
     return this.http.post(`servers/${id}/update`, {tag, desc})
+  },
+  destroyServer ({id}) {
+    return this.http.post(`servers/${id}/destroy`)
   }
 }

@@ -55,7 +55,7 @@
               <code>{{data.item.fingerprint}}</code>
             </template>
             <template slot="operation" scope="data">
-              <b-button :disabled="loading" size="sm" variant="danger" @click="destroySSHKey(data.item.id)">删除</b-button>
+              <b-link href="" :disabled="loading" @click="destroySSHKey(data.item.id)" class="text-danger">删除</b-link>
             </template>
           </b-table>
         </b-col>

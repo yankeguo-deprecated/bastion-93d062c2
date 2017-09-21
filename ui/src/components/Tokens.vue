@@ -32,7 +32,7 @@
         <b-col>
           <b-table striped hover :items="restTokens" :fields="fields">
             <template slot="operation" scope="data">
-              <b-button :disabled="loading" size="sm" variant="danger" @click="destroyToken(data.item.id)">删除</b-button>
+              <b-link href="" :disabled="loading" @click="destroyToken(data.item.id)" class="text-danger">删除</b-link>
             </template>
           </b-table>
         </b-col>
