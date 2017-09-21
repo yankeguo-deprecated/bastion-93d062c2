@@ -12,7 +12,7 @@ type UserCreateForm struct {
 }
 
 // UserCreate create a user
-func UserCreate(ctx *web.Context, r APIRender, f UserCreateForm, db *models.DB) {
+func UserCreate(ctx *web.Context, r APIRender, f UserCreateForm, db *models.DB, a Auth) {
 	if !models.UserLoginRegexp.MatchString(f.Login) {
 		r.Fail(ParamsInvalid, "登录名格式不正确")
 		return
@@ -49,6 +49,8 @@ func UserCreate(ctx *web.Context, r APIRender, f UserCreateForm, db *models.DB) 
 		r.Fail(InternalError, err.Error())
 		return
 	}
+
+	db.Audit(a.CurrentUser, "users.create", u)
 
 	r.Success("user", u)
 }
