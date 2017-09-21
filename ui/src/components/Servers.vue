@@ -174,7 +174,7 @@ export default {
         const server = body.server
         for (let s of this.servers) {
           if (s.id === server.id) {
-            s.tags = server.tags
+            s.tags = server.tags.filter((t) => t !== 'default')
             s.desc = server.desc
           }
         }

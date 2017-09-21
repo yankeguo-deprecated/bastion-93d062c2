@@ -10,6 +10,7 @@ import SSHKeys from '@/components/SSHKeys'
 import Tokens from '@/components/Tokens'
 import Admin from '@/components/Admin'
 import Servers from '@/components/Servers'
+import Users from '@/components/Users'
 import store from '../store'
 
 Vue.use(Router)
@@ -44,6 +45,11 @@ const router = new Router({
           path: 'servers',
           name: 'servers',
           component: Servers
+        },
+        {
+          path: 'users',
+          name: 'users',
+          component: Users
         }
       ]
     },

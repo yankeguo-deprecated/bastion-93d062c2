@@ -135,7 +135,7 @@ func ServerSync(ctx *web.Context, r APIRender, s *models.Server, db *models.DB) 
 	}
 	// users
 	us := []models.User{}
-	db.Where("id IN (?)", ids).Find(&us)
+	db.Where("id IN (?) AND is_blocked = ?", ids, false).Find(&us)
 	// build result
 	as := make([]types.Account, 0, len(us))
 	for _, u := range us {
