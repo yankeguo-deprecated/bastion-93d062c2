@@ -18,18 +18,19 @@ type Grant struct {
 // GrantResolved is a Grant with IsExpired determined
 type GrantResolved struct {
 	Grant
-	IsExpired bool `json:"isExpired"`
+	IsExpired bool   `json:"isExpired"`
+	UserLogin string `json:"userLogin"`
 }
 
 // ConvertGrantResolved convert []Grant to []GrantResolved
-func ConvertGrantResolved(gs []Grant) []GrantResolved {
-	ret := make([]GrantResolved, len(gs))
+func ConvertGrantResolved(gs []Grant) []*GrantResolved {
+	ret := make([]*GrantResolved, 0, len(gs))
 	now := time.Now()
-	for i, g := range gs {
-		ret[i] = GrantResolved{
+	for _, g := range gs {
+		ret = append(ret, &GrantResolved{
 			Grant:     g,
 			IsExpired: g.IsExpired(now),
-		}
+		})
 	}
 	return ret
 }

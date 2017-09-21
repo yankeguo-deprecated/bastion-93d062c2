@@ -10,8 +10,14 @@ import (
 // GrantList list all grants
 func GrantList(ctx *web.Context, r APIRender, db *models.DB) {
 	gs := []models.Grant{}
-	db.Find(&gs)
-	r.Success("grants", models.ConvertGrantResolved(gs))
+	db.Where("tag = ?", ctx.Params(":tag")).Find(&gs)
+	gv := models.ConvertGrantResolved(gs)
+	u := &models.User{}
+	for _, g := range gv {
+		db.First(u, g.UserID)
+		g.UserLogin = u.Login
+	}
+	r.Success("grants", gv)
 }
 
 // GrantCreateForm from for create grant

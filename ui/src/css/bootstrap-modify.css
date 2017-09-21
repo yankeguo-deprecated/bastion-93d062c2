@@ -1,3 +1,26 @@
 .table th, .table td {
   padding: 0.6rem;
 }
+
+.list-group-item.active {
+  z-index: 2;
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.list-group-item {
+  padding: 0.5rem 0.75rem;
+}
+
+a.list-group-item.active {
+  color: white;
+}
+
+a.list-group-item.active:hover {
+  color: white;
+}
+
+a.list-group-item.active:focus {
+  color: white;
+}

@@ -11,6 +11,7 @@ import Tokens from '@/components/Tokens'
 import Admin from '@/components/Admin'
 import Servers from '@/components/Servers'
 import Users from '@/components/Users'
+import Grants from '@/components/Grants'
 import store from '../store'
 
 Vue.use(Router)
@@ -50,6 +51,11 @@ const router = new Router({
           path: 'users',
           name: 'users',
           component: Users
+        },
+        {
+          path: 'grants',
+          name: 'grants',
+          component: Grants
         }
       ]
     },
