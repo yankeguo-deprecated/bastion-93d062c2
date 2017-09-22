@@ -42,7 +42,7 @@ func (f GrantCreateForm) ExpiresAt() *time.Time {
 }
 
 // GrantCreate create/update a grant
-func GrantCreate(ctx *web.Context, r APIRender, db *models.DB, f GrantCreateForm) {
+func GrantCreate(ctx *web.Context, r APIRender, db *models.DB, f GrantCreateForm, a Auth) {
 	if f.UserID == 0 {
 		if len(f.UserLogin) == 0 {
 			r.Fail(ParamsInvalid, "没有指定用户")
@@ -66,15 +66,24 @@ func GrantCreate(ctx *web.Context, r APIRender, db *models.DB, f GrantCreateForm
 			ExpiresAt: f.ExpiresAt(),
 		}
 		db.Create(g)
+		db.Audit(a.CurrentUser, "grants.create", g)
 	} else {
 		db.Model(g).Update(map[string]interface{}{"CanSudo": f.CanSudo, "ExpiresAt": f.ExpiresAt()})
+		db.Audit(a.CurrentUser, "grants.update", g)
 	}
 	r.Success("grant", g)
 }
 
 // GrantDestroy update a grant
-func GrantDestroy(ctx *web.Context, r APIRender, db *models.DB) {
+func GrantDestroy(ctx *web.Context, r APIRender, db *models.DB, a Auth) {
 	id := ctx.ParamsInt(":id")
+	g := &models.Grant{}
+	db.First(g, id)
+	if db.NewRecord(g) {
+		r.Fail(ParamsInvalid, "没有找到记录")
+		return
+	}
+	db.Audit(a.CurrentUser, "grants.destroy", g)
 	db.Unscoped().Where("id = ?", id).Delete(&models.Grant{})
 	r.Success()
 }

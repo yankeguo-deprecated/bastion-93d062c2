@@ -3,6 +3,7 @@ package models
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -58,4 +59,14 @@ func (s *Server) AfterFind() error {
 	// recover Tags from Tag
 	s.Tags = com.CompactSliceStr(strings.Split(s.Tag, ","))
 	return nil
+}
+
+// AuditableName implements types.Auditable
+func (s Server) AuditableName() string {
+	return fmt.Sprintf("Server(%d, %s)", s.ID, s.Name)
+}
+
+// AuditableDetail implements types.Auditable
+func (s Server) AuditableDetail() string {
+	return fmt.Sprintf("%s:%d, %s", s.Address, s.Port, s.Tag)
 }

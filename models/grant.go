@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 
 	"ireul.com/orm"
@@ -61,4 +62,21 @@ func CompactSliceGrant(ins []Grant) map[uint]Grant {
 		}
 	}
 	return outs
+}
+
+// AuditableName implements types.Auditable
+func (n Grant) AuditableName() string {
+	return fmt.Sprintf("Grant(%d, %s)", n.ID, n.Tag)
+}
+
+// AuditableDetail implements types.Auditable
+func (n Grant) AuditableDetail() string {
+	d := fmt.Sprintf("User(%d) => Tag(%s)", n.UserID, n.Tag)
+	if n.CanSudo {
+		d = d + ",SUDO"
+	}
+	if n.ExpiresAt == nil {
+		d = d + ",INFINITY"
+	}
+	return d
 }

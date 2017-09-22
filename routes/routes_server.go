@@ -72,6 +72,7 @@ func ServerCreate(ctx *web.Context, db *models.DB, r APIRender, a Auth, f Server
 		r.Fail(InternalError, err.Error())
 		return
 	}
+	db.Audit(a.CurrentUser, "servers.create", s)
 
 	r.Success("server", s)
 }
@@ -108,11 +109,15 @@ func ServerUpdate(ctx *web.Context, db *models.DB, r APIRender, a Auth, f Server
 		s.Desc = f.Desc
 	}
 
-	if err := db.Select("tag", "desc").Save(s).Error; err != nil {
+	err := db.Select("tag", "desc").Save(s).Error
+
+	if err != nil {
 		r.Fail(InternalError, err.Error())
-	} else {
-		r.Success("server", s)
+		return
 	}
+
+	db.Audit(a.CurrentUser, "servers.update", s)
+	r.Success("server", s)
 }
 
 // ServerList list all servers
@@ -152,8 +157,15 @@ func ServerSync(ctx *web.Context, r APIRender, s *models.Server, db *models.DB) 
 }
 
 // ServerDestroy destroy a server
-func ServerDestroy(ctx *web.Context, r APIRender, db *models.DB) {
+func ServerDestroy(ctx *web.Context, r APIRender, db *models.DB, a Auth) {
 	id := ctx.Params(":id")
+	s := &models.Server{}
+	db.First(s, id)
+	if db.NewRecord(s) {
+		r.Fail(ParamsInvalid, "没有找到服务器")
+		return
+	}
+	db.Audit(a.CurrentUser, "servers.create", s)
 	db.Where("id = ?", id).Unscoped().Delete(&models.Server{})
 	r.Success()
 }
