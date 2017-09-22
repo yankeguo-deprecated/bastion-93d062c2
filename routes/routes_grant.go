@@ -32,11 +32,13 @@ type GrantCreateForm struct {
 // ExpiresAt convert ExpiresAt to *time.Time
 func (f GrantCreateForm) ExpiresAt() *time.Time {
 	// convert to time.Time
-	var t time.Time
 	if f.ExpiresIn != 0 {
+		var t time.Time
 		t = time.Now().Add(time.Second * time.Duration(f.ExpiresIn))
+		return &t
+	} else {
+		return nil
 	}
-	return &t
 }
 
 // GrantCreate create/update a grant

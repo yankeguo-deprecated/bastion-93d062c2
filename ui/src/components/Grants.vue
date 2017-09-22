@@ -153,9 +153,9 @@ export default {
       this.$state.begin()
       this.$api.createGrant(data).then(() => {
         this.reloadGrants()
-        this.$stae.end()
+        this.$state.end()
       }, () => {
-        this.$stae.end()
+        this.$state.end()
       })
     }
   }
