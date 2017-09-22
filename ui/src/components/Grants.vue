@@ -30,7 +30,7 @@
           <b-form-checkbox v-model="form.data.canSudo">SUDO</b-form-checkbox>
         </b-form-group>
         &nbsp;
-        <b-button type="submit" variant="primary">更新</b-button>
+        <b-button type="submit" variant="primary" :disabled="$state.isLoading">更新</b-button>
       </b-form>
       <br/>
       <b-table striped hover :items="grants" :fields="fields">
@@ -38,6 +38,9 @@
           <span v-if="!data.item.expiresAt" class="text-success">无</span>
           <span v-if="data.item.expiresAt && !data.item.isExpired" class="text-success">{{data.item.expiresAt}}</span>
           <span v-if="data.item.expiresAt && data.item.isExpired" class="text-danger">{{data.item.expiresAt}}</span>
+        </template>
+        <template slot="operation" scope="data">
+          <b-link href="" :disabled="$state.isLoading" @click="destroyGrant(data.item.id)" class="text-danger">删除</b-link>
         </template>
       </b-table>
     </b-col>
@@ -96,6 +99,9 @@ export default {
         },
         updatedAt: {
           label: '更新时间'
+        },
+        operation: {
+          label: '操作'
         }
       }
     }
@@ -125,6 +131,18 @@ export default {
       }
       this.activeTag = tag
       this.reloadGrants()
+    },
+    destroyGrant (id) {
+      if (!confirm('确认要删除么')) {
+        return
+      }
+      this.$state.begin()
+      this.$api.destroyGrant({id}).then(() => {
+        this.$state.end()
+        this.reloadGrants()
+      }, () => {
+        this.$state.end()
+      })
     },
     createGrant () {
       let data = {

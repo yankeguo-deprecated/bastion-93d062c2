@@ -9,5 +9,8 @@ export default {
   },
   createGrant ({userLogin, canSudo, expiresIn, tag}) {
     return this.http.post(`grants/create`, {userLogin, canSudo, expiresIn, tag})
+  },
+  destroyGrant ({id}) {
+    return this.http.post(`grants/${id}/destroy`)
   }
 }
