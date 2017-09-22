@@ -4,7 +4,7 @@
       <h5 class="text-info">添加用户</h5>
       <b-form @submit="createUser">
         <b-form-group label="登录名" label-for="login-input">
-          <b-form-input id="login-input" type="text" v-model="formAdd.data.login" placeholder="输入登录名"></b-form-input>
+          <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="login-input" type="text" v-model="formAdd.data.login" placeholder="输入登录名"></b-form-input>
           <b-form-text text-variant="muted">最大长度24，最小长度3，创建后<b>不可修改</b>，限定<code>数字</code> <code>英文</code> <code>-</code> <code>_</code>，且只能用<code>英文</code>开头</b-form-text>
         </b-form-group>
         <b-form-group label="密码" label-for="password-input">

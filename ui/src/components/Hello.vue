@@ -18,7 +18,7 @@
         <b-col md="4">
           <b-form @submit="submitForm">
             <b-form-group label="登录名:" label-for="login-input">
-              <b-form-input id="login-input" type="text" v-model="form.login" required placeholder="输入登录名"></b-form-input>
+              <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="login-input" type="text" v-model="form.login" required placeholder="输入登录名"></b-form-input>
             </b-form-group>
             <b-form-group label="密码:" label-for="password-input">
               <b-form-input id="password-input" type="password" v-model="form.password" required placeholder="输入密码"></b-form-input>

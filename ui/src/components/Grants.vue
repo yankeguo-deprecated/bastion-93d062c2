@@ -12,25 +12,22 @@
       </p>
       <b-form :inline="true" @submit="createGrant">
         <b-form-group>
-          <b-form-input type="text" v-model="form.data.userLogin" required placeholder="用户登录名"></b-form-input>
+          <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" v-model="form.data.userLogin" required placeholder="用户登录名"></b-form-input>
         </b-form-group>
         &nbsp;
         <b-form-group>
-          <b-form-checkbox v-model="form.data.isInfinity">无过期时间</b-form-checkbox>
+          <b-form-input id="expires-in-input" :disabled="form.data.expiresUnit === 'i'" type="number" v-model="form.data.expiresIn"></b-form-input>
         </b-form-group>
         &nbsp;
         <b-form-group>
-          <b-form-input v-if="!form.data.isInfinity" type="number" v-model="form.data.expiresIn"></b-form-input>
-        </b-form-group>
-        <b-form-group>
-        <b-form-select v-if="!form.data.isInfinity" v-model="form.data.expiresUnit" :options="form.expiresUnitOptions"></b-form-select>
+        <b-form-select v-model="form.data.expiresUnit" :options="form.expiresUnitOptions"></b-form-select>
         </b-form-group>
         &nbsp;
         <b-form-group>
-          <b-form-checkbox v-model="form.data.canSudo">SUDO</b-form-checkbox>
+        <b-form-select v-model="form.data.canSudo" :options="form.canSudoOptions"></b-form-select>
         </b-form-group>
         &nbsp;
-        <b-button type="submit" variant="primary" :disabled="$state.isLoading">更新</b-button>
+        <b-button type="submit" variant="info" :disabled="$state.isLoading">创建/更新</b-button>
       </b-form>
       <br/>
       <b-table striped hover :items="grants" :fields="fields">
@@ -40,6 +37,7 @@
           <span v-if="data.item.expiresAt && data.item.isExpired" class="text-danger">{{data.item.expiresAt}}</span>
         </template>
         <template slot="operation" scope="data">
+          <b-link href="" :disabled="$state.isLoading" @click="editGrant(data.index)" class="text-info">编辑</b-link>&nbsp;|&nbsp;
           <b-link href="" :disabled="$state.isLoading" @click="destroyGrant(data.item.id)" class="text-danger">删除</b-link>
         </template>
       </b-table>
@@ -68,13 +66,17 @@ export default {
           userLogin: null,
           expiresIn: 30,
           expiresUnit: 'd',
-          isInfinity: false,
           canSudo: false
         },
         expiresUnitOptions: [
           { value: 'd', text: '天' },
           { value: 'h', text: '小时' },
-          { value: 'm', text: '分钟' }
+          { value: 'm', text: '分钟' },
+          { value: 'i', text: '无期限' }
+        ],
+        canSudoOptions: [
+          { value: false, text: '无SUDO' },
+          { value: true, text: 'SUDO' }
         ],
         error: null
       },
@@ -144,13 +146,21 @@ export default {
         this.$state.end()
       })
     },
+    editGrant (index) {
+      let item = this.grants[index]
+      this.form.data.userLogin = item.userLogin
+      this.form.data.canSudo = item.canSudo
+      if (!item.expiresAt) {
+        this.form.data.expiresUnit = 'i'
+      }
+    },
     createGrant () {
       let data = {
         canSudo: this.form.data.canSudo,
         tag: this.activeTag,
         userLogin: this.form.data.userLogin
       }
-      if (!this.form.data.isInfinity) {
+      if (this.form.data.expiresUnit !== 'i') {
         let scale = 0
         switch (this.form.data.expiresUnit) {
           case 'd': {
@@ -181,4 +191,7 @@ export default {
 </script>
 
 <style>
+input#expires-in-input {
+  width: 6rem;
+}
 </style>

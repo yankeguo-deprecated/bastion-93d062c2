@@ -13,7 +13,7 @@
               <p>沙箱连接公钥用于从外部连接沙箱环境</p>
               <b-form @submit="createSSHKey">
                 <b-form-group label="名称" label-for="name-input">
-                  <b-form-input id="name-input" type="text" v-model="form.name" placeholder="输入名称，20字以内"></b-form-input>
+                  <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="name-input" type="text" v-model="form.name" placeholder="输入名称，20字以内"></b-form-input>
                 </b-form-group>
                 <b-form-group label="公钥" label-for="public-key-input">
                   <b-form-textarea id="public-key-input" :rows="3" v-model="form.publicKey" required placeholder="ssh-rsa AAA..."></b-form-textarea>

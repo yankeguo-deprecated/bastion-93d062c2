@@ -6,11 +6,11 @@
       </template>
       <b-form @submit="createServer">
         <b-form-group label="名称" label-for="name-input">
-          <b-form-input id="name-input" type="text" v-model="formAdd.data.name" placeholder="输入名称"></b-form-input>
+          <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="name-input" type="text" v-model="formAdd.data.name" placeholder="输入名称"></b-form-input>
           <b-form-text text-variant="muted">最大长度24，最小长度3，创建后<b>不可修改</b>，限定<code>数字</code> <code>英文</code> <code>-</code> <code>_</code>，且只能用<code>英文</code>开头</b-form-text>
         </b-form-group>
         <b-form-group label="地址" label-for="address-input">
-          <b-form-input id="address-input" type="text" v-model="formAdd.data.address" required placeholder="输入IP地址"></b-form-input>
+          <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="address-input" type="text" v-model="formAdd.data.address" required placeholder="输入IP地址"></b-form-input>
           <b-form-text text-variant="muted">创建后<b>不可修改</b>，建议使用内网<code>IPv4</code>地址</b-form-text>
         </b-form-group>
         <b-form-group label="端口号" label-for="port-input">
@@ -18,7 +18,7 @@
           <b-form-text text-variant="muted">创建后<b>不可修改</b>，一般为<code>22</code></b-form-text>
         </b-form-group>
         <b-form-group label="标签" label-for="tag-input">
-          <b-form-input id="tag-input" type="text" v-model="formAdd.data.tag" required placeholder="输入标签"></b-form-input>
+          <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="tag-input" type="text" v-model="formAdd.data.tag" required placeholder="输入标签"></b-form-input>
           <b-form-text text-variant="muted">最大长度100，使用<code>英文逗号</code>分隔，每个标签限定<code>数字</code> <code>英文</code> <code>-</code> <code>_</code>，且只能用<code>英文</code>开头，所有受管服务器默认具有<code>default</code>标签</b-form-text>
         </b-form-group>
         <b-form-group label="备注" label-for="desc-input">
