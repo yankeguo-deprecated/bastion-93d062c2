@@ -12,8 +12,8 @@ func GrantList(ctx *web.Context, r APIRender, db *models.DB) {
 	gs := []models.Grant{}
 	db.Where("tag = ?", ctx.Params(":tag")).Find(&gs)
 	gv := models.ConvertGrantResolved(gs)
-	u := &models.User{}
 	for _, g := range gv {
+		u := &models.User{}
 		db.First(u, g.UserID)
 		g.UserLogin = u.Login
 	}
