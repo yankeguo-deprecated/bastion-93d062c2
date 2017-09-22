@@ -10,7 +10,7 @@ import (
 func TagList(ctx *web.Context, r APIRender, db *models.DB) {
 	// all tags from servers
 	ss := []models.Server{}
-	tags := []string{}
+	tags := []string{models.ServerTagDefault}
 	db.Find(&ss)
 	for _, s := range ss {
 		for _, t := range s.Tags {
