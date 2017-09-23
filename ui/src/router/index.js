@@ -12,6 +12,7 @@ import Admin from '@/components/Admin'
 import Servers from '@/components/Servers'
 import Users from '@/components/Users'
 import Grants from '@/components/Grants'
+import AuditLogs from '@/components/AuditLogs'
 import store from '../store'
 
 Vue.use(Router)
@@ -56,6 +57,11 @@ const router = new Router({
           path: 'grants',
           name: 'grants',
           component: Grants
+        },
+        {
+          path: 'audit_logs',
+          name: 'audit_logs',
+          component: AuditLogs
         }
       ]
     },

@@ -8,7 +8,6 @@ import (
 // AuditLog a auditable log, records important operations
 type AuditLog struct {
 	orm.Model
-	User         User   `json:"user"`
 	UserID       uint   `json:"userId" orm:"index"`
 	Source       string `json:"source"`
 	SourceDetail string `json:"sourceDetail"`

@@ -12,6 +12,7 @@
             <b-nav-item :to="{ name: 'servers' }">服务器</b-nav-item>
             <b-nav-item :to="{ name: 'users' }">用户</b-nav-item>
             <b-nav-item :to="{ name: 'grants' }">授权</b-nav-item>
+            <b-nav-item :to="{ name: 'audit_logs' }">审核日志</b-nav-item>
           </b-nav>
         </b-col>
       </b-row>
