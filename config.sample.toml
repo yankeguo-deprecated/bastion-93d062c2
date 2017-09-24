@@ -1,28 +1,46 @@
 [bastion]
 
+# application environment, one of "development", "production" or "test"
+# use "production" in production deployment
 env = "development"
 
 [db]
 
+# MySQL database DSN
+# see https://github.com/go-sql-driver/mysql/#dsn-data-source-name
 url = "root@tcp(localhost:3306)/bastion?parseTime=true"
 
 [redis]
 
+# Redis url
+# see https://godoc.org/github.com/go-redis/redis#ParseURL
 url = "redis://localhost:6379/1"
 
 [web]
 
-domain = "localhost"
+# web address, used for display only, set to something can be accessed from public internet
+address = "http://localhost:5000"
+# web server binding address, in ideal situation, set it to "localhost" and use a reverse proxy
 host = "localhost"
+# web server port
 port = 5566
 
 [sshd]
 
+# sshd address, used for display only, set to something can be accessed from public internet
+address = "localhost:2222"
+# sshd service binding address, normally set to "0.0.0.0"
 host = "0.0.0.0"
+# sshd service port, you can change system sshd port and change this to 22
 port = 2222
+# sshd service host key file, only RSA is supported, use "ssh-keygen -t rsa -f /path/to/host_rsa" to generate
 host_key_file = "/tmp/host_rsa"
 
 [sandbox]
 
+# sandbox container image name, you can use a custom image
+# see https://github.com/go-ireul/bastion/wiki/Sandbox-EN
 image = "pagodatech/sandbox"
+# sandbox data file location
+# see https://github.com/go-ireul/bastion/wiki/Sandbox-EN
 data_dir = "/tmp/bastion/sandboxes"
