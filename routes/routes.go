@@ -12,6 +12,7 @@ func Mount(m *web.Web) {
 	m.Use(Authenticator())
 	m.Get("/api", apiAction)
 	m.Get("/api/audit_logs", RequireAdmin(), AuditLogList)
+	m.Get("/api/dashboard", RequireAuth(), UserDashboard)
 	m.Post("/api/tokens/create", binding.Bind(TokenCreateForm{}), TokenCreate)
 	m.Post("/api/tokens/:id/destroy", RequireAuth(), ResolveCurrentToken(":id"), TokenDestroy)
 	m.Get("/api/users/:userid/tokens", RequireAuth(), ResolveCurrentUser(":userid"), TokenList)

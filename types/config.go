@@ -3,8 +3,8 @@ package types
 // Config 配置
 type Config struct {
 	Web struct {
-		// Domain 域名地址，用于展示
-		Domain string `toml:"domain"`
+		// Address 从外部访问 WEB 的地址，用于 UI 展示
+		Address string `toml:"address"`
 		// Host 主机，用于 IP 绑定
 		Host string `toml:"host"`
 		// Port 端口号
@@ -29,6 +29,8 @@ type Config struct {
 		DataDir string `toml:"data_dir"`
 	} `toml:"sandbox"`
 	SSHD struct {
+		// Address 从外部访问 SSH 的地址，用于 UI 展示
+		Address string `toml:"address"`
 		// SSHD 服务的绑定地址
 		Host string `toml:"host"`
 		// SSHD 服务的端口号

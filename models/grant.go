@@ -23,7 +23,7 @@ type GrantResolved struct {
 	UserLogin string `json:"userLogin"`
 }
 
-// ConvertGrantResolved convert []Grant to []GrantResolved
+// ConvertGrantResolved convert []Grant to []*GrantResolved
 func ConvertGrantResolved(gs []Grant) []*GrantResolved {
 	ret := make([]*GrantResolved, 0, len(gs))
 	now := time.Now()

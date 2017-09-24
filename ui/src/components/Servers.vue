@@ -209,8 +209,4 @@ export default {
 </script>
 
 <style scoped>
-span.badge {
-  margin-left: 0.1rem;
-  margin-right: 0.1rem;
-}
 </style>

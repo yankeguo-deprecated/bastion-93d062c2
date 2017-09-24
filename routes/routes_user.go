@@ -1,9 +1,57 @@
 package routes
 
 import (
+	"time"
+
 	"ireul.com/bastion/models"
+	"ireul.com/bastion/types"
 	"ireul.com/web"
 )
+
+// UserDashboard dashboard of one user
+func UserDashboard(ctx *web.Context, r APIRender, db *models.DB, a Auth, cfg *types.Config) {
+	d := types.Dashboard{}
+	mss := map[uint]*types.DashboardServer{}
+	// check SSHKey
+	c := 0
+	db.Model(&models.SSHKey{}).Where("user_id = ?", a.CurrentUser.ID).Count(&c)
+	d.Sandbox.IsKeyMissing = c == 0
+	// set SSHD address for display
+	d.Sandbox.Address = cfg.SSHD.Address
+	// list all Grant not expired
+	gs := []models.Grant{}
+	db.Where("( expires_at > ? OR expires_at IS NULL ) AND user_id = ?", time.Now(), a.CurrentUser.ID).Find(&gs)
+	// find servers by Tag
+	for _, g := range gs {
+		pt := "%," + g.Tag + ",%"
+		ss := []models.Server{}
+		db.Where("tag LIKE ?", pt).Find(&ss)
+		for _, s := range ss {
+			if mss[s.ID] == nil {
+				mss[s.ID] = &types.DashboardServer{
+					ID:      s.ID,
+					Name:    s.Name,
+					Address: s.Address,
+					Port:    s.Port,
+					Account: types.AccountPrefix + a.CurrentUser.Login,
+					CanSudo: g.CanSudo,
+					Tags:    []string{g.Tag},
+				}
+			} else {
+				ds := mss[s.ID]
+				if g.CanSudo && !ds.CanSudo {
+					ds.CanSudo = true
+				}
+				ds.Tags = append(ds.Tags, g.Tag)
+			}
+		}
+	}
+	d.Servers = make([]types.DashboardServer, 0, len(mss))
+	for _, v := range mss {
+		d.Servers = append(d.Servers, *v)
+	}
+	r.Success("dashboard", d)
+}
 
 // UserCreateForm for for new user
 type UserCreateForm struct {

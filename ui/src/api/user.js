@@ -1,4 +1,7 @@
 export default {
+  fetchDashboard: function () {
+    return this.http.get('dashboard')
+  },
   fetchUser: function ({id}) {
     return this.http.get(`users/${id}`).then((resp) => {
       this.transformModelDate(resp.body.user, 'createdAt')

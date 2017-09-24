@@ -37,9 +37,7 @@ export default {
 <style scoped>
 .settings-title {
   margin-top: 16px;
-}
-
-.settings-tabs {
+  margin-bottom: 12px;
 }
 
 .settings-content {

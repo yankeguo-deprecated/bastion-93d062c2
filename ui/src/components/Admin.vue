@@ -37,9 +37,7 @@ export default {
 <style scoped>
 .admin-title {
   margin-top: 16px;
-}
-
-.admin-tabs {
+  margin-bottom: 12px;
 }
 
 .admin-content {

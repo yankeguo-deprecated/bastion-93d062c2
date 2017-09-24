@@ -6,19 +6,19 @@ func TestConfig(t *testing.T) {
 	const c = `
 [bastion]
 env = "a"
-master_key_file = "c"
 [db]
 url = "e"
 [redis]
 url = "f"
 [web]
-domain = "g"
+address = "g"
 host = "h"
 port = 9
 [sandbox]
 data_dir = "b"
 image = "d1"
 [sshd]
+address = "zz"
 host = "00"
 port = 222
 host_key_file = "ss"
@@ -30,17 +30,14 @@ host_key_file = "ss"
 	if cfg.Bastion.Env != "a" {
 		t.Fatal("bastion.env failed")
 	}
-	if cfg.Bastion.MasterKeyFile != "c" {
-		t.Fatal("bastion.master_key_file failed")
-	}
 	if cfg.Database.URL != "e" {
 		t.Fatal("db.url failed")
 	}
 	if cfg.Redis.URL != "f" {
 		t.Fatal("redis.url failed")
 	}
-	if cfg.Web.Domain != "g" {
-		t.Fatal("web.domain failed")
+	if cfg.Web.Address != "g" {
+		t.Fatal("web.address failed")
 	}
 	if cfg.Web.Host != "h" {
 		t.Fatal("web.host failed")
@@ -59,6 +56,9 @@ host_key_file = "ss"
 	}
 	if cfg.SSHD.Port != 222 {
 		t.Fatal("sshd.port failed")
+	}
+	if cfg.SSHD.Address != "zz" {
+		t.Fatal("sshd.address failed")
 	}
 	if cfg.SSHD.HostKeyFile != "ss" {
 		t.Fatal("sshd.host_key_file failed")

@@ -2,6 +2,11 @@
   padding: 0.6rem;
 }
 
+span.badge {
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+}
+
 .list-group-item.active {
   z-index: 2;
   color: #fff;

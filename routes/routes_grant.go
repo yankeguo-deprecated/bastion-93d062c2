@@ -36,9 +36,8 @@ func (f GrantCreateForm) ExpiresAt() *time.Time {
 		var t time.Time
 		t = time.Now().Add(time.Second * time.Duration(f.ExpiresIn))
 		return &t
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // GrantCreate create/update a grant
