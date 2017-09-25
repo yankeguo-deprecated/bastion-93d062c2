@@ -71,7 +71,7 @@
       <b-row>
         <b-col :md="3">
           <h5 class="text-info">添加受管服务器</h5>
-          <p>添加服务器后，在右边<code>详情</code>按钮查看<code>访问密钥</code>，并参照文档在受管服务器上建立守护进程</p>
+          <p>添加服务器后，在右边<code>详情</code>按钮查看<code>访问密钥</code>，并参照<a target="_blank" href="https://github.com/go-ireul/bastion/wiki/Agent-EN">文档</a>在受管服务器上建立守护进程</p>
           <b-button :block="true" :disabled="loading" variant="info" @click="showModalAdd">添加</b-button>
         </b-col>
         <b-col>

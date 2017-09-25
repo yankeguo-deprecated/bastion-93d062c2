@@ -28,10 +28,17 @@
           <b-row>
             <b-col>
               <b-table hover striped :items="servers" :fields="fields">
-                <template slot="address" scope="data">{{data.item.address}}:{{data.item.port}}</template>
-                <template slot="canSudo" scope="data"><b-badge variant="success" pill v-if="data.item.canSudo">SUDO</b-badge></template>
-                <template slot="tags" scope="data"><b-badge variant="info" pill v-for="tag in data.item.tags" :key="tag">{{tag}}</b-badge></template>
-  </b-table>
+                <template slot="address" scope="data">
+                  <span v-if="data.item.port !== 22">{{data.item.address}}:{{data.item.port}}</span>
+                  <span v-if="data.item.port === 22">{{data.item.address}}</span>
+                </template>
+                <template slot="canSudo" scope="data">
+                  <b-badge variant="success" pill v-if="data.item.canSudo">SUDO</b-badge>
+                </template>
+                <template slot="tags" scope="data">
+                  <b-badge variant="info" pill v-for="tag in data.item.tags" :key="tag">{{tag}}</b-badge>
+                </template>
+              </b-table>
             </b-col>
           </b-row>
         </b-col>
@@ -94,14 +101,6 @@ export default {
         }
         this.sandbox.address = dashboard.sandbox.address
         this.sandbox.isKeyMissing = dashboard.sandbox.isKeyMissing
-        // servers
-        dashboard.servers.forEach((s) => {
-          if (s.port === 22) {
-            s.ssh = `ssh ${s.account}@${s.address}`
-          } else {
-            s.ssh = `ssh -p ${s.port} ${s.account}@${s.address}`
-          }
-        })
         this.servers = dashboard.servers
       })
     }
