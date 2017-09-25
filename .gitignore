@@ -19,3 +19,4 @@
 # ignore dist
 /bastion
 /dist
+/bagent/bagent

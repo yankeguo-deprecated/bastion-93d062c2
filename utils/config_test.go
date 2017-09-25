@@ -11,6 +11,7 @@ url = "e"
 [redis]
 url = "f"
 [web]
+serve_static = true
 address = "g"
 host = "h"
 port = 9
@@ -62,5 +63,8 @@ host_key_file = "ss"
 	}
 	if cfg.SSHD.HostKeyFile != "ss" {
 		t.Fatal("sshd.host_key_file failed")
+	}
+	if !cfg.Web.ServeStatic {
+		t.Fatal("web.serve_static failed")
 	}
 }

@@ -8,9 +8,6 @@ import (
 )
 
 const tmplSync = `#!/bin/bash
-set -e
-set -u
-
 ## Create Account
 
 {{range $.AccountsAdd}}

@@ -24,16 +24,6 @@ func execWebCommand(c *cli.Context) (err error) {
 	// setup log
 	log.SetPrefix("[bastion-web] ")
 
-	// create web instance
-	m := web.New()
-	m.Use(web.Logger())
-	m.Use(web.Recovery())
-	m.Use(web.Static("public"))
-	m.Use(web.Renderer())
-	m.Use(func(ctx *web.Context) {
-		ctx.Data["Version"] = VERSION
-	})
-
 	// decode config
 	var cfg *types.Config
 	if cfg, err = utils.ParseConfigFile(c.GlobalString("config")); err != nil {
@@ -44,6 +34,18 @@ func execWebCommand(c *cli.Context) (err error) {
 		log.Fatalln(err)
 		return
 	}
+
+	// create web instance
+	m := web.New()
+	m.Use(web.Logger())
+	m.Use(web.Recovery())
+	if cfg.Web.ServeStatic {
+		m.Use(web.Static("public"))
+	}
+	m.Use(web.Renderer())
+	m.Use(func(ctx *web.Context) {
+		ctx.Data["Version"] = VERSION
+	})
 
 	// map config
 	m.SetEnv(cfg.Bastion.Env)

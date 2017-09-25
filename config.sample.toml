@@ -24,6 +24,8 @@ address = "http://localhost:5000"
 host = "localhost"
 # web server port
 port = 5566
+# serve static, whether serve static files from ./public/
+serve_static = true
 
 [sshd]
 

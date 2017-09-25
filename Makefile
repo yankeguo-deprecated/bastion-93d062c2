@@ -1,10 +1,11 @@
 build:
 	go build
 dist:
+	rm -rf dist
 	mkdir -p dist/public
 	go build -o dist/bastion
-	cd ui && npm install && NODE_ENV=production npm run build
-	cp -r public/* dist/public
+	cd ui && make dist
+	cd bagent && go build -o ../dist/bagent
 	cp -r ui/dist/* dist/public
 	cp config.sample.toml dist/
 lint:

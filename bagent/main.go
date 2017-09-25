@@ -23,7 +23,7 @@ var debug = len(os.Getenv("BASTION_DEBUG")) > 0
 
 func main() {
 	// check is root
-	if os.Getuid() != 0 {
+	if os.Getuid() != 0 && !debug {
 		log.Fatalln("bagent must run as root user!")
 		return
 	}
@@ -37,8 +37,7 @@ func main() {
 		return
 	}
 	if len(home) == 0 {
-		log.Fatalln("environment 'BASTION_HOME' not set!")
-		return
+		home = "/home"
 	}
 	// start loop
 	syncAccounts()
@@ -51,7 +50,9 @@ func main() {
 func syncAccounts() {
 	// request API
 	res, err := makeRequest()
-	fmt.Println(res)
+	if debug {
+		fmt.Println(res)
+	}
 	if err != nil {
 		log.Println("failed to request bastion host:", err.Error())
 		return
@@ -61,6 +62,7 @@ func syncAccounts() {
 	as, err := readAccounts()
 	if err != nil {
 		log.Println("failed to read accounts from /etc/passwd:", err.Error())
+		return
 	}
 
 	// compute
@@ -95,16 +97,20 @@ OUTER:
 
 	// execute script
 	script := GenerateSyncScript(data)
+
+	if debug {
+		log.Println("--- DEBUG sync script output")
+		log.Println(script)
+		log.Println("--- DEBUG sync script output")
+		return
+	}
+
 	cmd := exec.Command("/bin/bash")
 	cmd.Stdin = strings.NewReader(script)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Println("failed to execute sync shell:", err.Error())
-	}
-	if debug {
-		log.Println("--- DEBUG sync script output")
-		log.Println([]byte(out))
-		log.Println("--- DEBUG sync script output")
+		log.Println(string(out))
 	}
 }
 
