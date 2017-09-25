@@ -123,7 +123,7 @@ export default {
     reloadTags () {
       this.state.begin()
       this.$api.listTags().then(({body}) => {
-        this.tags = _.sortBy(body.tags, (t) => t !== 'default')
+        this.tags = _.sortBy(body.tags, (t) => t === 'default')
         this.state.end()
       }, () => {
         this.state.end()
