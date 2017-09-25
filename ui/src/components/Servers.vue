@@ -4,7 +4,7 @@
       <template slot="modal-title">
         <span class="text-info">添加受管服务器</span>
       </template>
-      <b-form @submit="createServer">
+      <b-form @submit.prevent="createServer">
         <b-form-group label="名称" label-for="name-input">
           <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="name-input" type="text" v-model="formAdd.data.name" placeholder="输入名称"></b-form-input>
           <b-form-text text-variant="muted">最大长度24，最小长度3，创建后<b>不可修改</b>，限定<code>数字</code> <code>英文</code> <code>-</code> <code>_</code>，且只能用<code>英文</code>开头</b-form-text>
@@ -37,7 +37,7 @@
       <template slot="modal-title">
         <span class="text-info">编辑受管服务器</span>
       </template>
-      <b-form @submit="updateServer">
+      <b-form @submit.prevent="updateServer">
         <b-form-group label="名称" label-for="name-input">
           <b-form-input id="name-input" type="text" disabled v-model="formEdit.data.name"></b-form-input>
         </b-form-group>

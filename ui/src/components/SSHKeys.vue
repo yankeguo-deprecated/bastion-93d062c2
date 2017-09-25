@@ -11,7 +11,7 @@
           <b-row>
             <b-col>
               <p>沙箱连接公钥用于从外部连接沙箱环境</p>
-              <b-form @submit="createSSHKey">
+              <b-form @submit.prevent="createSSHKey">
                 <b-form-group label="名称" label-for="name-input">
                   <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="name-input" type="text" v-model="form.name" placeholder="输入名称，20字以内"></b-form-input>
                 </b-form-group>

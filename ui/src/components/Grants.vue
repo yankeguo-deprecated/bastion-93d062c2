@@ -10,7 +10,7 @@
       <p class="text-info" v-if="activeTag === 'default'">
         <code>default</code>为所有服务器默认具有的标签，请谨慎使用
       </p>
-      <b-form :inline="true" @submit="createGrant">
+      <b-form :inline="true" @submit.prevent="createGrant">
         <b-form-group>
           <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" v-model="form.data.userLogin" required placeholder="用户登录名"></b-form-input>
         </b-form-group>

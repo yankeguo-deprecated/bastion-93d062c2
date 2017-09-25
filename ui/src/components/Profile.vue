@@ -25,7 +25,7 @@
       </b-col>
       <b-col md="4">
         <h5 class="text-info">修改个人信息</h5>
-        <b-form @submit="updateUser">
+        <b-form @submit.prevent="updateUser">
           <b-form-group label="昵称" label-for="nickname-input">
             <b-form-input id="nickname-input" v-model="form.nickname" required placeholder="昵称最长20位"></b-form-input>
           </b-form-group>

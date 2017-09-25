@@ -4,7 +4,7 @@
       <template slot="modal-title">
         <span class="text-info">修改密码</span>
       </template>
-      <b-form @submit="updatePassword">
+      <b-form @submit.prevent="updatePassword">
         <b-form-group label="用户名">
           <b-form-input disabled v-model="formEditPassword.data.login"></b-form-input>
         </b-form-group>
@@ -27,7 +27,7 @@
     </b-modal>
     <b-col md="3">
       <h5 class="text-info">添加用户</h5>
-      <b-form @submit="createUser">
+      <b-form @submit.prevent="createUser">
         <b-form-group label="登录名" label-for="login-input">
           <b-form-input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="login-input" type="text" v-model="formAdd.data.login" placeholder="输入登录名"></b-form-input>
           <b-form-text text-variant="muted">最大长度24，最小长度3，创建后
