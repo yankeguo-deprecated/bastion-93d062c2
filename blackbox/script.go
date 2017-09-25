@@ -20,8 +20,8 @@ useradd --create-home --home-dir "{{$.BaseDir}}/{{.}}" --shell /bin/bash {{.}}
 {{range $.Accounts}}
 # lock the passwd 
 passwd -l {{.Account}}
-# unlock account shell
-chsh -s /bin/bash {{.Account}}
+# unlock account
+usermod --expiredate "" {{.}}
 # update authorized_keys
 mkdir -p "{{$.BaseDir}}/{{.Account}}/.ssh"
 echo "{{.PublicKey}}" > "{{$.BaseDir}}/{{.Account}}/.ssh/authorized_keys"
@@ -30,18 +30,14 @@ chown {{.Account}}:{{.Account}} "{{$.BaseDir}}/{{.Account}}/.ssh/authorized_keys
 chmod 700 "{{$.BaseDir}}/{{.Account}}/.ssh"
 chmod 600 "{{$.BaseDir}}/{{.Account}}/.ssh/authorized_keys"
 # update sudo status
-gpasswd {{if .CanSudo}}-a{{else}}-d{{end}} {{.Account}} sudo
+gpasswd {{if .CanSudo}}-a{{else}}-d{{end}} {{.Account}} sudo || true
 {{end}}
 
 ## Remove Account
 
 {{range $.AccountsRemove}}
-# lock the passwd 
-passwd -l {{.}}
-# lock account shell
-chsh -s /bin/false {{.}}
-# remove authorized_keys
-rm -f "{{$.BaseDir}}/{{.}}/.ssh/authorized_keys"
+# lock account
+usermod --expiredate 1 {{.}}
 {{end}}
 `
 
