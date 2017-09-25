@@ -3,53 +3,78 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
 	"strings"
-	"time"
 
 	"ireul.com/bastion/types"
 	"ireul.com/etc/passwd"
+	"ireul.com/yaml"
 )
 
-var host = os.Getenv("BASTION_HOST")
-var token = os.Getenv("BASTION_TOKEN")
-var home = os.Getenv("BASTION_HOME")
-var ticker = time.NewTicker(time.Minute)
+// ConfigFilePath path to config file
+const ConfigFilePath = "/etc/blackbox.yaml"
 
-var debug = len(os.Getenv("BASTION_DEBUG")) > 0
-
-func main() {
-	// check is root
-	if os.Getuid() != 0 && !debug {
-		log.Fatalln("bagent must run as root user!")
-		return
-	}
-	// check variables
-	if len(host) == 0 {
-		log.Fatalln("environment 'BASTION_HOST' not set!")
-		return
-	}
-	if len(token) == 0 {
-		log.Fatalln("environment 'BASTION_TOKEN' not set!")
-		return
-	}
-	if len(home) == 0 {
-		home = "/home"
-	}
-	// start loop
-	syncAccounts()
-	for {
-		<-ticker.C
-		syncAccounts()
-	}
+// Config config struct
+type Config struct {
+	Host  string `yaml:"host"`
+	Token string `yaml:"token"`
+	Home  string `yaml:"home"`
 }
 
-func syncAccounts() {
+var debug = len(os.Getenv("BLACKBOX_DEBUG")) > 0
+
+func main() {
+	// setup log
+	log.SetPrefix("[blackbox] ")
+
+	// check is root user
+	if os.Getuid() != 0 && !debug {
+		log.Fatalln("blackbox must run as root user!")
+		return
+	}
+
+	// decode config
+	cp := ConfigFilePath
+	if debug {
+		cp = "blackbox.yaml"
+	}
+
+	c := Config{}
+
+	data, err := ioutil.ReadFile(cp)
+	if err != nil {
+		log.Fatalln("failed to read", cp, err.Error())
+		return
+	}
+
+	if err = yaml.Unmarshal(data, &c); err != nil {
+		log.Fatalln("failed to decode", cp, err.Error())
+		return
+	}
+
+	// check config
+	if len(c.Host) == 0 {
+		log.Fatalln("'host' not set in", cp)
+		return
+	}
+	if len(c.Token) == 0 {
+		log.Fatalln("'token' not set in", cp)
+		return
+	}
+	if len(c.Home) == 0 {
+		c.Home = "/home"
+	}
+
+	syncAccounts(c)
+}
+
+func syncAccounts(c Config) {
 	// request API
-	res, err := makeRequest()
+	res, err := requestAPI(c)
 	if debug {
 		fmt.Println(res)
 	}
@@ -59,7 +84,7 @@ func syncAccounts() {
 	}
 
 	// read data
-	as, err := readAccounts()
+	as, err := readSystemAccounts()
 	if err != nil {
 		log.Println("failed to read accounts from /etc/passwd:", err.Error())
 		return
@@ -67,17 +92,16 @@ func syncAccounts() {
 
 	// compute
 	data := SyncData{
-		BaseDir:  home,
-		Accounts: res.Accounts,
+		BaseDir:        c.Home,
+		Accounts:       res.Accounts,
+		AccountsAdd:    []string{},
+		AccountsRemove: []string{},
 	}
-
-	adds := []string{}
-	dels := []string{}
 
 	// missing accounts
 	for _, a := range res.Accounts {
 		if as[a.Account].UID == "" {
-			adds = append(adds, a.Account)
+			data.AccountsAdd = append(data.AccountsAdd, a.Account)
 		}
 	}
 
@@ -89,11 +113,8 @@ OUTER:
 				continue OUTER
 			}
 		}
-		dels = append(dels, k)
+		data.AccountsRemove = append(data.AccountsRemove, k)
 	}
-
-	data.AccountsAdd = adds
-	data.AccountsRemove = dels
 
 	// execute script
 	script := GenerateSyncScript(data)
@@ -114,13 +135,13 @@ OUTER:
 	}
 }
 
-func makeRequest() (res types.ServerSyncResponse, err error) {
+func requestAPI(c Config) (res types.ServerSyncResponse, err error) {
 	var req *http.Request
 	// make request
-	if req, err = http.NewRequest(http.MethodPost, host+"/api/servers/sync", strings.NewReader("")); err != nil {
+	if req, err = http.NewRequest(http.MethodPost, c.Host+"/api/servers/sync", strings.NewReader("")); err != nil {
 		return
 	}
-	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("Authorization", "Bearer "+c.Token)
 	// execute request
 	var r *http.Response
 	if r, err = http.DefaultClient.Do(req); err != nil {
@@ -131,7 +152,7 @@ func makeRequest() (res types.ServerSyncResponse, err error) {
 	return
 }
 
-func readAccounts() (map[string]passwd.Entry, error) {
+func readSystemAccounts() (map[string]passwd.Entry, error) {
 	var file = "/etc/passwd"
 	if debug {
 		file = "passwd"
@@ -140,6 +161,7 @@ func readAccounts() (map[string]passwd.Entry, error) {
 	if err != nil {
 		return nil, err
 	}
+	// filter accounts not start with 'bastion-'
 	ret := make(map[string]passwd.Entry)
 	for k, v := range all {
 		if strings.HasPrefix(k, types.AccountPrefix) {
