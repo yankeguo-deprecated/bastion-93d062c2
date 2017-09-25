@@ -2,16 +2,18 @@
   <b-row>
     <b-col>
       <h5 class="text-info">审核日志</h5>
-      <b-pagination :disabled="$state.isLoading" align="center" @input="changePage" size="sm" :total-rows="auditLogs.total" v-model="auditLogs.activePage" :per-page="auditLogs.limit">
+      <b-pagination :disabled="state.isLoading" align="center" @input="changePage" size="sm" :total-rows="auditLogs.total" v-model="auditLogs.activePage" :per-page="auditLogs.limit">
       </b-pagination>
       <b-table striped hover :items="auditLogs.data" :fields="auditLogs.fields">
       </b-table>
-      <b-pagination :disabled="$state.isLoading" align="center" @input="changePage" size="sm" :total-rows="auditLogs.total" v-model="auditLogs.activePage" :per-page="auditLogs.limit">
+      <b-pagination :disabled="state.isLoading" align="center" @input="changePage" size="sm" :total-rows="auditLogs.total" v-model="auditLogs.activePage" :per-page="auditLogs.limit">
       </b-pagination>
     </b-col>
   </b-row>
 </template>
 <<script>
+import VueState from '../lib/vue-state'
+
 export default {
   name: 'audit_logs',
   head: {
@@ -21,6 +23,7 @@ export default {
   },
   data () {
     return {
+      state: new VueState(),
       auditLogs: {
         activePage: 1,
         total: 0,
@@ -52,15 +55,15 @@ export default {
   },
   methods: {
     reloadAuditLogs () {
-      this.$state.begin()
+      this.state.begin()
       this.$api.listAuditLogs({offset: this.auditLogs.offset}).then(({body}) => {
         this.auditLogs.data = body.auditLogs
         this.auditLogs.offset = body.offset
         this.auditLogs.limit = body.limit
         this.auditLogs.total = body.total
-        this.$state.end()
+        this.state.end()
       }, ({body}) => {
-        this.$state.end()
+        this.state.end()
       })
     },
     changePage (page) {

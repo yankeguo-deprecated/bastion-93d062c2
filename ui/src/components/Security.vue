@@ -77,6 +77,10 @@ export default {
   },
   methods: {
     updateUserPassword () {
+      if (this.form.newPassword !== this.form.newPasswordConfirmation) {
+        this.form.error = '重复密码不正确'
+        return
+      }
       this.loading = true
       this.form.success = null
       this.form.error = null

@@ -15,10 +15,6 @@ import Api from './api'
 
 Vue.use(Api)
 
-import VueState from './lib/vue-state'
-
-Vue.use(VueState)
-
 import App from './App'
 import router from './router'
 import store from './store'

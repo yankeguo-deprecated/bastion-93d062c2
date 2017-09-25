@@ -3,7 +3,7 @@
     <b-col md="3">
       <b-list-group>
         <h5 class="text-info">标签</h5>
-        <b-list-group-item @click="switchTag(tag)" href="" tag="a" v-for="tag in tags" :key="tag" :disabled="$state.isLoading" :active="tag === activeTag">{{tag}}</b-list-group-item>
+        <b-list-group-item @click="switchTag(tag)" href="" tag="a" v-for="tag in tags" :key="tag" :disabled="state.isLoading" :active="tag === activeTag">{{tag}}</b-list-group-item>
       </b-list-group>
     </b-col>
     <b-col>
@@ -27,7 +27,7 @@
         <b-form-select v-model="form.data.canSudo" :options="form.canSudoOptions"></b-form-select>
         </b-form-group>
         &nbsp;
-        <b-button type="submit" variant="info" :disabled="$state.isLoading">创建/更新</b-button>
+        <b-button type="submit" variant="info" :disabled="state.isLoading">创建/更新</b-button>
       </b-form>
       <br/>
       <b-table striped hover :items="grants" :fields="fields">
@@ -37,8 +37,8 @@
           <span v-if="data.item.expiresAt && data.item.isExpired" class="text-danger">{{data.item.expiresAt}}</span>
         </template>
         <template slot="operation" scope="data">
-          <b-link href="" :disabled="$state.isLoading" @click="editGrant(data.index)" class="text-info">编辑</b-link>&nbsp;|&nbsp;
-          <b-link href="" :disabled="$state.isLoading" @click="destroyGrant(data.item.id)" class="text-danger">删除</b-link>
+          <b-link href="" :disabled="state.isLoading" @click="editGrant(data.index)" class="text-info">编辑</b-link>&nbsp;|&nbsp;
+          <b-link href="" :disabled="state.isLoading" @click="destroyGrant(data.item.id)" class="text-danger">删除</b-link>
         </template>
       </b-table>
     </b-col>
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import VueState from '../lib/vue-state'
 import _ from 'lodash'
 
 export default {
@@ -61,6 +62,7 @@ export default {
   },
   data () {
     return {
+      state: new VueState(),
       form: {
         data: {
           userLogin: null,
@@ -110,25 +112,25 @@ export default {
   },
   methods: {
     reloadGrants () {
-      this.$state.begin()
+      this.state.begin()
       this.$api.listGrants({tag: this.activeTag}).then(({body}) => {
         this.grants = body.grants
-        this.$state.end()
+        this.state.end()
       }, () => {
-        this.$state.end()
+        this.state.end()
       })
     },
     reloadTags () {
-      this.$state.begin()
+      this.state.begin()
       this.$api.listTags().then(({body}) => {
         this.tags = _.sortBy(body.tags, (t) => t !== 'default')
-        this.$state.end()
+        this.state.end()
       }, () => {
-        this.$state.end()
+        this.state.end()
       })
     },
     switchTag (tag) {
-      if (this.$state.isLoading) {
+      if (this.state.isLoading) {
         return
       }
       this.activeTag = tag
@@ -138,12 +140,12 @@ export default {
       if (!confirm('确认要删除么')) {
         return
       }
-      this.$state.begin()
+      this.state.begin()
       this.$api.destroyGrant({id}).then(() => {
-        this.$state.end()
+        this.state.end()
         this.reloadGrants()
       }, () => {
-        this.$state.end()
+        this.state.end()
       })
     },
     editGrant (index) {
@@ -178,12 +180,12 @@ export default {
         }
         data.expiresIn = this.form.data.expiresIn * scale
       }
-      this.$state.begin()
+      this.state.begin()
       this.$api.createGrant(data).then(() => {
         this.reloadGrants()
-        this.$state.end()
+        this.state.end()
       }, () => {
-        this.$state.end()
+        this.state.end()
       })
     }
   }
