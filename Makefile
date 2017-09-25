@@ -5,7 +5,6 @@ dist:
 	mkdir -p dist/public
 	go build -o dist/bastion
 	cd ui && make dist
-	cd blackbox && go build -o ../dist/blackbox
 	cp -r ui/dist/* dist/public
 	cp config.sample.toml dist/
 lint:
