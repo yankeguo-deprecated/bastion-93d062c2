@@ -8,7 +8,7 @@ env = "development"
 
 # MySQL database DSN
 # see https://github.com/go-sql-driver/mysql/#dsn-data-source-name
-url = "root@tcp(localhost:3306)/bastion?parseTime=true"
+url = "root@tcp(localhost:3306)/bastion?parseTime=true&charset=utf8mb4,utf8"
 
 [redis]
 
