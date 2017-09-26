@@ -17,8 +17,7 @@ cp robots.txt dist/
 popd
 
 # dist
-rm -rf dist/bastion-$VERSION*
-rm -rf dist/blackbox-$VERSION*
+rm -rf dist
 
 mkdir -p dist/bastion-$VERSION
 mkdir -p dist/blackbox-$VERSION
