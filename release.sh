@@ -24,7 +24,7 @@ mkdir -p dist/bastion-$VERSION
 mkdir -p dist/blackbox-$VERSION
 mkdir -p dist/bastion-$VERSION/public
 cp -r ui/dist/* dist/bastion-$VERSION/public/
-cp config.sample.toml dist/bastion-$VERSION/public/
+cp config.sample.toml dist/bastion-$VERSION/
 
 # bastion
 GOOS=linux GOARCH=amd64 go build -o dist/bastion-$VERSION/bastion
