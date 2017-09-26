@@ -8,36 +8,70 @@ import (
 )
 
 const tmplSync = `#!/bin/bash
-## Create Account
+set -e
+set -u
+
+# Global Variables
+
+HOME_BASE="{{$.BaseDir}}"
+SUDOERS_TMP=/tmp/bastion-sudoers.tmp
+
+# Functions
+
+create_user() {
+	useradd --create-home --home-dir "$HOME_BASE/$1" $1
+}
+
+clean_sudoers_tmp() {
+	rm -f $SUDOERS_TMP
+	touch -f $SUDOERS_TMP
+}
+
+apply_sudoers_tmp() {
+	mv -f $SUDOERS_TMP /etc/sudoers.d/bastion-sudoers
+}
+
+unlock_account() {
+	usermod -L -e "" $1
+}
+
+update_account_authorized_keys() {
+	SSH_DIR="$HOME_BASE/$1/.ssh"
+	mkdir -p "$SSH_DIR"
+	pushd "$SSH_DIR"
+	echo "$2" > authorized_keys
+	chown -R $1:$1 .
+	chmod 700 .
+	chmod 600 authorized_keys
+	popd
+}
+
+add_account_to_sudoers_tmp() {
+	echo "$1 ALL=(ALL:ALL) NOPASSWD:ALL" >> $SUDOERS_TMP
+}
+
+lock_account() {
+	usermod -L -e 1 $1
+}
 
 {{range $.AccountsAdd}}
-# create account
-useradd --create-home --home-dir "{{$.BaseDir}}/{{.}}" --shell /bin/bash {{.}}
+create_user {{.}}
 {{end}}
 
-## Update Account
+clean_sudoers_tmp
 
 {{range $.Accounts}}
-# lock the passwd 
-passwd -l {{.Account}}
-# unlock account
-usermod --expiredate "" {{.}}
-# update authorized_keys
-mkdir -p "{{$.BaseDir}}/{{.Account}}/.ssh"
-echo "{{.PublicKey}}" > "{{$.BaseDir}}/{{.Account}}/.ssh/authorized_keys"
-chown {{.Account}}:{{.Account}} "{{$.BaseDir}}/{{.Account}}/.ssh"
-chown {{.Account}}:{{.Account}} "{{$.BaseDir}}/{{.Account}}/.ssh/authorized_keys"
-chmod 700 "{{$.BaseDir}}/{{.Account}}/.ssh"
-chmod 600 "{{$.BaseDir}}/{{.Account}}/.ssh/authorized_keys"
-# update sudo status
-gpasswd {{if .CanSudo}}-a{{else}}-d{{end}} {{.Account}} sudo || true
+unlock_account {{.Account}}
+update_account_authorized_keys {{.Account}} "{{.PublicKey}}"
+{{if .CanSudo}}
+add_account_to_sudoers_tmp {{.Account}}
+{{end}}
 {{end}}
 
-## Remove Account
+apply_sudoers_tmp
 
 {{range $.AccountsRemove}}
-# lock account
-usermod --expiredate 1 {{.}}
+lock_account {{.}}
 {{end}}
 `
 
