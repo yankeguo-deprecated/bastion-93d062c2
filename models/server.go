@@ -15,7 +15,7 @@ import (
 const ServerTagDefault = "default"
 
 // ServerNameRegexp 用户登录名正则表达式
-var ServerNameRegexp = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9_-]{2,23}$`)
+var ServerNameRegexp = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9_.-]{2,23}$`)
 
 // ServerTagRegexp regexp for a single tag
 var ServerTagRegexp = regexp.MustCompile(`^[a-zA-Z][a-zA-Z0-9_-]{0,23}$`)
