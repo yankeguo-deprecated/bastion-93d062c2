@@ -9,8 +9,6 @@ type Config struct {
 		Host string `toml:"host"`
 		// Port 端口号
 		Port int `toml:"port"`
-		// ServeStatic
-		ServeStatic bool `toml:"serve_static"`
 	} `toml:"web"`
 	Redis struct {
 		// URL Redis 数据库链接

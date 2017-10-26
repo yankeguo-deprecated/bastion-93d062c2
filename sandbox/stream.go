@@ -66,5 +66,4 @@ func (s ExecStream) Run(ctx context.Context) (err error) {
 			}
 		}
 	}
-	return
 }

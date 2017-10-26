@@ -37,18 +37,21 @@ func execWebCommand(c *cli.Context) (err error) {
 
 	// create web instance
 	m := web.New()
+	m.SetEnv(cfg.Bastion.Env)
 	m.Use(web.Logger())
 	m.Use(web.Recovery())
-	if cfg.Web.ServeStatic {
+	if m.Env() == web.DEV {
 		m.Use(web.Static("public"))
+		m.Use(web.Renderer())
+	} else {
+		m.Use(web.Static("public", web.StaticOptions{BinFS: true}))
+		m.Use(web.Renderer(web.RenderOptions{BinFS: true}))
 	}
-	m.Use(web.Renderer())
 	m.Use(func(ctx *web.Context) {
 		ctx.Data["Version"] = VERSION
 	})
 
 	// map config
-	m.SetEnv(cfg.Bastion.Env)
 	m.Map(cfg)
 
 	// create sandbox.Manager

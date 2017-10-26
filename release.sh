@@ -3,7 +3,7 @@
 set -e
 set -u
 
-export VERSION="v2017092601"
+export VERSION="v2017102701"
 
 # UI
 pushd ui
@@ -13,16 +13,18 @@ mkdir -p dist
 npm install
 NODE_ENV=production npm run build
 cp robots.txt dist/
+mkdir -p dist/bundle
+mv dist/index.html dist/robots.txt dist/static dist/bundle
 
 popd
 
 # dist
 rm -rf dist
 
+binfs ui/dist/bundle > binfs.out.go
+
 mkdir -p dist/bastion-$VERSION
 mkdir -p dist/blackbox-$VERSION
-mkdir -p dist/bastion-$VERSION/public
-cp -r ui/dist/* dist/bastion-$VERSION/public/
 cp config.sample.toml dist/bastion-$VERSION/
 
 # bastion
