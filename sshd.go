@@ -78,6 +78,22 @@ func execSSHDCommand(c *cli.Context) (err error) {
 		db.Touch(u)
 		db.Touch(k)
 		db.Audit(k, "ssh.success", snb)
+		// update .ssh/config
+		ss := []models.Server{}
+		db.Find(&ss)
+		entries := []sandbox.SSHEntry{}
+		for _, s := range ss {
+			entries = append(entries, sandbox.SSHEntry{
+				Name: s.Name,
+				Port: s.Port,
+				Host: s.Address,
+				User: types.AccountPrefix + u.Login,
+			})
+		}
+		err = sm.ExecScript(snb, sandbox.ScriptSeedSSHConfig(entries))
+		if err != nil {
+			io.WriteString(s, "failed to seed .ssh/config")
+		}
 		// ensure command
 		cmd := s.Command()
 		if len(cmd) == 0 {

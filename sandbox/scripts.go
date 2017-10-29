@@ -41,7 +41,7 @@ echo "  User {{.User}}" >> /root/.ssh/config
 type SSHEntry struct {
 	Name string
 	Host string
-	Port int
+	Port uint
 	User string
 }
 
@@ -63,7 +63,8 @@ func scriptSeedSSH(publicKey string, privateKey string) string {
 	)
 }
 
-func scriptSeedSSHConfig(entries []SSHEntry) string {
+// ScriptSeedSSHConfig create a script for seeding .ssh/config
+func ScriptSeedSSHConfig(entries []SSHEntry) string {
 	return createScript(
 		"seed-ssh-config",
 		tplSSHConfig,
